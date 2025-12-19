@@ -1,0 +1,51 @@
+
+> microgreens-app@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v5.22.0) to .\node_modules\@prisma\client in 134ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want real-time updates to your database without manual polling? Discover how with Pulse: https://pris.ly/tip-0-pulse
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 5.22.0 -> 7.2.0                       │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Environments: .env
+
+ ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 6.5s
+   Running TypeScript ...
+Failed to compile.
+
+./app/(dashboard)/inventory/new/material-form.tsx:10:31
+Type error: No overload matches this call.
+  Overload 1 of 2, '(action: (state: { message: string; }) => { message: string; } | Promise<{ message: string; }>, initialState: { message: string; }, permalink?: string | undefined): [state: { message: string; }, dispatch: () => void, isPending: boolean]', gave the following error.
+    Argument of type '(prevState: State, formData: FormData) => Promise<{ message: string; }>' is not assignable to parameter of type '(state: { message: string; }) => { message: string; } | Promise<{ message: string; }>'.
+      Target signature provides too few arguments. Expected 2 or more, but got 1.
+  Overload 2 of 2, '(action: (state: { message: string; }, payload: FormData) => { message: string; } | Promise<{ message: string; }>, initialState: { message: string; }, permalink?: string | undefined): [state: ...]', gave the following error.
+    Argument of type 'State' is not assignable to parameter of type '{ message: string; }'.
+      Types of property 'message' are incompatible.
+        Type 'string | null | undefined' is not assignable to type 'string'.
+          Type 'undefined' is not assignable to type 'string'.
+
+[0m [90m  8 |[39m
+ [90m  9 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mMaterialForm[39m() {
+[31m[1m>[22m[39m[90m 10 |[39m     [36mconst[39m [state[33m,[39m dispatch] [33m=[39m useFormState(createMaterial[33m,[39m initialState)[33m;[39m
+ [90m    |[39m                               [31m[1m^[22m[39m
+ [90m 11 |[39m
+ [90m 12 |[39m     [36mreturn[39m (
+ [90m 13 |[39m         [33m<[39m[33mform[39m action[33m=[39m{dispatch} className[33m=[39m[32m"flex flex-col gap-4 bg-white p-6 rounded-lg shadow-sm border max-w-lg"[39m[33m>[39m[0m
+Next.js build worker exited with code: 1 and signal: null

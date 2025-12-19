@@ -1,0 +1,78 @@
+
+> microgreens-app@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v5.22.0) to .\node_modules\@prisma\client in 121ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Help us improve the Prisma ORM for everyone. Share your feedback in a short 2-min survey: https://pris.ly/orm/survey/release-5-22
+
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Environments: .env
+
+ ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 5.2s
+   Running TypeScript ...
+   Collecting page data using 5 workers ...
+   Generating static pages using 5 workers (0/18) ...
+   Generating static pages using 5 workers (4/18) 
+prisma:query BEGIN
+prisma:query DEALLOCATE ALL
+prisma:query SELECT "public"."Material"."id", "public"."Material"."name", "public"."Material"."unit", "public"."Material"."createdAt" FROM "public"."Material" WHERE 1=1 ORDER BY "public"."Material"."name" ASC OFFSET $1
+prisma:query COMMIT
+   Generating static pages using 5 workers (8/18) 
+   Generating static pages using 5 workers (13/18) 
+prisma:query BEGIN
+prisma:query DEALLOCATE ALL
+prisma:query SELECT "public"."Material"."id", "public"."Material"."name", "public"."Material"."unit", "public"."Material"."createdAt" FROM "public"."Material" WHERE 1=1 ORDER BY "public"."Material"."name" ASC OFFSET $1
+prisma:query COMMIT
+prisma:query BEGIN
+prisma:query DEALLOCATE ALL
+prisma:query SELECT "public"."Customer"."id", "public"."Customer"."name", "public"."Customer"."contact", "public"."Customer"."address", "public"."Customer"."createdAt" FROM "public"."Customer" WHERE 1=1 ORDER BY "public"."Customer"."name" ASC OFFSET $1
+prisma:query COMMIT
+prisma:query BEGIN
+prisma:query DEALLOCATE ALL
+prisma:query SELECT "public"."Material"."id", "public"."Material"."name", "public"."Material"."unit", "public"."Material"."createdAt" FROM "public"."Material" WHERE 1=1 ORDER BY "public"."Material"."name" ASC OFFSET $1
+prisma:query SELECT "public"."Stock"."id", "public"."Stock"."materialId", "public"."Stock"."quantity", "public"."Stock"."updatedAt" FROM "public"."Stock" WHERE "public"."Stock"."materialId" IN ($1,$2,$3,$4) OFFSET $5
+prisma:query COMMIT
+ ✓ Generating static pages using 5 workers (18/18) in 2.6s
+   Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/auth/[...nextauth]
+├ ○ /auth/login
+├ ƒ /customers
+├ ƒ /customers/[id]/edit
+├ ○ /customers/new
+├ ƒ /harvest/[lotId]
+├ ƒ /inventory
+├ ƒ /inventory/[id]/edit
+├ ○ /inventory/new
+├ ƒ /lots
+├ ƒ /lots/[id]
+├ ƒ /lots/[id]/edit
+├ ○ /lots/new
+├ ƒ /purchases
+├ ƒ /purchases/[id]/edit
+├ ○ /purchases/new
+├ ƒ /reports
+├ ƒ /sales
+├ ƒ /sales/[id]/edit
+├ ○ /sales/new
+├ ƒ /users
+├ ƒ /users/[id]/edit
+└ ○ /users/create
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
