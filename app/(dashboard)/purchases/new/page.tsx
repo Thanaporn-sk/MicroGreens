@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import PurchaseForm from './purchase-form';
 
+export const dynamic = 'force-dynamic';
+
 export default async function NewPurchasePage() {
     const materials = await prisma.material.findMany({
         orderBy: { name: 'asc' },
