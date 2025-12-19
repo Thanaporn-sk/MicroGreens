@@ -1,0 +1,70 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Modal from '@/app/ui/modal';
+import { getCustomerHistory } from '@/app/lib/history-actions';
+import { formatDate } from '@/app/lib/formatters';
+
+interface Sale {
+    id: number;
+    saleDate: Date;
+    productName: string;
+    weight: number;
+    price: number;
+}
+
+export default function CustomerHistoryModal({
+    isOpen,
+    onClose,
+    customerId,
+    customerName
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    customerId: number | null;
+    customerName: string;
+}) {
+    const [history, setHistory] = useState<Sale[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (isOpen && customerId) {
+            setLoading(true);
+            getCustomerHistory(customerId)
+                .then(setHistory)
+                .catch(console.error)
+                .finally(() => setLoading(false));
+        }
+    }, [isOpen, customerId]);
+
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} title={`Sales History: ${customerName}`}>
+            {loading ? (
+                <div className="text-center py-4">Loading...</div>
+            ) : history.length === 0 ? (
+                <p className="text-gray-500 text-center">No sales history found.</p>
+            ) : (
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                        {history.map((item) => (
+                            <tr key={item.id}>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formatDate(item.saleDate)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.productName}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.weight.toFixed(2)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">${item.price.toFixed(2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </Modal>
+    );
+}

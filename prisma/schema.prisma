@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("STAFF") // ADMIN, STAFF, VIEWER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Material {
+  id        Int        @id @default(autoincrement())
+  name      String
+  unit      String
+  stock     Stock?
+  purchases Purchase[]
+  harvests  Harvest[]
+  adjustments StockAdjustment[]
+  createdAt DateTime   @default(now())
+}
+
+model Stock {
+  id         Int      @id @default(autoincrement())
+  materialId Int      @unique
+  material   Material @relation(fields: [materialId], references: [id])
+  quantity   Float
+  updatedAt  DateTime @updatedAt
+}
+
+model Purchase {
+  id         Int      @id @default(autoincrement())
+  materialId Int
+  material   Material @relation(fields: [materialId], references: [id])
+  quantity   Float
+  cost       Float?
+  date       DateTime
+  createdAt  DateTime @default(now())
+}
+
+model PlantingLot {
+  id           Int       @id @default(autoincrement())
+  lotCode      String    @unique
+  cropType     String
+  seedUsed     Float
+  trayCount    Int
+  plantingDate      DateTime
+  expectedHarvestDate DateTime?
+  mediumUsed        String?
+  harvests     Harvest[]
+  notes        String?
+  status       String    @default("PLANTED") // PLANTED, HARVESTING, COMPLETED
+  createdAt    DateTime  @default(now())
+}
+
+
+model Harvest {
+  id          Int         @id @default(autoincrement())
+  lotId       Int
+  lot         PlantingLot @relation(fields: [lotId], references: [id])
+  weight      Float
+  trayCount   Int?        // Number of trays harvested in this batch
+  bagCount    Int?
+  harvestDate DateTime
+  createdAt   DateTime    @default(now())
+  materialId  Int?
+  material    Material?   @relation(fields: [materialId], references: [id])
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  contact   String?
+  address   String?
+  sales     Sale[]
+  createdAt DateTime @default(now())
+}
+
+model Sale {
+  id          Int       @id @default(autoincrement())
+  customerId  Int?
+  customer    Customer? @relation(fields: [customerId], references: [id])
+  productName String
+  weight      Float
+  bagCount    Int?
+  price       Float
+  saleDate    DateTime
+  createdAt   DateTime  @default(now())
+}
+
+model StockAdjustment {
+  id         Int      @id @default(autoincrement())
+  materialId Int
+  material   Material @relation(fields: [materialId], references: [id])
+  quantity   Float
+  reason     String
+  date       DateTime @default(now())
+}
+
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    String?
+  action    String
+  detail    String // JSON string
+  createdAt DateTime @default(now())
+}

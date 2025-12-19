@@ -1,0 +1,98 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { Pencil } from 'lucide-react';
+import DeleteButton from '@/app/ui/delete-button';
+import { deleteSale } from '@/app/lib/actions';
+import { formatDate } from '@/app/lib/formatters';
+import CustomerHistoryModal from '@/app/ui/history/customer-history-modal';
+import ProductHistoryModal from '@/app/ui/history/product-history-modal';
+
+type SaleWithCustomer = {
+    id: number;
+    saleDate: Date;
+    productName: string;
+    weight: number;
+    price: number;
+    customer: {
+        id: number;
+        name: string;
+    } | null;
+};
+
+export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
+    const [historyCustomer, setHistoryCustomer] = useState<{ id: number, name: string } | null>(null);
+    const [historyProduct, setHistoryProduct] = useState<string | null>(null);
+
+    return (
+        <>
+            <div className="rounded-lg bg-white shadow overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                        <tr>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                            <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                        {sales.length === 0 ? (
+                            <tr>
+                                <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">No sales recorded.</td>
+                            </tr>
+                        ) : (
+                            sales.map((sale) => (
+                                <tr key={sale.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formatDate(sale.saleDate)}</td>
+                                    <td
+                                        className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline"
+                                        onClick={() => sale.customer && setHistoryCustomer({ id: sale.customer.id, name: sale.customer.name })}
+                                        title={sale.customer ? "View Customer History" : ""}
+                                    >
+                                        {sale.customer?.name || 'Unknown'}
+                                    </td>
+                                    <td
+                                        className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline"
+                                        onClick={() => setHistoryProduct(sale.productName)}
+                                        title="View Product Sales History"
+                                    >
+                                        {sale.productName}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sale.weight.toFixed(2)}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">${sale.price.toFixed(2)}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-2">
+                                        <Link href={`/sales/${sale.id}/edit`} className="text-blue-600 hover:text-blue-900 p-1">
+                                            <Pencil className="w-4 h-4" />
+                                        </Link>
+                                        <DeleteButton id={sale.id} deleteAction={deleteSale} />
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+            {historyCustomer && (
+                <CustomerHistoryModal
+                    isOpen={!!historyCustomer}
+                    onClose={() => setHistoryCustomer(null)}
+                    customerId={historyCustomer.id}
+                    customerName={historyCustomer.name}
+                />
+            )}
+
+            {historyProduct && (
+                <ProductHistoryModal
+                    isOpen={!!historyProduct}
+                    onClose={() => setHistoryProduct(null)}
+                    productName={historyProduct}
+                />
+            )}
+        </>
+    );
+}
