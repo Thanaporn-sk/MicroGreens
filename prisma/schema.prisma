@@ -20,7 +20,7 @@ model User {
 
 model Material {
   id        Int        @id @default(autoincrement())
-  name      String
+  name      String     @unique
   unit      String
   stock     Stock?
   purchases Purchase[]
