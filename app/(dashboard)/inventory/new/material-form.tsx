@@ -1,13 +1,13 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import Link from 'next/link';
 import { createMaterial, State } from '@/app/lib/actions';
 
 const initialState: State = { message: null, errors: {} };
 
 export default function MaterialForm() {
-    const [state, dispatch] = useFormState<State, FormData>(createMaterial, initialState);
+    const [state, dispatch] = useActionState<State, FormData>(createMaterial, initialState);
 
     return (
         <form action={dispatch} className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-sm border max-w-lg">

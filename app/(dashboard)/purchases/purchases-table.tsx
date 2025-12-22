@@ -7,6 +7,7 @@ import DeleteButton from '@/app/ui/delete-button';
 import { deletePurchase } from '@/app/lib/actions';
 import { formatDate } from '@/app/lib/formatters';
 import MaterialHistoryModal from '@/app/ui/history/material-history-modal';
+import SortableHeader from '@/app/ui/sortable-header';
 
 type PurchaseWithMaterial = {
     id: number;
@@ -30,10 +31,18 @@ export default function PurchasesTable({ purchases }: { purchases: PurchaseWithM
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Material</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Date" value="date" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Material" value="material" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Quantity" value="quantity" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Cost" value="cost" />
+                            </th>
                             <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                         </tr>
                     </thead>

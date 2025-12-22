@@ -3,24 +3,36 @@ import { prisma } from '@/lib/prisma';
 import { Plus } from 'lucide-react';
 import Search from '@/app/ui/search';
 import SalesTable from './sales-table';
+import { Prisma } from '@prisma/client';
 
 export default async function SalesPage(props: {
     searchParams?: Promise<{
         query?: string;
+        sort?: string;
+        order?: 'asc' | 'desc';
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
+    const sort = searchParams?.sort || 'saleDate';
+    const order = searchParams?.order || 'desc';
+
+    const orderBy: Prisma.SaleOrderByWithRelationInput = {};
+    if (sort === 'customer') {
+        orderBy.customer = { name: order };
+    } else {
+        orderBy[sort as keyof Prisma.SaleOrderByWithRelationInput] = order;
+    }
 
     const sales = await prisma.sale.findMany({
         where: {
             OR: [
-                { productName: { contains: query } },
-                { customer: { name: { contains: query } } }
+                { productName: { contains: query, mode: 'insensitive' } },
+                { customer: { name: { contains: query, mode: 'insensitive' } } }
             ]
         },
         include: { customer: true },
-        orderBy: { saleDate: 'desc' },
+        orderBy: orderBy,
     });
 
     return (

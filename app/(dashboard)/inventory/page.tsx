@@ -11,20 +11,34 @@ type MaterialWithStock = {
     stock: { quantity: number } | null;
 };
 
+// ... imports
+import { Prisma } from '@prisma/client';
+
 export default async function InventoryPage(props: {
     searchParams?: Promise<{
         query?: string;
+        sort?: string;
+        order?: 'asc' | 'desc';
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
+    const sort = searchParams?.sort || 'name';
+    const order = searchParams?.order || 'asc';
+
+    const orderBy: Prisma.MaterialOrderByWithRelationInput = {};
+    if (sort === 'stock') {
+        orderBy.stock = { quantity: order };
+    } else {
+        orderBy[sort as keyof Prisma.MaterialOrderByWithRelationInput] = order;
+    }
 
     const materials = await prisma.material.findMany({
         where: {
-            name: { contains: query }
+            name: { contains: query, mode: 'insensitive' }
         },
         include: { stock: true },
-        orderBy: { name: 'asc' }
+        orderBy: orderBy
     });
 
     return (

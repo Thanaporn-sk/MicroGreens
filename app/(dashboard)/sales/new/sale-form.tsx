@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { createSale, State } from '@/app/lib/actions';
 import type { Customer, Material } from '@prisma/client';
 
@@ -10,7 +10,7 @@ type MaterialWithStock = Material & { stock: { quantity: number } | null };
 const initialState: State = { message: null, errors: {} };
 
 export default function SaleForm({ customers, materials }: { customers: Customer[], materials: MaterialWithStock[] }) {
-    const [state, dispatch] = useFormState<State, FormData>(createSale, initialState);
+    const [state, dispatch] = useActionState<State, FormData>(createSale, initialState);
 
     return (
         <form action={dispatch} className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-sm border max-w-lg">

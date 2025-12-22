@@ -4,22 +4,36 @@ import { Plus } from 'lucide-react';
 import Search from '@/app/ui/search';
 import PurchasesTable from './purchases-table';
 
+// ... imports
+import { Prisma } from '@prisma/client';
+
 export default async function PurchasesPage(props: {
     searchParams?: Promise<{
         query?: string;
+        sort?: string;
+        order?: 'asc' | 'desc';
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
+    const sort = searchParams?.sort || 'date';
+    const order = searchParams?.order || 'desc';
+
+    const orderBy: Prisma.PurchaseOrderByWithRelationInput = {};
+    if (sort === 'material') {
+        orderBy.material = { name: order };
+    } else {
+        orderBy[sort as keyof Prisma.PurchaseOrderByWithRelationInput] = order;
+    }
 
     const purchases = await prisma.purchase.findMany({
         where: {
             material: {
-                name: { contains: query }
+                name: { contains: query, mode: 'insensitive' }
             }
         },
         include: { material: true },
-        orderBy: { date: 'desc' },
+        orderBy: orderBy,
     });
 
     return (

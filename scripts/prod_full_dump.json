@@ -1,0 +1,386 @@
+{
+  "User": [
+    {
+      "id": "cmjckvkfu0000147yhaemb89p",
+      "email": "admin@example.com",
+      "password": "$2b$10$6Z/caOu7mSBeRTisktocfuzcgS9PJUTtJQBwLoC.3LCXjJTXbj8rG",
+      "name": "Admin User",
+      "role": "ADMIN",
+      "createdAt": "2025-12-19T07:58:53.754Z",
+      "updatedAt": "2025-12-19T07:58:53.754Z"
+    }
+  ],
+  "Material": [
+    {
+      "id": 1,
+      "name": "Sun Flower Seed",
+      "unit": "kg",
+      "createdAt": "2025-12-19T08:01:21.957Z"
+    },
+    {
+      "id": 2,
+      "name": "Soil",
+      "unit": "bag",
+      "createdAt": "2025-12-19T08:01:45.405Z"
+    },
+    {
+      "id": 3,
+      "name": "coconut coir",
+      "unit": "bag",
+      "createdAt": "2025-12-19T08:42:58.783Z"
+    },
+    {
+      "id": 4,
+      "name": "Sun Flower Sprout",
+      "unit": "kg",
+      "createdAt": "2025-12-19T08:59:57.885Z"
+    }
+  ],
+  "Customer": [
+    {
+      "id": 1,
+      "name": "P' Kae",
+      "contact": "",
+      "address": "",
+      "createdAt": "2025-12-19T09:06:03.657Z"
+    },
+    {
+      "id": 2,
+      "name": "P'Nok",
+      "contact": "",
+      "address": "",
+      "createdAt": "2025-12-19T09:06:15.887Z"
+    },
+    {
+      "id": 3,
+      "name": "Som O",
+      "contact": "",
+      "address": "",
+      "createdAt": "2025-12-19T09:06:30.459Z"
+    },
+    {
+      "id": 4,
+      "name": "Ano",
+      "contact": "",
+      "address": "",
+      "createdAt": "2025-12-19T09:06:51.516Z"
+    }
+  ],
+  "PlantingLot": [
+    {
+      "id": 5,
+      "lotCode": "S2025-12-05",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.45,
+      "trayCount": 4,
+      "plantingDate": "2025-12-13T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-20T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "PLANTED",
+      "createdAt": "2025-12-19T08:56:39.405Z"
+    },
+    {
+      "id": 6,
+      "lotCode": "S2025-12-06",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.22,
+      "trayCount": 3,
+      "plantingDate": "2025-12-15T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-22T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "PLANTED",
+      "createdAt": "2025-12-19T08:57:47.902Z"
+    },
+    {
+      "id": 7,
+      "lotCode": "S2025-12-07",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.22,
+      "trayCount": 2,
+      "plantingDate": "2025-12-16T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-23T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "PLANTED",
+      "createdAt": "2025-12-19T08:58:41.608Z"
+    },
+    {
+      "id": 1,
+      "lotCode": "S2025-12-01",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.25,
+      "trayCount": 2,
+      "plantingDate": "2025-12-03T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-10T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "COMPLETED",
+      "createdAt": "2025-12-19T08:48:05.851Z"
+    },
+    {
+      "id": 2,
+      "lotCode": "S2025-12-02",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.13,
+      "trayCount": 1,
+      "plantingDate": "2025-12-06T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-13T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "COMPLETED",
+      "createdAt": "2025-12-19T08:49:10.579Z"
+    },
+    {
+      "id": 3,
+      "lotCode": "S2025-12-03",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.25,
+      "trayCount": 2,
+      "plantingDate": "2025-12-07T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-14T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "COMPLETED",
+      "createdAt": "2025-12-19T08:49:59.715Z"
+    },
+    {
+      "id": 4,
+      "lotCode": "S2025-12-04",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.47,
+      "trayCount": 4,
+      "plantingDate": "2025-12-11T00:00:00.000Z",
+      "expectedHarvestDate": "2025-12-18T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "COMPLETED",
+      "createdAt": "2025-12-19T08:52:32.078Z"
+    }
+  ],
+  "ActivityLog": [
+    {
+      "id": 1,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 15 of Material ID 2 for 200",
+      "createdAt": "2025-12-19T08:40:35.069Z"
+    },
+    {
+      "id": 2,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 2 of Material ID 1 for 100",
+      "createdAt": "2025-12-19T08:40:57.321Z"
+    },
+    {
+      "id": 3,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 3 of Material ID 1 for 300",
+      "createdAt": "2025-12-19T08:41:14.039Z"
+    },
+    {
+      "id": 4,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-01 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:48:06.257Z"
+    },
+    {
+      "id": 5,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-02 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:49:10.959Z"
+    },
+    {
+      "id": 6,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-03 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:50:00.094Z"
+    },
+    {
+      "id": 7,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-04 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:52:32.458Z"
+    },
+    {
+      "id": 8,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-05 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:56:41.014Z"
+    },
+    {
+      "id": 9,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-06 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:57:48.302Z"
+    },
+    {
+      "id": 10,
+      "userId": "wut@wut.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2025-12-07 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2025-12-19T08:58:41.984Z"
+    },
+    {
+      "id": 11,
+      "userId": "wut@wut.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 1: 3.6g (2 trays) - Status: COMPLETED",
+      "createdAt": "2025-12-19T09:01:05.739Z"
+    },
+    {
+      "id": 12,
+      "userId": "wut@wut.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 2: 1g (1 trays) - Status: COMPLETED",
+      "createdAt": "2025-12-19T09:01:56.806Z"
+    },
+    {
+      "id": 13,
+      "userId": "wut@wut.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 3: 1.75g (2 trays) - Status: COMPLETED",
+      "createdAt": "2025-12-19T09:03:13.034Z"
+    },
+    {
+      "id": 14,
+      "userId": "wut@wut.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 4: 2.5g (4 trays) - Status: COMPLETED",
+      "createdAt": "2025-12-19T09:04:14.065Z"
+    },
+    {
+      "id": 15,
+      "userId": "wut@wut.com",
+      "action": "Create Customer",
+      "detail": "Added customer P' Kae",
+      "createdAt": "2025-12-19T09:06:04.088Z"
+    },
+    {
+      "id": 16,
+      "userId": "wut@wut.com",
+      "action": "Create Customer",
+      "detail": "Added customer P'Nok",
+      "createdAt": "2025-12-19T09:06:16.093Z"
+    },
+    {
+      "id": 17,
+      "userId": "wut@wut.com",
+      "action": "Create Customer",
+      "detail": "Added customer Som O",
+      "createdAt": "2025-12-19T09:06:30.862Z"
+    },
+    {
+      "id": 18,
+      "userId": "wut@wut.com",
+      "action": "Create Customer",
+      "detail": "Added customer Ano",
+      "createdAt": "2025-12-19T09:06:51.920Z"
+    }
+  ],
+  "Stock": [
+    {
+      "id": 2,
+      "materialId": 2,
+      "quantity": 15,
+      "updatedAt": "2025-12-19T08:40:33.881Z"
+    },
+    {
+      "id": 1,
+      "materialId": 1,
+      "quantity": 5,
+      "updatedAt": "2025-12-19T08:41:13.101Z"
+    },
+    {
+      "id": 3,
+      "materialId": 3,
+      "quantity": 0,
+      "updatedAt": "2025-12-19T08:42:58.783Z"
+    },
+    {
+      "id": 4,
+      "materialId": 4,
+      "quantity": 8.85,
+      "updatedAt": "2025-12-19T09:04:12.464Z"
+    }
+  ],
+  "Purchase": [
+    {
+      "id": 3,
+      "materialId": 2,
+      "quantity": 15,
+      "cost": 200,
+      "date": "2025-12-06T00:00:00.000Z",
+      "createdAt": "2025-12-19T08:40:33.881Z"
+    },
+    {
+      "id": 4,
+      "materialId": 1,
+      "quantity": 2,
+      "cost": 100,
+      "date": "2025-12-06T00:00:00.000Z",
+      "createdAt": "2025-12-19T08:40:56.378Z"
+    },
+    {
+      "id": 5,
+      "materialId": 1,
+      "quantity": 3,
+      "cost": 300,
+      "date": "2025-12-12T00:00:00.000Z",
+      "createdAt": "2025-12-19T08:41:13.101Z"
+    }
+  ],
+  "StockAdjustment": [],
+  "Harvest": [
+    {
+      "id": 1,
+      "lotId": 1,
+      "weight": 3.6,
+      "trayCount": 2,
+      "bagCount": 9,
+      "harvestDate": "2025-12-10T00:00:00.000Z",
+      "createdAt": "2025-12-19T09:01:04.239Z",
+      "materialId": 4
+    },
+    {
+      "id": 2,
+      "lotId": 2,
+      "weight": 1,
+      "trayCount": 1,
+      "bagCount": 4,
+      "harvestDate": "2025-12-13T00:00:00.000Z",
+      "createdAt": "2025-12-19T09:01:55.869Z",
+      "materialId": 4
+    },
+    {
+      "id": 3,
+      "lotId": 3,
+      "weight": 1.75,
+      "trayCount": 2,
+      "bagCount": 7,
+      "harvestDate": "2025-12-14T00:00:00.000Z",
+      "createdAt": "2025-12-19T09:03:12.070Z",
+      "materialId": 4
+    },
+    {
+      "id": 4,
+      "lotId": 4,
+      "weight": 2.5,
+      "trayCount": 4,
+      "bagCount": 10,
+      "harvestDate": "2025-12-17T00:00:00.000Z",
+      "createdAt": "2025-12-19T09:04:12.464Z",
+      "materialId": 4
+    }
+  ],
+  "Sale": []
+}

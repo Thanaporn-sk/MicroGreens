@@ -7,6 +7,7 @@ import DeleteButton from '@/app/ui/delete-button';
 import { deleteMaterial } from '@/app/lib/actions';
 import StockAdjustmentModal from '@/app/ui/stock-adjustment-modal';
 import MaterialHistoryModal from '@/app/ui/history/material-history-modal';
+import SortableHeader from '@/app/ui/sortable-header';
 
 type MaterialWithStock = {
     id: number;
@@ -24,9 +25,13 @@ export default function InventoryTable({ materials }: { materials: MaterialWithS
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                            <SortableHeader label="Name" value="name" />
+                        </th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit</th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                            <SortableHeader label="Stock" value="stock" />
+                        </th>
                         <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                     </tr>
                 </thead>

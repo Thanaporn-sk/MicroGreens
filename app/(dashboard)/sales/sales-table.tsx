@@ -8,6 +8,7 @@ import { deleteSale } from '@/app/lib/actions';
 import { formatDate } from '@/app/lib/formatters';
 import CustomerHistoryModal from '@/app/ui/history/customer-history-modal';
 import ProductHistoryModal from '@/app/ui/history/product-history-modal';
+import SortableHeader from '@/app/ui/sortable-header';
 
 type SaleWithCustomer = {
     id: number;
@@ -31,11 +32,21 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Date" value="saleDate" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Customer" value="customer" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Product" value="productName" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Weight" value="weight" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500">
+                                <SortableHeader label="Price" value="price" />
+                            </th>
                             <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                         </tr>
                     </thead>

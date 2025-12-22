@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Sun Flower Seed",
+    "unit": "kg",
+    "createdAt": "2025-12-19T08:01:21.957Z"
+  },
+  {
+    "id": 2,
+    "name": "Soil",
+    "unit": "bag",
+    "createdAt": "2025-12-19T08:01:45.405Z"
+  },
+  {
+    "id": 3,
+    "name": "coconut coir",
+    "unit": "bag",
+    "createdAt": "2025-12-19T08:42:58.783Z"
+  },
+  {
+    "id": 4,
+    "name": "Sun Flower Sprout",
+    "unit": "kg",
+    "createdAt": "2025-12-19T08:59:57.885Z"
+  }
+]
