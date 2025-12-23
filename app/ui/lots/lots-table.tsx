@@ -34,6 +34,9 @@ export default function LotsTable({ lots }: { lots: LotWithWeight[] }) {
                         <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300">
                             <SortableHeader label="Planted Date" value="plantingDate" />
                         </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300">
+                            <SortableHeader label="Exp. Harvest" value="expectedHarvestDate" />
+                        </th>
                         <th scope="col" className="px-6 py-3 text-right text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Trays (Planted)</th>
                         <th scope="col" className="px-6 py-3 text-right text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Harvest Qty (kg)</th>
                         <th scope="col" className="px-6 py-3 text-right text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Yield (kg/tray)</th>
@@ -64,6 +67,9 @@ export default function LotsTable({ lots }: { lots: LotWithWeight[] }) {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{formatDate(lot.plantingDate)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    {lot.expectedHarvestDate ? formatDate(lot.expectedHarvestDate) : '-'}
+                                </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{lot.trayCount}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{lot.totalWeight} kg</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{(lot.totalWeight / (lot.trayCount || 1)).toFixed(2)}</td>
