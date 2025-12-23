@@ -28,11 +28,11 @@ export default function LotFilters({ crops }: { crops: string[] }) {
     const currentCrop = searchParams.get('crop') || '';
 
     return (
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg border shadow-sm mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg border dark:border-gray-700 shadow-sm mb-6">
             <div className="flex flex-1 gap-4 w-full sm:w-auto">
                 {/* Status Filter */}
                 <select
-                    className="border rounded p-2 text-sm w-full sm:w-40"
+                    className="border dark:border-gray-600 rounded p-2 text-sm w-full sm:w-40 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
                     value={currentStatus}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
                 >
@@ -44,7 +44,7 @@ export default function LotFilters({ crops }: { crops: string[] }) {
 
                 {/* Crop Filter */}
                 <select
-                    className="border rounded p-2 text-sm w-full sm:w-40"
+                    className="border dark:border-gray-600 rounded p-2 text-sm w-full sm:w-40 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
                     value={currentCrop}
                     onChange={(e) => handleFilterChange('crop', e.target.value)}
                 >
@@ -58,17 +58,17 @@ export default function LotFilters({ crops }: { crops: string[] }) {
             </div>
 
             {/* View Toggle */}
-            <div className="flex border rounded overflow-hidden">
+            <div className="flex border dark:border-gray-600 rounded overflow-hidden">
                 <button
                     onClick={() => toggleView('grid')}
-                    className={`p-2 ${currentView === 'grid' ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+                    className={`p-2 ${currentView === 'grid' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                     title="Grid View"
                 >
                     <LayoutGrid size={20} />
                 </button>
                 <button
                     onClick={() => toggleView('table')}
-                    className={`p-2 ${currentView === 'table' ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+                    className={`p-2 ${currentView === 'table' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                     title="Table View"
                 >
                     <List size={20} />

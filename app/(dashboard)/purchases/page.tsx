@@ -39,7 +39,7 @@ export default async function PurchasesPage(props: {
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold">Purchases</h1>
+                <h1 className="text-2xl font-bold dark:text-gray-100">Purchases</h1>
                 <Link
                     href="/purchases/new"
                     className="flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500"

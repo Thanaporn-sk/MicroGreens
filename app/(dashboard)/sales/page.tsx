@@ -38,7 +38,7 @@ export default async function SalesPage(props: {
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold">Sales Record</h1>
+                <h1 className="text-2xl font-bold dark:text-white">Sales Record</h1>
                 <Link
                     href="/sales/new"
                     className="flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500"

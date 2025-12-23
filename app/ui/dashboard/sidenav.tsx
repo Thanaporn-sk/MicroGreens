@@ -15,6 +15,7 @@ import {
     Menu,
     X
 } from 'lucide-react';
+import { ThemeToggle } from '@/app/ui/theme-toggle';
 
 const links = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -49,7 +50,7 @@ export default function SideNav({ signOutAction }: { signOutAction: () => Promis
 
             {/* Sidebar Container - Hidden on mobile unless open, Fixed on Desktop */}
             <div className={`
-                fixed inset-y-0 left-0 z-40 w-64 bg-white border-r transform transition-transform duration-200 ease-in-out
+                fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r dark:border-gray-800 transform transition-transform duration-200 ease-in-out
                 md:translate-x-0 md:static md:h-screen
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
@@ -72,8 +73,8 @@ export default function SideNav({ signOutAction }: { signOutAction: () => Promis
                                         onClick={() => setIsOpen(false)}
                                         className={`flex items-center gap-3 rounded-md px-3 py-3 text-sm font-medium transition-colors
                                             ${isActive
-                                                ? 'bg-blue-50 text-blue-600'
-                                                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600'
+                                                ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+                                                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-400'
                                             }
                                         `}
                                     >
@@ -82,6 +83,16 @@ export default function SideNav({ signOutAction }: { signOutAction: () => Promis
                                     </Link>
                                 );
                             })}
+                        </div>
+
+                        <div className="space-y-1">
+                            <div className="px-3 py-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 block">Theme</span>
+                                <div className="flex items-center gap-3">
+                                    <ThemeToggle />
+                                    <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">Appearance</span>
+                                </div>
+                            </div>
                         </div>
 
                         <form action={signOutAction}>

@@ -41,7 +41,7 @@ export default async function CustomersPage(props: {
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold">Customers</h1>
+                <h1 className="text-2xl font-bold dark:text-white">Customers</h1>
                 <Link href="/customers/new" className="flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500">
                     <Plus className="h-5 w-5 mr-2" />
                     Add Customer
@@ -54,7 +54,7 @@ export default async function CustomersPage(props: {
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-500">Sort:</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">Sort:</span>
                         <CustomerSortControls />
                     </div>
                     <ViewToggle />

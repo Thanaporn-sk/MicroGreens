@@ -8,25 +8,25 @@ export default function LoginForm() {
     const [errorMessage, dispatch] = useActionState(authenticate, undefined);
 
     return (
-        <form action={dispatch} className="flex flex-col gap-4 p-6 border rounded-lg shadow-md bg-white w-full max-w-sm">
-            <h1 className="text-2xl font-bold mb-4 text-center">Microgreens Platform</h1>
+        <form action={dispatch} className="flex flex-col gap-4 p-6 border dark:border-gray-700 rounded-lg shadow-md bg-white dark:bg-gray-800 w-full max-w-sm">
+            <h1 className="text-2xl font-bold mb-4 text-center dark:text-white">Microgreens Platform</h1>
             <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
+                <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-200">Email</label>
                 <input
                     type="email"
                     name="email"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="admin@example.com"
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium mb-1">Password</label>
+                <label className="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-200">Password</label>
                 <input
                     type="password"
                     name="password"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="••••••"
                 />
             </div>

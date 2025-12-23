@@ -15,43 +15,43 @@ export default async function EditUserPage(props: { params: Promise<{ id: string
     return (
         <div className="w-full max-w-2xl mx-auto space-y-8">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Edit User</h1>
-                <Link href="/users" className="text-sm text-blue-600 hover:underline">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Edit User</h1>
+                <Link href="/users" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
                     &larr; Back to Users
                 </Link>
             </div>
 
             {/* Edit Details Form */}
-            <div className="bg-white p-8 rounded-lg shadow border">
-                <h2 className="text-lg font-semibold mb-4 text-gray-900 border-b pb-2">User Details</h2>
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow border border-gray-200 dark:border-gray-700 transition-colors">
+                <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">User Details</h2>
                 <form action={updateUserWithId} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-700">Name</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Name</label>
                         <input
                             type="text"
                             name="name"
                             defaultValue={user.name || ''}
-                            className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-700">Email</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Email</label>
                         <input
                             type="email"
                             name="email"
                             defaultValue={user.email}
                             required
-                            className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-700">Role</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Role</label>
                         <select
                             name="role"
                             defaultValue={user.role}
-                            className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                            className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                         >
                             <option value="STAFF">Staff</option>
                             <option value="ADMIN">Admin</option>
@@ -71,18 +71,18 @@ export default async function EditUserPage(props: { params: Promise<{ id: string
             </div>
 
             {/* Change Password Form */}
-            <div className="bg-white p-8 rounded-lg shadow border">
-                <h2 className="text-lg font-semibold mb-4 text-gray-900 border-b pb-2">Reset Password</h2>
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow border border-gray-200 dark:border-gray-700 transition-colors">
+                <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">Reset Password</h2>
                 <form action={updatePasswordWithId} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-700">New Password</label>
+                        <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">New Password</label>
                         <input
                             type="password"
                             name="password"
                             required
                             minLength={6}
                             placeholder="Enter new password"
-                            className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                         />
                     </div>
 

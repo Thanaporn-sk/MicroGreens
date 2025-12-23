@@ -38,6 +38,8 @@ export type State = {
 export async function createMaterial(prevState: State, formData: FormData) {
     const name = formData.get('name') as string;
     const unit = formData.get('unit') as string;
+    const description = formData.get('description') as string;
+    const images = formData.getAll('images') as File[];
 
     if (!name || !unit) {
         return {
@@ -55,14 +57,48 @@ export async function createMaterial(prevState: State, formData: FormData) {
         };
     }
 
+    // Handle Image Uploads
+    const imageUrls: string[] = [];
+    if (images && images.length > 0) {
+        const { writeFile, mkdir } = await import('fs/promises');
+        const { join } = await import('path');
+
+        const relativeUploadDir = `/uploads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`;
+        const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
+
+        try {
+            await mkdir(uploadDir, { recursive: true });
+
+            for (const file of images) {
+                if (file.size > 0 && file.name !== 'undefined') {
+                    const bytes = await file.arrayBuffer();
+                    const buffer = Buffer.from(bytes);
+                    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+                    const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+                    const filepath = join(uploadDir, filename);
+
+                    await writeFile(filepath, buffer);
+                    imageUrls.push(`${relativeUploadDir}/${filename}`);
+                }
+            }
+        } catch (e) {
+            console.error('Error saving uploaded images during creation', e);
+        }
+    }
+
     await prisma.material.create({
         data: {
             name,
             unit,
+            // @ts-ignore
+            description,
             stock: {
                 create: {
                     quantity: 0,
                 }
+            },
+            images: {
+                create: imageUrls.map(url => ({ url }))
             }
         },
     });
@@ -309,6 +345,9 @@ export async function deleteMaterial(id: number) {
 export async function updateMaterial(id: number, formData: FormData) {
     const name = formData.get('name') as string;
     const unit = formData.get('unit') as string;
+    const description = formData.get('description') as string;
+    const images = formData.getAll('images') as File[];
+    const deletedImageIdsStr = formData.get('deletedImageIds') as string;
 
     const existing = await prisma.material.findFirst({
         where: {
@@ -321,9 +360,59 @@ export async function updateMaterial(id: number, formData: FormData) {
         throw new Error('Material name already exists.');
     }
 
+    // Handle Image Uploads
+    const imageUrls: string[] = [];
+    if (images && images.length > 0) {
+        const { writeFile, mkdir } = await import('fs/promises');
+        const { join } = await import('path');
+        const relativeUploadDir = `/uploads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`;
+        const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
+
+        try {
+            await mkdir(uploadDir, { recursive: true });
+            for (const file of images) {
+                if (file.size > 0) {
+                    const bytes = await file.arrayBuffer();
+                    const buffer = Buffer.from(bytes);
+                    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+                    const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+                    const filepath = join(uploadDir, filename);
+                    await writeFile(filepath, buffer);
+                    imageUrls.push(`${relativeUploadDir}/${filename}`);
+                }
+            }
+        } catch (e) {
+            console.error('Error saving uploaded images during update', e);
+        }
+    }
+
+    // Handle Image Deletion
+    if (deletedImageIdsStr) {
+        try {
+            const idsToDelete = JSON.parse(deletedImageIdsStr) as number[];
+            if (idsToDelete.length > 0) {
+                await prisma.materialImage.deleteMany({
+                    where: {
+                        id: { in: idsToDelete },
+                        materialId: id // Ensure we only delete images belonging to this material
+                    }
+                });
+            }
+        } catch (e) {
+            console.error("Failed to parse deletedImageIds or delete images", e);
+        }
+    }
+
     await prisma.material.update({
         where: { id },
-        data: { name, unit }
+        data: {
+            name,
+            unit,
+            description,
+            images: {
+                create: imageUrls.map(url => ({ url }))
+            }
+        }
     });
 
     revalidatePath('/inventory');
@@ -547,6 +636,9 @@ export async function updatePlantingLot(id: number, formData: FormData) {
         throw new Error('Missing required fields');
     }
 
+    const seedUsed = parseFloat(formData.get('seedUsed') as string) || 0;
+    const mediumUsed = formData.get('mediumUsed') as string || '';
+
     const oldLot = await prisma.plantingLot.findUnique({ where: { id } });
     if (!oldLot) throw new Error("Lot not found");
 
@@ -555,12 +647,14 @@ export async function updatePlantingLot(id: number, formData: FormData) {
         data: {
             lotCode,
             cropType,
+            seedUsed,
             trayCount,
-            plantingDate,
-            expectedHarvestDate,
+            mediumUsed,
             notes,
+            expectedHarvestDate: expectedHarvestDate ? new Date(expectedHarvestDate) : null,
+            plantingDate: plantingDate ? new Date(plantingDate) : undefined,
             status,
-        }
+        },
     });
 
     await logActivity('Update Lot', `Updated Lot ${lotCode} (ID: ${id})`);
@@ -568,6 +662,111 @@ export async function updatePlantingLot(id: number, formData: FormData) {
     revalidatePath('/lots');
     revalidatePath(`/lots/${id}`);
     redirect('/lots');
+}
+
+export async function addLotEvent(lotId: number, formData: FormData) {
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const dateStr = formData.get('date') as string;
+    const date = dateStr ? new Date(dateStr) : new Date();
+
+    if (!title) throw new Error("Title is required");
+
+    await prisma.lotEvent.create({
+        data: {
+            lotId,
+            title,
+            description,
+            date
+        }
+    });
+
+    revalidatePath(`/lots/${lotId}`);
+}
+
+export async function addLotImage(lotId: number, formData: FormData) {
+    const image = formData.get('image') as File;
+    const caption = formData.get('caption') as string;
+    const eventIdStr = formData.get('eventId') as string;
+    const eventId = eventIdStr ? parseInt(eventIdStr) : null;
+
+    if (!image || image.size === 0) throw new Error("Image is required");
+
+    const { writeFile, mkdir } = await import('fs/promises');
+    const { join } = await import('path');
+    const relativeUploadDir = `/uploads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`;
+    const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
+
+    try {
+        await mkdir(uploadDir, { recursive: true });
+
+        const bytes = await image.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        const filename = `${uniqueSuffix}-${image.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+        const filepath = join(uploadDir, filename);
+        await writeFile(filepath, buffer);
+
+        const url = `${relativeUploadDir}/${filename}`;
+
+        await prisma.lotImage.create({
+            data: {
+                lotId,
+                eventId,
+                url,
+                caption
+            }
+        });
+    } catch (e) {
+        console.error('Error saving uploaded image', e);
+        throw new Error('Failed to save image');
+    }
+
+    revalidatePath(`/lots/${lotId}`);
+}
+
+export async function editHarvest(id: number, formData: FormData) {
+    const productMaterialId = parseInt(formData.get('productMaterialId') as string);
+    const weight = parseFloat(formData.get('weight') as string);
+    const trayCount = parseInt(formData.get('trayCount') as string);
+    const bagCount = formData.get('bagCount') ? parseInt(formData.get('bagCount') as string) : 0;
+    const harvestDate = new Date(formData.get('harvestDate') as string);
+
+    const oldHarvest = await prisma.harvest.findUnique({ where: { id } });
+    if (!oldHarvest) throw new Error("Harvest not found");
+
+    await prisma.$transaction(async (tx) => {
+        // 1. Revert old stock change if material existed
+        if (oldHarvest.materialId) {
+            await tx.stock.update({
+                where: { materialId: oldHarvest.materialId },
+                data: { quantity: { decrement: oldHarvest.weight } }
+            });
+        }
+
+        // 2. Update Harvest
+        await tx.harvest.update({
+            where: { id },
+            data: {
+                materialId: productMaterialId,
+                weight,
+                trayCount,
+                bagCount,
+                harvestDate
+            }
+        });
+
+        // 3. Apply new stock change
+        await tx.stock.upsert({
+            where: { materialId: productMaterialId },
+            update: { quantity: { increment: weight } },
+            create: { materialId: productMaterialId, quantity: weight }
+        });
+    });
+
+    revalidatePath('/lots');
+    revalidatePath('/inventory');
+    redirect(`/lots/${oldHarvest.lotId}`);
 }
 
 export async function deleteHarvest(id: number) {
@@ -582,6 +781,15 @@ export async function deleteHarvest(id: number) {
             });
         }
         await tx.harvest.delete({ where: { id } });
+
+        // Check if there are any remaining harvests for this lot
+        const remainingHarvests = await tx.harvest.count({ where: { lotId: harvest.lotId } });
+        if (remainingHarvests === 0) {
+            await tx.plantingLot.update({
+                where: { id: harvest.lotId },
+                data: { status: 'PLANTED' } // Revert status to PLANTED (Growing)
+            });
+        }
     });
 
     revalidatePath('/lots');
