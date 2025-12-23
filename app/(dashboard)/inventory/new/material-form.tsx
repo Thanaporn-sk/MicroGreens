@@ -10,19 +10,19 @@ export default function MaterialForm() {
     const [state, dispatch] = useActionState<State, FormData>(createMaterial, initialState);
 
     return (
-        <form action={dispatch} className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-sm border max-w-lg">
+        <form action={dispatch} className="flex flex-col gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 max-w-lg">
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Material Name</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Material Name</label>
                 <input
                     name="name"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="e.g. Sunflower Seeds"
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Unit</label>
-                <select name="unit" className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Unit</label>
+                <select name="unit" className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                     <option value="kg">kg</option>
                     <option value="bag">bag</option>
                     <option value="g">g</option>
@@ -32,17 +32,43 @@ export default function MaterialForm() {
             </div>
 
             {state.message && (
-                <div className="p-3 bg-red-100 text-red-700 rounded text-sm">
+                <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded text-sm">
                     {state.message}
                 </div>
             )}
+            <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Description</label>
+                <textarea
+                    name="description"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                    placeholder="Enter material description..."
+                    rows={3}
+                />
+            </div>
+
+            <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Images</label>
+                <input
+                    type="file"
+                    name="images"
+                    multiple
+                    accept="image/*"
+                    className="block w-full text-sm text-gray-500 dark:text-gray-400
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 dark:file:bg-blue-900/50 file:text-blue-700 dark:file:text-blue-300
+                        hover:file:bg-blue-100 dark:hover:file:bg-blue-900/70"
+                />
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Select multiple images to upload.</p>
+            </div>
 
 
 
             <div className="flex gap-2 mt-4">
                 <Link
                     href="/inventory"
-                    className="bg-gray-100 text-gray-700 p-2 rounded hover:bg-gray-200 transition-colors text-center w-full"
+                    className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-center w-full"
                 >
                     Cancel
                 </Link>

@@ -6,7 +6,10 @@ import { notFound } from 'next/navigation';
 export default async function EditMaterialPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
     const id = parseInt(params.id);
-    const material = await prisma.material.findUnique({ where: { id } });
+    const material = await prisma.material.findUnique({
+        where: { id },
+        include: { images: true }
+    });
 
     if (!material) {
         notFound();

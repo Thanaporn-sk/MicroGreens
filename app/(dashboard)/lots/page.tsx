@@ -68,7 +68,7 @@ export default async function LotsPage(props: {
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold">Planting Lots</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Planting Lots</h1>
                 <Link
                     href="/lots/new"
                     className="flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500"
@@ -100,39 +100,43 @@ export default async function LotsPage(props: {
                             };
                             const label = statusLabels[status] || status;
                             return (
-                                <div key={lot.id} className="bg-white rounded-lg shadow border p-6 hover:shadow-md transition-shadow relative group">
+                                <div key={lot.id} className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow relative group">
                                     <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                         <DeleteButton id={lot.id} deleteAction={deletePlantingLot} />
                                     </div>
                                     <Link href={`/lots/${lot.id}`} className="block">
                                         <div className="flex justify-between items-start mb-4">
                                             <div>
-                                                <h3 className="font-bold text-lg text-gray-900">{lot.lotCode}</h3>
-                                                <p className="text-sm text-gray-500">{lot.cropType}</p>
+                                                <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">{lot.lotCode}</h3>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">{lot.cropType}</p>
                                             </div>
-                                            <span className={`px-2 py-1 rounded text-xs font-semibold ${status === 'PLANTED' ? 'bg-green-100 text-green-800' :
-                                                status === 'HARVESTING' ? 'bg-yellow-100 text-yellow-800' :
-                                                    status === 'COMPLETED' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                                            <span className={`px-2 py-1 rounded text-xs font-semibold ${status === 'PLANTED' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                                                status === 'HARVESTING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+                                                    status === 'COMPLETED' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                                                 }`}>
                                                 {label}
                                             </span>
                                         </div>
 
                                         <div className="mt-4 space-y-2">
-                                            <p className="text-sm text-gray-600">Planted: <span className="font-medium">{formatDate(lot.plantingDate)}</span></p>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Planted: <span className="font-medium text-gray-900 dark:text-gray-200">{formatDate(lot.plantingDate)}</span></p>
                                             {lot.expectedHarvestDate && (
-                                                <p className="text-sm text-blue-600">Exp. Harvest: <span className="font-medium">{formatDate(lot.expectedHarvestDate)}</span></p>
+                                                <p className="text-sm text-blue-600 dark:text-blue-400">Exp. Harvest: <span className="font-medium">{formatDate(lot.expectedHarvestDate)}</span></p>
                                             )}
                                         </div>
 
-                                        <div className="mt-4 pt-4 border-t grid grid-cols-2 gap-4">
+                                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-3 gap-2 text-center">
                                             <div>
-                                                <p className="text-xs text-gray-500 uppercase">Trays</p>
-                                                <p className="font-semibold text-lg">{lot.trayCount}</p>
+                                                <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Trays</p>
+                                                <p className="font-bold text-base text-gray-900 dark:text-gray-100">{lot.trayCount}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs text-gray-500 uppercase">Yield</p>
-                                                <p className="font-semibold text-lg">{lot.totalWeight} g</p>
+                                                <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Harv. Qty</p>
+                                                <p className="font-bold text-base text-gray-900 dark:text-gray-100">{lot.totalWeight} kg</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Yield</p>
+                                                <p className="font-bold text-base text-gray-900 dark:text-gray-100">{(lot.totalWeight / (lot.trayCount || 1)).toFixed(2)}</p>
                                             </div>
                                         </div>
 

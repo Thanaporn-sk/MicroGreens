@@ -45,7 +45,7 @@ The application implements the following core functions via server actions (loca
 
 ### Inventory (Materials & Stock)
 -   `createMaterial`: Define a new raw material with name and unit.
--   `updateMaterial`: Rename or update unit of a material.
+-   `updateMaterial`: Rename, update unit, description, or manage images (upload/delete) for a material.
 -   `deleteMaterial`: Remove a material (checks for existing usage in Purchases/Harvests).
 -   `adjustStock`: Manually increment or decrement stock with a reason (e.g., "Spillage", "Inventory Count").
 
@@ -63,7 +63,14 @@ The application implements the following core functions via server actions (loca
 -   `createHarvest`: Record harvest yield (Weight, Trays, Bags) for a lot.
     -   Auto-updates Lot Status to 'HARVESTING' or 'COMPLETED'.
     -   Auto-increments stock of the harvested product.
+-   `editHarvest`: Update harvest details (product, weight, trays, date).
+    -   Reverts old stock changes and applies new ones atomically.
 -   `deleteHarvest`: Remove a harvest record (reverts/decrements product stock).
+    -   Auto-reverts Lot Status to 'PLANTED' if the last harvest is deleted.
+
+### Operations (Lots Events & Images)
+-   `addLotEvent`: Add a timeline event to a planting lot (Title, Description, Date).
+-   `addLotImage`: Upload and attach an image to a lot, optionally linked to a specific event.
 
 ### Sales
 -   `createSale`: Record a sale to a customer.

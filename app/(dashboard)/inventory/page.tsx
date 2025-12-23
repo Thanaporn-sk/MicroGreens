@@ -4,14 +4,6 @@ import { Plus } from 'lucide-react';
 import InventoryTable from '@/app/(dashboard)/inventory/inventory-table';
 import Search from '@/app/ui/search';
 
-type MaterialWithStock = {
-    id: number;
-    name: string;
-    unit: string;
-    stock: { quantity: number } | null;
-};
-
-// ... imports
 import { Prisma } from '@prisma/client';
 
 export default async function InventoryPage(props: {
@@ -37,14 +29,19 @@ export default async function InventoryPage(props: {
         where: {
             name: { contains: query, mode: 'insensitive' }
         },
-        include: { stock: true },
+        include: {
+            stock: true,
+            images: {
+                select: { url: true }
+            }
+        },
         orderBy: orderBy
     });
 
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold">Inventory & Stock</h1>
+                <h1 className="text-2xl font-bold dark:text-gray-100">Inventory & Stock</h1>
                 <Link
                     href="/inventory/new"
                     className="flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500"

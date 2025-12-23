@@ -45,20 +45,20 @@ export default function StockAdjustmentModal({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 relative transition-colors">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
                     <X className="w-5 h-5" />
                 </button>
 
-                <h2 className="text-xl font-bold mb-4">Adjust Stock: {materialName}</h2>
+                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Adjust Stock: {materialName}</h2>
 
-                <div className="mb-4 p-3 bg-gray-50 rounded-md">
-                    <p className="text-sm text-gray-600">Current Stock: <span className="font-bold text-gray-900">{currentStock} {unit}</span></p>
+                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-100 dark:border-gray-700">
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Current Stock: <span className="font-bold text-gray-900 dark:text-white">{currentStock} {unit}</span></p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Adjustment Amount (+/-)
                         </label>
                         <div className="flex items-center gap-2">
@@ -68,16 +68,16 @@ export default function StockAdjustmentModal({
                                 required
                                 value={adjustment}
                                 onChange={(e) => setAdjustment(e.target.value)}
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                                className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
                                 placeholder="-5.5 or 10"
                             />
-                            <span className="text-gray-500 text-sm">{unit}</span>
+                            <span className="text-gray-500 dark:text-gray-400 text-sm">{unit}</span>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1">Use negative values to deduct stock (e.g. -5).</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Use negative values to deduct stock (e.g. -5).</p>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Reason
                         </label>
                         <input
@@ -85,7 +85,7 @@ export default function StockAdjustmentModal({
                             required
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                            className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
                             placeholder="e.g. Usage, Spoilage, Correction"
                         />
                     </div>
@@ -94,14 +94,14 @@ export default function StockAdjustmentModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 shadow-sm"
                         >
                             {isSubmitting ? 'Saving...' : 'Save Adjustment'}
                         </button>

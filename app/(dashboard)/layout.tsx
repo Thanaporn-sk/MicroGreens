@@ -8,7 +8,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden bg-gray-50">
+        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden bg-gray-50 dark:bg-gray-950">
             <SideNav
                 signOutAction={async () => {
                     'use server';

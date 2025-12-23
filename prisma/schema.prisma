@@ -19,14 +19,24 @@ model User {
 }
 
 model Material {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  unit      String
-  stock     Stock?
-  purchases Purchase[]
-  harvests  Harvest[]
+  id          Int             @id @default(autoincrement())
+  name        String          @unique
+  unit        String
+  description String?
+  images      MaterialImage[]
+  stock       Stock?
+  purchases   Purchase[]
+  harvests    Harvest[]
   adjustments StockAdjustment[]
-  createdAt DateTime   @default(now())
+  createdAt   DateTime        @default(now())
+}
+
+model MaterialImage {
+  id         Int      @id @default(autoincrement())
+  materialId Int
+  material   Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  url        String
+  createdAt  DateTime @default(now())
 }
 
 model Stock {
@@ -48,18 +58,42 @@ model Purchase {
 }
 
 model PlantingLot {
-  id           Int       @id @default(autoincrement())
-  lotCode      String    @unique
-  cropType     String
-  seedUsed     Float
-  trayCount    Int
-  plantingDate      DateTime
+  id                  Int         @id @default(autoincrement())
+  lotCode             String      @unique
+  cropType            String
+  seedUsed            Float
+  trayCount           Int
+  plantingDate        DateTime
   expectedHarvestDate DateTime?
-  mediumUsed        String?
-  harvests     Harvest[]
-  notes        String?
-  status       String    @default("PLANTED") // PLANTED, HARVESTING, COMPLETED
-  createdAt    DateTime  @default(now())
+  mediumUsed          String?
+  harvests            Harvest[]
+  events              LotEvent[]
+  images              LotImage[]
+  notes               String?
+  status              String      @default("PLANTED") // PLANTED, HARVESTING, COMPLETED
+  createdAt           DateTime    @default(now())
+}
+
+model LotEvent {
+  id          Int         @id @default(autoincrement())
+  lotId       Int
+  lot         PlantingLot @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  date        DateTime    @default(now())
+  images      LotImage[]
+  createdAt   DateTime    @default(now())
+}
+
+model LotImage {
+  id          Int         @id @default(autoincrement())
+  lotId       Int
+  lot         PlantingLot @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  eventId     Int?
+  event       LotEvent?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  url         String
+  caption     String?
+  createdAt   DateTime    @default(now())
 }
 
 

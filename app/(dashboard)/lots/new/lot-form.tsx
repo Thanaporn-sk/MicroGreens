@@ -6,33 +6,33 @@ import type { Material } from '@prisma/client';
 
 export default function LotForm({ materials }: { materials: Material[] }) {
     return (
-        <form action={createPlantingLot} className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-sm border max-w-lg">
+        <form action={createPlantingLot} className="flex flex-col gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 max-w-lg">
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Lot Code</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Lot Code</label>
                 <input
                     name="lotCode"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="e.g. LOT-2023-001"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Crop Type</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Crop Type</label>
                 <input
                     name="cropType"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="e.g. Sunflower"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Seed Material (Deduct from Stock)</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Seed Material (Deduct from Stock)</label>
                 <select
                     name="seedMaterialId"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                 >
                     <option value="">Select Seed</option>
                     {materials.map((m) => (
@@ -44,55 +44,55 @@ export default function LotForm({ materials }: { materials: Material[] }) {
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Seed Amount Used</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Seed Amount Used</label>
                 <input
                     type="number"
                     step="0.01"
                     name="seedAmount"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="0.00"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Number of Trays</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Number of Trays</label>
                 <input
                     type="number"
                     name="trayCount"
                     required
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="0"
                 />
             </div>
 
             <div>
                 <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Planting Date</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Planting Date</label>
                     <input
                         type="date"
                         name="plantingDate"
                         defaultValue={new Date().toISOString().split('T')[0]}
                         required
-                        className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     />
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-700">Expected Harvest Date (Optional)</label>
+                <div className="mt-4">
+                    <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Expected Harvest Date (Optional)</label>
                     <input
                         type="date"
                         name="expectedHarvestDate"
-                        className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     />
                 </div>
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">Notes (Optional)</label>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Notes (Optional)</label>
                 <textarea
                     name="notes"
-                    className="border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     placeholder="Substrate used, special conditions..."
                 />
             </div>
@@ -102,7 +102,7 @@ export default function LotForm({ materials }: { materials: Material[] }) {
             <div className="flex gap-2 mt-4">
                 <Link
                     href="/lots"
-                    className="bg-gray-100 text-gray-700 p-2 rounded hover:bg-gray-200 transition-colors text-center w-full"
+                    className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-center w-full"
                 >
                     Cancel
                 </Link>
