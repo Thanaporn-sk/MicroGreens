@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { logActivity } from './activity';
+import { supabase } from '@/app/lib/supabase';
 
 export async function authenticate(
     prevState: string | undefined,
@@ -60,25 +61,31 @@ export async function createMaterial(prevState: State, formData: FormData) {
     // Handle Image Uploads
     const imageUrls: string[] = [];
     if (images && images.length > 0) {
-        const { writeFile, mkdir } = await import('fs/promises');
-        const { join } = await import('path');
-
-        const relativeUploadDir = `/uploads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`;
-        const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
-
         try {
-            await mkdir(uploadDir, { recursive: true });
-
             for (const file of images) {
                 if (file.size > 0 && file.name !== 'undefined') {
-                    const bytes = await file.arrayBuffer();
-                    const buffer = Buffer.from(bytes);
                     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-                    const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
-                    const filepath = join(uploadDir, filename);
+                    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '');
+                    const filename = `${uniqueSuffix}-${cleanFileName}`;
 
-                    await writeFile(filepath, buffer);
-                    imageUrls.push(`${relativeUploadDir}/${filename}`);
+                    const buffer = await file.arrayBuffer();
+                    const { error: uploadError } = await supabase.storage
+                        .from('images')
+                        .upload(filename, buffer, {
+                            contentType: file.type,
+                            upsert: false
+                        });
+
+                    if (uploadError) {
+                        console.error('Supabase upload error:', uploadError);
+                        continue;
+                    }
+
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('images')
+                        .getPublicUrl(filename);
+
+                    imageUrls.push(publicUrl);
                 }
             }
         } catch (e) {
@@ -363,22 +370,31 @@ export async function updateMaterial(id: number, formData: FormData) {
     // Handle Image Uploads
     const imageUrls: string[] = [];
     if (images && images.length > 0) {
-        const { writeFile, mkdir } = await import('fs/promises');
-        const { join } = await import('path');
-        const relativeUploadDir = `/uploads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`;
-        const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
-
         try {
-            await mkdir(uploadDir, { recursive: true });
             for (const file of images) {
                 if (file.size > 0) {
-                    const bytes = await file.arrayBuffer();
-                    const buffer = Buffer.from(bytes);
                     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-                    const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
-                    const filepath = join(uploadDir, filename);
-                    await writeFile(filepath, buffer);
-                    imageUrls.push(`${relativeUploadDir}/${filename}`);
+                    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '');
+                    const filename = `${uniqueSuffix}-${cleanFileName}`;
+
+                    const buffer = await file.arrayBuffer();
+                    const { error: uploadError } = await supabase.storage
+                        .from('images')
+                        .upload(filename, buffer, {
+                            contentType: file.type,
+                            upsert: false
+                        });
+
+                    if (uploadError) {
+                        console.error('Supabase upload error:', uploadError);
+                        continue;
+                    }
+
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('images')
+                        .getPublicUrl(filename);
+
+                    imageUrls.push(publicUrl);
                 }
             }
         } catch (e) {
@@ -692,22 +708,27 @@ export async function addLotImage(lotId: number, formData: FormData) {
 
     if (!image || image.size === 0) throw new Error("Image is required");
 
-    const { writeFile, mkdir } = await import('fs/promises');
-    const { join } = await import('path');
-    const relativeUploadDir = `/uploads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`;
-    const uploadDir = join(process.cwd(), 'public', relativeUploadDir);
-
     try {
-        await mkdir(uploadDir, { recursive: true });
-
-        const bytes = await image.arrayBuffer();
-        const buffer = Buffer.from(bytes);
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-        const filename = `${uniqueSuffix}-${image.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
-        const filepath = join(uploadDir, filename);
-        await writeFile(filepath, buffer);
+        const cleanFileName = image.name.replace(/[^a-zA-Z0-9.-]/g, '');
+        const filename = `${uniqueSuffix}-${cleanFileName}`;
 
-        const url = `${relativeUploadDir}/${filename}`;
+        const buffer = await image.arrayBuffer();
+        const { error: uploadError } = await supabase.storage
+            .from('images')
+            .upload(filename, buffer, {
+                contentType: image.type,
+                upsert: false
+            });
+
+        if (uploadError) {
+            console.error('Supabase upload error:', uploadError);
+            throw new Error('Upload to Supabase failed');
+        }
+
+        const { data: { publicUrl: url } } = supabase.storage
+            .from('images')
+            .getPublicUrl(filename);
 
         await prisma.lotImage.create({
             data: {
