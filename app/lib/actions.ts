@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { logActivity } from './activity';
-import { supabase } from '@/app/lib/supabase';
+import { getSupabaseClient } from '@/app/lib/supabase';
 
 export async function authenticate(
     prevState: string | undefined,
@@ -69,7 +69,7 @@ export async function createMaterial(prevState: State, formData: FormData) {
                     const filename = `${uniqueSuffix}-${cleanFileName}`;
 
                     const buffer = await file.arrayBuffer();
-                    const { error: uploadError } = await supabase.storage
+                    const { error: uploadError } = await getSupabaseClient().storage
                         .from('images')
                         .upload(filename, buffer, {
                             contentType: file.type,
@@ -81,7 +81,7 @@ export async function createMaterial(prevState: State, formData: FormData) {
                         continue;
                     }
 
-                    const { data: { publicUrl } } = supabase.storage
+                    const { data: { publicUrl } } = getSupabaseClient().storage
                         .from('images')
                         .getPublicUrl(filename);
 
@@ -378,7 +378,7 @@ export async function updateMaterial(id: number, formData: FormData) {
                     const filename = `${uniqueSuffix}-${cleanFileName}`;
 
                     const buffer = await file.arrayBuffer();
-                    const { error: uploadError } = await supabase.storage
+                    const { error: uploadError } = await getSupabaseClient().storage
                         .from('images')
                         .upload(filename, buffer, {
                             contentType: file.type,
@@ -390,7 +390,7 @@ export async function updateMaterial(id: number, formData: FormData) {
                         continue;
                     }
 
-                    const { data: { publicUrl } } = supabase.storage
+                    const { data: { publicUrl } } = getSupabaseClient().storage
                         .from('images')
                         .getPublicUrl(filename);
 
@@ -714,7 +714,7 @@ export async function addLotImage(lotId: number, formData: FormData) {
         const filename = `${uniqueSuffix}-${cleanFileName}`;
 
         const buffer = await image.arrayBuffer();
-        const { error: uploadError } = await supabase.storage
+        const { error: uploadError } = await getSupabaseClient().storage
             .from('images')
             .upload(filename, buffer, {
                 contentType: image.type,
@@ -726,7 +726,7 @@ export async function addLotImage(lotId: number, formData: FormData) {
             throw new Error('Upload to Supabase failed');
         }
 
-        const { data: { publicUrl: url } } = supabase.storage
+        const { data: { publicUrl: url } } = getSupabaseClient().storage
             .from('images')
             .getPublicUrl(filename);
 

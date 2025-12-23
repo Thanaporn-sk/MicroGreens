@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/app/lib/supabase';
+import { getSupabaseClient } from '@/app/lib/supabase';
 
 export async function POST(request: NextRequest) {
     try {
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
         // Upload to Supabase Storage
         const buffer = await file.arrayBuffer();
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { data: uploadData, error: uploadError } = await getSupabaseClient().storage
             .from('images') // Ensure this bucket exists in Supabase
             .upload(filename, buffer, {
                 contentType: file.type,
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Get public URL
-        const { data: { publicUrl } } = supabase.storage
+        const { data: { publicUrl } } = getSupabaseClient().storage
             .from('images')
             .getPublicUrl(filename);
 
