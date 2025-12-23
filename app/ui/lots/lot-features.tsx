@@ -111,7 +111,7 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
                                 {/* Event Images */}
                                 {event.images && event.images.length > 0 && (
                                     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mt-3">
-                                        {event.images.map(img => (
+                                        {event.images.map((img: LotImage) => (
                                             <div
                                                 key={img.id}
                                                 className="relative aspect-square rounded-md overflow-hidden bg-gray-200 dark:bg-gray-700 border dark:border-gray-600 cursor-pointer hover:opacity-90 transition-opacity"
