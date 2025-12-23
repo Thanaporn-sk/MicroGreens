@@ -70,7 +70,7 @@ export async function createMaterial(prevState: State, formData: FormData) {
 
                     const buffer = await file.arrayBuffer();
                     const { error: uploadError } = await getSupabaseClient().storage
-                        .from('images')
+                        .from('imageStorage')
                         .upload(filename, buffer, {
                             contentType: file.type,
                             upsert: false
@@ -82,7 +82,7 @@ export async function createMaterial(prevState: State, formData: FormData) {
                     }
 
                     const { data: { publicUrl } } = getSupabaseClient().storage
-                        .from('images')
+                        .from('imageStorage')
                         .getPublicUrl(filename);
 
                     imageUrls.push(publicUrl);
@@ -379,7 +379,7 @@ export async function updateMaterial(id: number, formData: FormData) {
 
                     const buffer = await file.arrayBuffer();
                     const { error: uploadError } = await getSupabaseClient().storage
-                        .from('images')
+                        .from('imageStorage')
                         .upload(filename, buffer, {
                             contentType: file.type,
                             upsert: false
@@ -391,7 +391,7 @@ export async function updateMaterial(id: number, formData: FormData) {
                     }
 
                     const { data: { publicUrl } } = getSupabaseClient().storage
-                        .from('images')
+                        .from('imageStorage')
                         .getPublicUrl(filename);
 
                     imageUrls.push(publicUrl);
@@ -715,7 +715,7 @@ export async function addLotImage(lotId: number, formData: FormData) {
 
         const buffer = await image.arrayBuffer();
         const { error: uploadError } = await getSupabaseClient().storage
-            .from('images')
+            .from('imageStorage')
             .upload(filename, buffer, {
                 contentType: image.type,
                 upsert: false
@@ -727,7 +727,7 @@ export async function addLotImage(lotId: number, formData: FormData) {
         }
 
         const { data: { publicUrl: url } } = getSupabaseClient().storage
-            .from('images')
+            .from('imageStorage')
             .getPublicUrl(filename);
 
         await prisma.lotImage.create({

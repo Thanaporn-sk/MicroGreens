@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         // Upload to Supabase Storage
         const buffer = await file.arrayBuffer();
         const { data: uploadData, error: uploadError } = await getSupabaseClient().storage
-            .from('images') // Ensure this bucket exists in Supabase
+            .from('imageStorage') // Ensure this bucket exists in Supabase
             .upload(filename, buffer, {
                 contentType: file.type,
                 upsert: false
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
         // Get public URL
         const { data: { publicUrl } } = getSupabaseClient().storage
-            .from('images')
+            .from('imageStorage')
             .getPublicUrl(filename);
 
         console.log(`Uploaded to Supabase: ${publicUrl}`);
