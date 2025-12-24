@@ -1,8 +1,8 @@
 'use client';
 
 import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 
 export default function LoginForm() {
     const [errorMessage, dispatch] = useActionState(authenticate, undefined);
@@ -35,21 +35,9 @@ export default function LoginForm() {
                     <p className="text-red-500 text-sm">{errorMessage}</p>
                 )}
             </div>
-            <LoginButton />
+            <SubmitButton pendingText="Logging in..." className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 w-full transition-colors disabled:bg-blue-300">
+                Login
+            </SubmitButton>
         </form>
-    );
-}
-
-function LoginButton() {
-    const { pending } = useFormStatus();
-    return (
-        <button
-            aria-disabled={pending}
-            disabled={pending}
-            type="submit"
-            className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 w-full transition-colors disabled:bg-blue-300"
-        >
-            {pending ? 'Logging in...' : 'Login'}
-        </button>
     );
 }

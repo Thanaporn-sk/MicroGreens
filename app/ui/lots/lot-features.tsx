@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { addLotEvent, addLotImage } from '@/app/lib/actions';
 import { Plus, Camera, X } from 'lucide-react';
+import { SubmitButton } from '@/app/ui/submit-button';
 import { formatDate, formatDateTime } from '@/app/lib/formatters';
 import type { LotEvent, LotImage } from '@prisma/client';
 
@@ -71,12 +72,11 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
                             >
                                 Cancel
                             </button>
-                            <button
-                                type="submit"
+                            <SubmitButton
                                 className="bg-blue-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-blue-700 shadow-sm"
                             >
                                 Save Event
-                            </button>
+                            </SubmitButton>
                         </div>
                     </div>
                 </form>
@@ -166,12 +166,12 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
                                                 >
                                                     Cancel
                                                 </button>
-                                                <button
-                                                    type="submit"
+                                                <SubmitButton
                                                     className="bg-green-600 text-white text-xs px-2 py-1 rounded hover:bg-green-700"
+                                                    pendingText="Uploading..."
                                                 >
                                                     Upload
-                                                </button>
+                                                </SubmitButton>
                                             </div>
                                         </div>
                                     </form>
@@ -270,12 +270,12 @@ export function LotGallery({ lotId, images }: { lotId: number, images: LotImage[
                             >
                                 Cancel
                             </button>
-                            <button
-                                type="submit"
+                            <SubmitButton
                                 className="bg-green-600 text-white text-sm px-3 py-1 rounded hover:bg-green-700"
+                                pendingText="Uploading..."
                             >
                                 Upload
-                            </button>
+                            </SubmitButton>
                         </div>
                     </div>
                 </form>

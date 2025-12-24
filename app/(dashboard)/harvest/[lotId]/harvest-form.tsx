@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { createHarvest, editHarvest } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 import type { Material, PlantingLot, Harvest } from '@prisma/client';
 
 type MaterialWithStock = Material & { stock: { quantity: number } | null };
@@ -107,12 +108,11 @@ export default function HarvestForm({
                     >
                         Cancel
                     </Link>
-                    <button
-                        type="submit"
+                    <SubmitButton
                         className="bg-green-600 text-white p-2 rounded hover:bg-green-700 transition-colors w-full"
                     >
                         {isEditing ? 'Update Harvest' : 'Save Harvest Record'}
-                    </button>
+                    </SubmitButton>
                 </div>
             </form>
 

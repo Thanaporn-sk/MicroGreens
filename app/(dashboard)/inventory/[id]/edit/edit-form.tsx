@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { updateMaterial } from '@/app/lib/actions';
-import type { Material, MaterialImage } from '@prisma/client';
+import type { Material } from '@prisma/client';
 import { X } from 'lucide-react';
+import { SubmitButton } from '@/app/ui/submit-button';
 
-type MaterialWithImages = Material & { images: MaterialImage[] };
+type MaterialWithImages = Material & { images: { id: number; url: string; }[] };
 
 export default function EditMaterialForm({ material }: { material: MaterialWithImages }) {
     const updateMaterialWithId = updateMaterial.bind(null, material.id);
@@ -107,12 +108,11 @@ export default function EditMaterialForm({ material }: { material: MaterialWithI
                 >
                     Cancel
                 </Link>
-                <button
-                    type="submit"
+                <SubmitButton
                     className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors w-full"
                 >
                     Update Material
-                </button>
+                </SubmitButton>
             </div>
 
             {/* Lightbox Modal */}

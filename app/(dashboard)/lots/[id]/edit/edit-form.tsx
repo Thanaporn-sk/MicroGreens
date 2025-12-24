@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { updatePlantingLot } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 import type { PlantingLot } from '@prisma/client';
 
 export default function EditLotForm({ lot }: { lot: PlantingLot }) {
@@ -104,12 +105,11 @@ export default function EditLotForm({ lot }: { lot: PlantingLot }) {
                 >
                     Cancel
                 </Link>
-                <button
-                    type="submit"
+                <SubmitButton
                     className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors w-full"
                 >
                     Update Lot
-                </button>
+                </SubmitButton>
             </div>
         </form>
     );

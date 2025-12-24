@@ -60,14 +60,14 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
                                 <tr key={sale.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{formatDate(sale.saleDate)}</td>
                                     <td
-                                        className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 cursor-pointer hover:underline"
+                                        className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-cyan-400 cursor-pointer hover:underline"
                                         onClick={() => sale.customer && setHistoryCustomer({ id: sale.customer.id, name: sale.customer.name })}
                                         title={sale.customer ? "View Customer History" : ""}
                                     >
                                         {sale.customer?.name || 'Unknown'}
                                     </td>
                                     <td
-                                        className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 cursor-pointer hover:underline"
+                                        className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-cyan-400 cursor-pointer hover:underline"
                                         onClick={() => setHistoryProduct(sale.productName)}
                                         title="View Product Sales History"
                                     >

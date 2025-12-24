@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { updateSale } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 import type { Sale } from '@prisma/client';
 
 export default function EditSaleForm({ sale }: { sale: Sale }) {
@@ -59,12 +60,11 @@ export default function EditSaleForm({ sale }: { sale: Sale }) {
                 >
                     Cancel
                 </Link>
-                <button
-                    type="submit"
+                <SubmitButton
                     className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors w-full"
                 >
                     Update Sale
-                </button>
+                </SubmitButton>
             </div>
         </form>
     );

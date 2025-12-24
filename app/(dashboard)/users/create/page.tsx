@@ -1,6 +1,7 @@
 
 import { createUser } from '@/app/lib/actions-user';
 import Link from 'next/link';
+import { SubmitButton } from '@/app/ui/submit-button';
 
 export default function CreateUserPage() {
     return (
@@ -58,12 +59,19 @@ export default function CreateUserPage() {
                     </select>
                 </div>
 
-                <button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors mt-4 font-medium"
-                >
-                    Create User
-                </button>
+                <div className="flex gap-4 mt-6">
+                    <Link
+                        href="/users"
+                        className="w-full text-center bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium border border-gray-300 dark:border-gray-600"
+                    >
+                        Cancel
+                    </Link>
+                    <SubmitButton
+                        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors font-medium"
+                    >
+                        Create User
+                    </SubmitButton>
+                </div>
             </form>
         </div>
     );

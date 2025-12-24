@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useActionState } from 'react';
 import { createSale, State } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 import type { Customer, Material } from '@prisma/client';
 
 type MaterialWithStock = Material & { stock: { quantity: number } | null };
@@ -96,12 +97,11 @@ export default function SaleForm({ customers, materials }: { customers: Customer
                 >
                     Cancel
                 </Link>
-                <button
-                    type="submit"
+                <SubmitButton
                     className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors w-full"
                 >
                     Record Sale
-                </button>
+                </SubmitButton>
             </div>
         </form>
     );

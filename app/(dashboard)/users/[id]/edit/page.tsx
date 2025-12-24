@@ -2,6 +2,7 @@
 import { updateUser, updateUserPassword } from '@/app/lib/actions-user';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { SubmitButton } from '@/app/ui/submit-button';
 
 export default async function EditUserPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -59,13 +60,18 @@ export default async function EditUserPage(props: { params: Promise<{ id: string
                         </select>
                     </div>
 
-                    <div className="flex justify-end">
-                        <button
-                            type="submit"
+                    <div className="flex justify-end gap-3">
+                        <Link
+                            href="/users"
+                            className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium border border-gray-300 dark:border-gray-600"
+                        >
+                            Cancel
+                        </Link>
+                        <SubmitButton
                             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                         >
                             Save Details
-                        </button>
+                        </SubmitButton>
                     </div>
                 </form>
             </div>
@@ -87,12 +93,12 @@ export default async function EditUserPage(props: { params: Promise<{ id: string
                     </div>
 
                     <div className="flex justify-end">
-                        <button
-                            type="submit"
+                        <SubmitButton
                             className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition-colors"
+                            pendingText="Updating..."
                         >
                             Update Password
-                        </button>
+                        </SubmitButton>
                     </div>
                 </form>
             </div>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { createCustomer } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 
 export default function CustomerForm() {
     return (
@@ -41,12 +42,11 @@ export default function CustomerForm() {
                 >
                     Cancel
                 </Link>
-                <button
-                    type="submit"
+                <SubmitButton
                     className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors w-full"
                 >
                     Save Customer
-                </button>
+                </SubmitButton>
             </div>
         </form>
     );

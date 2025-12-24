@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import Link from 'next/link';
 import { createMaterial, State } from '@/app/lib/actions';
+import { SubmitButton } from '@/app/ui/submit-button';
 
 const initialState: State = { message: null, errors: {} };
 
@@ -72,12 +73,11 @@ export default function MaterialForm() {
                 >
                     Cancel
                 </Link>
-                <button
-                    type="submit"
+                <SubmitButton
                     className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition-colors w-full"
                 >
                     Save Material
-                </button>
+                </SubmitButton>
             </div>
         </form>
     );
