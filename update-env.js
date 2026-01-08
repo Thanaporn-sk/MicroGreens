@@ -17,7 +17,7 @@ if (!match) {
 
 const password = match[1];
 const newHost = 'aws-1-ap-south-1.pooler.supabase.com';
-const newPort = '5432';
+const newPort = '6543'; // Session POOL
 const newUser = 'postgres.xgwokqgdwmdwuukgawvd';
 const newDb = 'postgres';
 
