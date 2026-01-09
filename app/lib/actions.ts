@@ -257,6 +257,7 @@ export async function createCustomer(formData: FormData) {
     await logActivity('Create Customer', `Added customer ${name}`);
 
     revalidatePath('/customers');
+    revalidatePath('/sales/new');
     redirect('/customers');
 }
 
