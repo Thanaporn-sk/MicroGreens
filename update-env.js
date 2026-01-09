@@ -17,11 +17,11 @@ if (!match) {
 
 const password = match[1];
 const newHost = 'aws-1-ap-south-1.pooler.supabase.com';
-const newPort = '6543'; // Session POOL
+const newPort = '5432'; // Transaction POOL
 const newUser = 'postgres.xgwokqgdwmdwuukgawvd';
 const newDb = 'postgres';
 
-const newUrl = `postgresql://${newUser}:${password}@${newHost}:${newPort}/${newDb}`;
+const newUrl = `postgresql://${newUser}:${password}@${newHost}:${newPort}/${newDb}?pgbouncer=true`;
 
 let newEnvContent = envContent.replace(/DATABASE_URL=.*/, `DATABASE_URL="${newUrl}"`);
 // Also update DIRECT_URL if it exists, reuse the same working session URL
