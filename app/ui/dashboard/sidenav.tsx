@@ -15,7 +15,7 @@ import {
     Menu,
     X
 } from 'lucide-react';
-import { ThemeToggle } from '@/app/ui/theme-toggle';
+import { UserMenu } from '@/app/ui/dashboard/user-menu';
 
 const links = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -28,7 +28,7 @@ const links = [
     { name: 'User Management', href: '/users', icon: Users },
 ];
 
-export default function SideNav({ signOutAction }: { signOutAction: () => Promise<void> }) {
+export default function SideNav({ signOutAction, userName }: { signOutAction: () => Promise<void>, userName: string }) {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -85,22 +85,7 @@ export default function SideNav({ signOutAction }: { signOutAction: () => Promis
                             })}
                         </div>
 
-                        <div className="space-y-1">
-                            <div className="px-3 py-2">
-                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 block">Theme</span>
-                                <div className="flex items-center gap-3">
-                                    <ThemeToggle />
-                                    <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">Appearance</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <form action={signOutAction}>
-                            <button className="flex w-full items-center gap-3 rounded-md px-3 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
-                                <LogOut className="w-5 h-5" />
-                                <span>Sign Out</span>
-                            </button>
-                        </form>
+                        <UserMenu userName={userName} signOutAction={signOutAction} />
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import DateFilter from './date-filter';
+import { format } from 'date-fns';
 
 // Helper for formatting currency if utils doesn't exist
 const formatMoney = (amount: number) => {
@@ -196,14 +197,17 @@ export default async function ReportsPage({
 
     const totalInventoryValue = inventoryValuation.reduce((sum, item) => sum + item.value, 0);
 
+    // Format initial dates for inputs
+    const initialStartDate = format(startDate, 'yyyy-MM-dd');
+    const initialEndDate = format(endDate, 'yyyy-MM-dd');
 
     return (
         <div className="w-full pb-10 space-y-8">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold dark:text-gray-100">Financial Reports</h1>
+                <h2 className="text-xl font-semibold dark:text-gray-200">Financial Overview</h2>
             </div>
 
-            <DateFilter />
+            <DateFilter initialStartDate={initialStartDate} initialEndDate={initialEndDate} />
 
             {/* High Level Summary */}
             <div className="grid gap-4 md:grid-cols-4">

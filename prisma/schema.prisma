@@ -18,11 +18,30 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+enum MaterialType {
+  ASSET
+  MATERIAL
+  SEED
+  CROP
+  PACKAGING
+  EQUIPMENT
+  OTHERS
+}
+
+enum MaterialFlow {
+  BUY
+  SELL
+  BOTH
+  NONE
+}
+
 model Material {
   id          Int             @id @default(autoincrement())
   name        String          @unique
   unit        String
   description String?
+  type        MaterialType    @default(MATERIAL)
+  buySale     MaterialFlow    @default(BOTH) @map("buy_sale")
   images      MaterialImage[]
   stock       Stock?
   purchases   Purchase[]

@@ -40,6 +40,8 @@ export async function createMaterial(prevState: State, formData: FormData) {
     const name = formData.get('name') as string;
     const unit = formData.get('unit') as string;
     const description = formData.get('description') as string;
+    const type = formData.get('type') as 'MATERIAL' | 'ASSET' | 'SEED' | 'CROP' | 'PACKAGING' | 'EQUIPMENT' | 'OTHERS' || 'MATERIAL';
+    const buySale = formData.get('buySale') as 'BUY' | 'SELL' | 'BOTH' | 'NONE' || 'BOTH';
     const images = formData.getAll('images') as File[];
 
     if (!name || !unit) {
@@ -99,6 +101,8 @@ export async function createMaterial(prevState: State, formData: FormData) {
             unit,
             // @ts-ignore
             description,
+            type,
+            buySale,
             stock: {
                 create: {
                     quantity: 0,
@@ -158,8 +162,8 @@ export async function createPlantingLot(formData: FormData) {
     const expectedHarvestDate = expectedHarvestDateStr ? new Date(expectedHarvestDateStr) : null;
     const notes = formData.get('notes') as string;
 
-    if (!lotCode || !cropType || isNaN(seedAmount)) {
-        throw new Error('Missing required fields');
+    if (!lotCode || !cropType || isNaN(seedAmount) || isNaN(trayCount) || isNaN(plantingDate.getTime())) {
+        throw new Error('Missing or invalid required fields (Lot Code, Crop Type, Seed Amount, Tray Count, Planting Date)');
     }
 
     await prisma.plantingLot.create({
@@ -354,6 +358,8 @@ export async function updateMaterial(id: number, formData: FormData) {
     const name = formData.get('name') as string;
     const unit = formData.get('unit') as string;
     const description = formData.get('description') as string;
+    const type = formData.get('type') as 'MATERIAL' | 'ASSET' | 'SEED' | 'CROP' | 'PACKAGING' | 'EQUIPMENT' | 'OTHERS' || 'MATERIAL';
+    const buySale = formData.get('buySale') as 'BUY' | 'SELL' | 'BOTH' | 'NONE' || 'BOTH';
     const images = formData.getAll('images') as File[];
     const deletedImageIdsStr = formData.get('deletedImageIds') as string;
 
@@ -426,6 +432,8 @@ export async function updateMaterial(id: number, formData: FormData) {
             name,
             unit,
             description,
+            type,
+            buySale,
             images: {
                 create: imageUrls.map(url => ({ url }))
             }
