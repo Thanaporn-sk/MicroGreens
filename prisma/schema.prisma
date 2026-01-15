@@ -41,7 +41,7 @@ model Material {
   unit        String
   description String?
   type        MaterialType    @default(MATERIAL)
-  buySale     MaterialFlow    @default(BOTH) @map("buy_sale")
+  buySale     MaterialFlow    @default(BUY) @map("buy_sale")
   images      MaterialImage[]
   stock       Stock?
   purchases   Purchase[]

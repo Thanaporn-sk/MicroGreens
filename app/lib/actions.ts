@@ -41,7 +41,7 @@ export async function createMaterial(prevState: State, formData: FormData) {
     const unit = formData.get('unit') as string;
     const description = formData.get('description') as string;
     const type = formData.get('type') as 'MATERIAL' | 'ASSET' | 'SEED' | 'CROP' | 'PACKAGING' | 'EQUIPMENT' | 'OTHERS' || 'MATERIAL';
-    const buySale = formData.get('buySale') as 'BUY' | 'SELL' | 'BOTH' | 'NONE' || 'BOTH';
+    const buySale = formData.get('buySale') as 'BUY' | 'SELL' | 'BOTH' | 'NONE' || 'BUY';
     const images = formData.getAll('images') as File[];
 
     if (!name || !unit) {
