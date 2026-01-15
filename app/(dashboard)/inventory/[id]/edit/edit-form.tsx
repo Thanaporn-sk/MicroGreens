@@ -58,6 +58,40 @@ export default function EditMaterialForm({ material }: { material: MaterialWithI
                 />
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Type</label>
+                    <select
+                        name="type"
+                        // @ts-ignore
+                        defaultValue={material.type || 'MATERIAL'}
+                        className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                    >
+                        <option value="MATERIAL">Material</option>
+                        <option value="ASSET">Asset</option>
+                        <option value="SEED">Seed</option>
+                        <option value="CROP">Crop</option>
+                        <option value="PACKAGING">Packaging</option>
+                        <option value="EQUIPMENT">Equipment</option>
+                        <option value="OTHERS">Others</option>
+                    </select>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Buy/Sale</label>
+                    <select
+                        name="buySale"
+                        // @ts-ignore
+                        defaultValue={material.buySale || 'BOTH'}
+                        className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                    >
+                        <option value="BOTH">Buy & Sell</option>
+                        <option value="BUY">Buy Only</option>
+                        <option value="SELL">Sell Only</option>
+                        <option value="NONE">None</option>
+                    </select>
+                </div>
+            </div>
+
             <div>
                 <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Add Images</label>
                 <input

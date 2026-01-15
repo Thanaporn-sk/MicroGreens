@@ -1,63 +1,92 @@
-const { PrismaClient } = require('@prisma/client');
-const fs = require('fs');
-const path = require('path');
-const dotenv = require('dotenv');
+
+const { Client } = require('pg');
+
+const sourceConfig = {
+    connectionString: "postgresql://postgres.xgwokqgdwmdwuukgawvd:mTrBBRnPSRaDagLW@aws-1-ap-south-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+};
+const targetConfig = {
+    connectionString: "postgresql://postgres.pbnvpdvjtdufjihyeczu:4Bxzu7THj3L1G54h@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+};
+
+const tables = [
+    'User',
+    'Customer',
+    'Material',
+    'Stock',
+    'Purchase',
+    'PlantingLot',
+    'LotEvent',
+    'Harvest',
+    'Sale',
+    'StockAdjustment',
+    'MaterialImage',
+    'LotImage',
+    'ActivityLog'
+];
+
+// Delete order: Child -> Parent
+const deleteOrder = [
+    'LotImage', 'MaterialImage', 'StockAdjustment', 'Sale', 'Harvest', 'LotEvent',
+    'PlantingLot', 'Purchase', 'Stock', 'Material', 'Customer', 'ActivityLog', 'User'
+];
 
 async function main() {
-    console.log('🔄 Starting Data Sync: PROD -> DEV');
-
-    // 1. Load PROD Environment
-    const prodEnvConfig = dotenv.parse(fs.readFileSync(path.join(__dirname, '../.env.prod')));
-    const prodDbUrl = prodEnvConfig.DATABASE_URL;
-
-    // 2. Load DEV Environment (Local .env)
-    const devEnvConfig = dotenv.parse(fs.readFileSync(path.join(__dirname, '../.env')));
-    const devDbUrl = devEnvConfig.DATABASE_URL;
-
-    console.log(`🔌 Prod DB: ...${prodDbUrl.split('@')[1]}`);
-    console.log(`🔌 Dev DB:  ...${devDbUrl.split('@')[1]}`);
-
-    // 3. Connect to PROD & Fetch
-    console.log('🔌 Connecting to PROD...');
-    const prismaProd = new PrismaClient({
-        datasources: { db: { url: prodDbUrl } }
-    });
-
-    let materials = [];
-    try {
-        console.log('📥 Fetching Materials from PROD...');
-        materials = await prismaProd.material.findMany();
-        console.log(`   Found ${materials.length} materials.`);
-    } finally {
-        await prismaProd.$disconnect();
-        console.log('🔌 Disconnected from PROD.');
-    }
-
-    // 4. Connect to DEV & Insert
-    console.log('🔌 Connecting to DEV...');
-    const prismaDev = new PrismaClient({
-        datasources: { db: { url: devDbUrl } }
-    });
+    console.log('Syncing Production -> Dev...');
+    const source = new Client(sourceConfig);
+    const target = new Client(targetConfig);
 
     try {
-        console.log('📤 Upserting to DEV...');
-        for (const m of materials) {
-            process.stdout.write(`   Processing "${m.name}"... `);
-            const { id, ...data } = m;
+        await source.connect();
+        console.log('Connected to Source (Prod)');
+        await target.connect();
+        console.log('Connected to Target (Dev)');
 
-            await prismaDev.material.upsert({
-                where: { name: m.name },
-                update: { unit: m.unit },
-                create: { name: m.name, unit: m.unit }
-            });
-            console.log('✅');
+        // 1. Clear Target
+        console.log('Clearing Target Database...');
+        for (const table of deleteOrder) {
+            try {
+                await target.query(`DELETE FROM "${table}"`);
+                console.log(`  Deleted ${table}`);
+            } catch (e) {
+                console.log(`  Failed to delete ${table}: ${e.message}`);
+            }
         }
-        console.log('✨ Sync Completed!');
+
+        // 2. Transfer Data
+        console.log('Transferring Data...');
+        for (const table of tables) {
+            console.log(`  Syncing ${table}...`);
+            const res = await source.query(`SELECT * FROM "${table}"`);
+            const rows = res.rows;
+
+            if (rows.length === 0) {
+                console.log(`    No rows involved.`);
+                continue;
+            }
+
+            console.log(`    Found ${rows.length} rows.`);
+
+            for (const row of rows) {
+                const keys = Object.keys(row).map(k => `"${k}"`).join(', ');
+                const values = Object.values(row);
+                const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
+
+                const query = `INSERT INTO "${table}" (${keys}) VALUES (${placeholders})`;
+                try {
+                    await target.query(query, values);
+                } catch (e) {
+                    console.error(`    Insert Failed for ${table} ID ${row.id}: ${e.message}`);
+                }
+            }
+        }
+
+        console.log('Sync Complete!');
 
     } catch (e) {
-        console.error('\n❌ Sync Failed:', e);
+        console.error('FATAL ERROR:', e);
     } finally {
-        await prismaDev.$disconnect();
+        await source.end();
+        await target.end();
     }
 }
 
