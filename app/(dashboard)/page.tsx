@@ -77,15 +77,20 @@ export default async function DashboardPage() {
                 <h2 className="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-4">Sales Trend (Last 7 Days)</h2>
                 <div className="h-64 flex items-end justify-between gap-2">
                     {chartData.map((day) => (
-                        <div key={day.date} className="flex flex-col items-center gap-2 w-full group">
+                        <div key={day.date} className="flex flex-col items-center gap-2 w-full group relative">
+                            {/* Hover Tooltip */}
+                            <div className="absolute bottom-[calc(100%-1.5rem)] mb-2 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 pointer-events-none">
+                                <div className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-bold py-1 px-2 rounded shadow-lg whitespace-nowrap">
+                                    ฿{day.amount.toLocaleString()}
+                                </div>
+                                <div className="w-2 h-2 bg-gray-900 dark:bg-white rotate-45 mx-auto -mt-1 shadow-lg"></div>
+                            </div>
+
                             <div className="relative w-full flex items-end justify-center h-48 bg-gray-50 dark:bg-gray-700/50 rounded-t-lg overflow-hidden group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors">
                                 <div
                                     className="w-full bg-green-500 opacity-80 group-hover:opacity-100 transition-opacity rounded-t-sm"
                                     style={{ height: `${(day.amount / maxSales) * 100}%` }}
                                 ></div>
-                                <div className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 text-xs font-bold text-gray-700 dark:text-gray-200 transition-opacity">
-                                    ฿{day.amount.toLocaleString()}
-                                </div>
                             </div>
                             <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{day.date}</span>
                         </div>

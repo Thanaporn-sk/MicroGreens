@@ -7,9 +7,12 @@ async function main() {
     // Tables with auto-increment ID
     const tables = [
         'Material',
+        'MaterialImage',
         'Stock',
         'Purchase',
         'PlantingLot',
+        'LotEvent',
+        'LotImage',
         'Harvest',
         'Customer',
         'Sale',

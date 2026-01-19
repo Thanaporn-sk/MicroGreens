@@ -16,7 +16,10 @@ export default async function LotDetailPage(props: { params: Promise<{ id: strin
                 include: { material: true }
             },
             events: {
-                orderBy: { date: 'desc' },
+                orderBy: [
+                    { date: 'desc' },
+                    { createdAt: 'desc' }
+                ],
                 include: { images: true }
             },
             images: {
