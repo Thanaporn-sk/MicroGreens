@@ -24,7 +24,7 @@ export default function LotFilters({ crops }: { crops: string[] }) {
     };
 
     const currentView = searchParams.get('view') || 'grid';
-    const currentStatus = searchParams.get('status') || '';
+    const currentStatus = searchParams.get('status') || 'ACTIVE';
     const currentCrop = searchParams.get('crop') || '';
 
     return (
@@ -37,6 +37,7 @@ export default function LotFilters({ crops }: { crops: string[] }) {
                     onChange={(e) => handleFilterChange('status', e.target.value)}
                 >
                     <option value="">All Statuses</option>
+                    <option value="ACTIVE">Active</option>
                     <option value="PLANTED">Growing</option>
                     <option value="HARVESTING">Harvesting</option>
                     <option value="COMPLETED">Harvested</option>

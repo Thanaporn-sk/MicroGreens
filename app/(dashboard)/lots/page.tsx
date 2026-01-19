@@ -24,7 +24,7 @@ export default async function LotsPage(props: {
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
-    const statusParam = searchParams?.status;
+    const statusParam = searchParams?.status || 'ACTIVE'; // Default to ACTIVE
     const cropParam = searchParams?.crop;
     const view = searchParams?.view || 'grid';
     const sort = searchParams?.sort || 'plantingDate'; // Default sort
@@ -36,8 +36,12 @@ export default async function LotsPage(props: {
     if (query) {
         where.lotCode = { contains: query };
     }
-    if (statusParam) {
+    if (statusParam && statusParam !== 'ACTIVE') {
+        // Regular status filter
         where.status = statusParam;
+    } else if (statusParam === 'ACTIVE') {
+        // Active means PLANTED or HARVESTING
+        where.status = { in: ['PLANTED', 'HARVESTING'] };
     }
     if (cropParam) {
         where.cropType = cropParam;

@@ -27,11 +27,26 @@ export default async function ReportsPage({
     const startDate = params?.startDate ? new Date(params.startDate) : new Date(new Date().getFullYear(), 0, 1); // Default to start of year
     const endDate = params?.endDate ? new Date(params.endDate) : new Date();
 
+    const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
     // Adjust endDate to end of day
     const endDateAdjusted = new Date(endDate);
     endDateAdjusted.setHours(23, 59, 59, 999);
 
-    const [sales, purchases, stocks, customers] = await Promise.all([
+    const [
+        sales,
+        purchases,
+        stocks,
+        customers,
+        // All-time totals
+        allTimeRevenueData,
+        allTimeExpenseData,
+        // YTD totals
+        ytdRevenueData,
+        ytdExpenseData
+    ] = await Promise.all([
         prisma.sale.findMany({
             where: {
                 saleDate: {
@@ -45,7 +60,7 @@ export default async function ReportsPage({
             where: {
                 date: {
                     gte: startDate,
-                    lte: endDateAdjusted, // Use adjusted end date for consistency
+                    lte: endDateAdjusted,
                 },
             },
             include: {
@@ -61,12 +76,31 @@ export default async function ReportsPage({
             include: {
                 sales: true
             }
+        }),
+        // All-time calculations
+        prisma.sale.aggregate({
+            _sum: { price: true }
+        }),
+        prisma.purchase.aggregate({
+            _sum: { cost: true }
+        }),
+        // YTD calculations
+        prisma.sale.aggregate({
+            where: { saleDate: { gte: startOfYear, lte: endOfToday } },
+            _sum: { price: true }
+        }),
+        prisma.purchase.aggregate({
+            where: { date: { gte: startOfYear, lte: endOfToday } },
+            _sum: { cost: true }
         })
     ]);
 
     const totalRevenue = sales.reduce((sum, sale) => sum + sale.price, 0);
     const totalExpenses = purchases.reduce((sum, p) => sum + (p.cost || 0), 0);
     const netProfit = totalRevenue - totalExpenses;
+
+    const netProfitAllTime = (allTimeRevenueData._sum.price || 0) - (allTimeExpenseData._sum.cost || 0);
+    const netProfitYTD = (ytdRevenueData._sum.price || 0) - (ytdExpenseData._sum.cost || 0);
 
     // --- Sales by Product ---
     const salesByProduct = sales.reduce((acc, sale) => {
@@ -210,10 +244,12 @@ export default async function ReportsPage({
             <DateFilter initialStartDate={initialStartDate} initialEndDate={initialEndDate} />
 
             {/* High Level Summary */}
-            <div className="grid gap-4 md:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
                 <SummaryCard title="Total Revenue" value={totalRevenue} type="success" />
                 <SummaryCard title="Total Expenses" value={totalExpenses} type="danger" />
-                <SummaryCard title="Net Profit" value={netProfit} type={netProfit >= 0 ? "success" : "danger"} />
+                <SummaryCard title="Net Profit (Period)" value={netProfit} type={netProfit >= 0 ? "success" : "danger"} />
+                <SummaryCard title="Net Profit (YTD)" value={netProfitYTD} type={netProfitYTD >= 0 ? "success" : "danger"} />
+                <SummaryCard title="Net Profit (All Time)" value={netProfitAllTime} type={netProfitAllTime >= 0 ? "success" : "danger"} />
                 <SummaryCard title="Inventory Value" value={totalInventoryValue} type="neutral" />
             </div>
 

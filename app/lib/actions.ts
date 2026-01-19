@@ -710,49 +710,138 @@ export async function addLotEvent(lotId: number, formData: FormData) {
 }
 
 export async function addLotImage(lotId: number, formData: FormData) {
-    const image = formData.get('image') as File;
+    const images = formData.getAll('images') as File[];
     const caption = formData.get('caption') as string;
     const eventIdStr = formData.get('eventId') as string;
     const eventId = eventIdStr ? parseInt(eventIdStr) : null;
 
-    if (!image || image.size === 0) throw new Error("Image is required");
+    // Filter out empty or invalid files
+    const validImages = images.filter(img => img instanceof File && img.size > 0 && img.name !== 'undefined');
+
+    if (!validImages || validImages.length === 0) {
+        throw new Error("At least one valid image is required");
+    }
 
     try {
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-        const cleanFileName = image.name.replace(/[^a-zA-Z0-9.-]/g, '');
-        const filename = `${uniqueSuffix}-${cleanFileName}`;
+        for (const image of validImages) {
+            const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+            const cleanFileName = image.name.replace(/[^a-zA-Z0-9.-]/g, '');
+            const filename = `${uniqueSuffix}-${cleanFileName}`;
 
-        const buffer = await image.arrayBuffer();
-        const { error: uploadError } = await getSupabaseClient().storage
-            .from('imageStorage')
-            .upload(filename, buffer, {
-                contentType: image.type,
-                upsert: false
-            });
+            const buffer = await image.arrayBuffer();
+            const { error: uploadError } = await getSupabaseClient().storage
+                .from('imageStorage')
+                .upload(filename, buffer, {
+                    contentType: image.type,
+                    upsert: false
+                });
 
-        if (uploadError) {
-            console.error('Supabase upload error:', uploadError);
-            throw new Error('Upload to Supabase failed');
-        }
-
-        const { data: { publicUrl: url } } = getSupabaseClient().storage
-            .from('imageStorage')
-            .getPublicUrl(filename);
-
-        await prisma.lotImage.create({
-            data: {
-                lotId,
-                eventId,
-                url,
-                caption
+            if (uploadError) {
+                console.error('Supabase upload error:', uploadError);
+                throw new Error(`Upload failed: ${uploadError.message}`);
             }
-        });
+
+            const { data: { publicUrl: url } } = getSupabaseClient().storage
+                .from('imageStorage')
+                .getPublicUrl(filename);
+
+            await prisma.lotImage.create({
+                data: {
+                    lotId,
+                    eventId,
+                    url,
+                    caption
+                }
+            });
+        }
     } catch (e) {
-        console.error('Error saving uploaded image', e);
-        throw new Error('Failed to save image');
+        console.error('Error saving uploaded images', e);
+        throw new Error(`Failed to save images: ${(e as Error).message}`);
     }
 
     revalidatePath(`/lots/${lotId}`);
+}
+
+export async function updateLotEvent(eventId: number, lotId: number, formData: FormData) {
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const dateStr = formData.get('date') as string;
+    const date = dateStr ? new Date(dateStr) : new Date();
+
+    if (!title) throw new Error("Title is required");
+
+    await prisma.lotEvent.update({
+        where: { id: eventId },
+        data: {
+            title,
+            description,
+            date
+        }
+    });
+
+    revalidatePath(`/lots/${lotId}`);
+}
+
+export async function deleteLotEvent(eventId: number, lotId: number) {
+    try {
+        // Get all images associated with this event
+        const images = await prisma.lotImage.findMany({
+            where: { eventId }
+        });
+
+        // Delete images from Supabase storage
+        for (const image of images) {
+            try {
+                const urlParts = image.url.split('/');
+                const filename = urlParts[urlParts.length - 1];
+
+                await getSupabaseClient().storage
+                    .from('imageStorage')
+                    .remove([filename]);
+            } catch (e) {
+                console.error('Failed to delete image from storage:', e);
+            }
+        }
+
+        // Delete event (images will be cascade deleted from DB)
+        await prisma.lotEvent.delete({
+            where: { id: eventId }
+        });
+
+        revalidatePath(`/lots/${lotId}`);
+    } catch (e) {
+        console.error('Error deleting lot event', e);
+        throw new Error('Failed to delete event');
+    }
+}
+
+export async function deleteLotImage(imageId: number, lotId: number) {
+    try {
+        // Get image details
+        const image = await prisma.lotImage.findUnique({
+            where: { id: imageId }
+        });
+
+        if (!image) throw new Error("Image not found");
+
+        // Extract filename from URL and delete from Supabase
+        const urlParts = image.url.split('/');
+        const filename = urlParts[urlParts.length - 1];
+
+        await getSupabaseClient().storage
+            .from('imageStorage')
+            .remove([filename]);
+
+        // Delete from database
+        await prisma.lotImage.delete({
+            where: { id: imageId }
+        });
+
+        revalidatePath(`/lots/${lotId}`);
+    } catch (e) {
+        console.error('Error deleting lot image', e);
+        throw new Error('Failed to delete image');
+    }
 }
 
 export async function editHarvest(id: number, formData: FormData) {
