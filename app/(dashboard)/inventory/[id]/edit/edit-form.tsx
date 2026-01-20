@@ -6,6 +6,7 @@ import { updateMaterial } from '@/app/lib/actions';
 import type { Material } from '@prisma/client';
 import { X } from 'lucide-react';
 import { SubmitButton } from '@/app/ui/submit-button';
+import { compressImage } from '@/app/lib/image-utils';
 
 type MaterialWithImages = Material & { images: { id: number; url: string; }[] };
 
@@ -20,8 +21,35 @@ export default function EditMaterialForm({ material }: { material: MaterialWithI
 
     const visibleImages = material.images ? material.images.filter(img => !deletedImageIds.includes(img.id)) : [];
 
+    async function handleSubmit(formData: FormData) {
+        const images = formData.getAll('images') as File[];
+        const compressedFormData = new FormData();
+
+        // Copy non-file fields
+        for (const [key, value] of formData.entries()) {
+            if (key !== 'images') {
+                compressedFormData.append(key, value);
+            }
+        }
+
+        // Compress and add images
+        for (const image of images) {
+            if (image.size > 0) {
+                try {
+                    const compressedBlob = await compressImage(image);
+                    compressedFormData.append('images', compressedBlob, image.name);
+                } catch (err) {
+                    console.error('Compression failed, using original', err);
+                    compressedFormData.append('images', image);
+                }
+            }
+        }
+
+        await updateMaterialWithId(compressedFormData);
+    }
+
     return (
-        <form action={updateMaterialWithId} className="flex flex-col gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 max-w-lg">
+        <form action={handleSubmit} className="flex flex-col gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 max-w-lg">
             <input type="hidden" name="deletedImageIds" value={JSON.stringify(deletedImageIds)} />
 
             <div>

@@ -145,7 +145,7 @@ export default async function DashboardPage() {
                                     <div key={log.id} className="px-6 py-3 flex flex-col gap-1">
                                         <div className="flex justify-between items-start">
                                             <span className="font-medium text-gray-900 dark:text-gray-200 text-sm">{log.action}</span>
-                                            <span className="text-xs text-gray-400 dark:text-gray-500">
+                                            <span className="text-xs text-gray-400 dark:text-gray-500" suppressHydrationWarning>
                                                 {formatDate(log.createdAt)} {log.createdAt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
