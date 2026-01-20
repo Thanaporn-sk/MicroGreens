@@ -9,6 +9,7 @@ import { Plus, Camera, X, Edit2, Trash2 } from 'lucide-react';
 import { SubmitButton } from '@/app/ui/submit-button';
 import { formatDate, formatDateTime } from '@/app/lib/formatters';
 import type { LotEvent, LotImage } from '@prisma/client';
+import { compressImage } from '@/app/lib/image-utils';
 
 type LotEventWithImages = LotEvent & { images: LotImage[] };
 
@@ -64,6 +65,15 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
     const [previews, setPreviews] = useState<string[]>([]);
     const [lightboxImage, setLightboxImage] = useState<string | null>(null);
     const [deleteDialog, setDeleteDialog] = useState<{ type: 'event' | 'image', id: number, eventId?: number } | null>(null);
+    const [defaultDate, setDefaultDate] = useState<string>('');
+
+    // Set client-side default date to avoid hydration mismatch
+    useEffect(() => {
+        const localNow = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+            .toISOString()
+            .slice(0, 16);
+        setDefaultDate(localNow);
+    }, []);
 
     // Collect all images for slideshow
     const allImages = React.useMemo(() =>
@@ -146,7 +156,7 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
                         <input
                             type="datetime-local"
                             name="date"
-                            defaultValue={new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16)}
+                            defaultValue={defaultDate}
                             className="w-full border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
                         />
                         <div className="flex justify-end gap-2 pt-2">
@@ -204,7 +214,7 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
                                         <input
                                             type="datetime-local"
                                             name="date"
-                                            defaultValue={new Date(new Date(event.date).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16)}
+                                            defaultValue={event.date ? new Date(new Date(event.date).getTime() - new Date(event.date).getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
                                             className="w-full border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
                                         />
                                         <div className="flex justify-end gap-2 pt-2">
@@ -292,7 +302,30 @@ export function LotTimeline({ lotId, events }: { lotId: number, events: LotEvent
                                         {/* Image Upload Form for this Event */}
                                         {uploadingEventId === event.id && (
                                             <form action={async (formData) => {
-                                                await addLotImage(lotId, formData);
+                                                const images = formData.getAll('images') as File[];
+                                                const compressedFormData = new FormData();
+
+                                                // Copy non-file fields
+                                                for (const [key, value] of formData.entries()) {
+                                                    if (key !== 'images') {
+                                                        compressedFormData.append(key, value);
+                                                    }
+                                                }
+
+                                                // Compress and add images
+                                                for (const image of images) {
+                                                    if (image.size > 0) {
+                                                        try {
+                                                            const compressedBlob = await compressImage(image);
+                                                            compressedFormData.append('images', compressedBlob, image.name);
+                                                        } catch (err) {
+                                                            console.error('Compression failed, using original', err);
+                                                            compressedFormData.append('images', image);
+                                                        }
+                                                    }
+                                                }
+
+                                                await addLotImage(lotId, compressedFormData);
                                                 closeUpload();
                                             }} className="mt-4 p-3 bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 shadow-sm animation-fadeIn">
                                                 <input type="hidden" name="eventId" value={event.id} />
@@ -489,7 +522,28 @@ export function LotGallery({ lotId, images }: { lotId: number, images: LotImage[
 
             {isUploading && (
                 <form action={async (formData) => {
-                    await addLotImage(lotId, formData);
+                    const images = formData.getAll('images') as File[];
+                    const compressedFormData = new FormData();
+
+                    for (const [key, value] of formData.entries()) {
+                        if (key !== 'images') {
+                            compressedFormData.append(key, value);
+                        }
+                    }
+
+                    for (const image of images) {
+                        if (image.size > 0) {
+                            try {
+                                const compressedBlob = await compressImage(image);
+                                compressedFormData.append('images', compressedBlob, image.name);
+                            } catch (err) {
+                                console.error('Compression failed, using original', err);
+                                compressedFormData.append('images', image);
+                            }
+                        }
+                    }
+
+                    await addLotImage(lotId, compressedFormData);
                     setIsUploading(false);
                     setPreviews([]);
                 }} className="mb-6 p-4 bg-gray-50 rounded border">

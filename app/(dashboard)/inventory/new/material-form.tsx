@@ -4,14 +4,42 @@ import { useActionState } from 'react';
 import Link from 'next/link';
 import { createMaterial, State } from '@/app/lib/actions';
 import { SubmitButton } from '@/app/ui/submit-button';
+import { compressImage } from '@/app/lib/image-utils';
 
 const initialState: State = { message: null, errors: {} };
 
 export default function MaterialForm() {
     const [state, dispatch] = useActionState<State, FormData>(createMaterial, initialState);
 
+    async function handleSubmit(formData: FormData) {
+        const images = formData.getAll('images') as File[];
+        const compressedFormData = new FormData();
+
+        // Copy non-file fields
+        for (const [key, value] of formData.entries()) {
+            if (key !== 'images') {
+                compressedFormData.append(key, value);
+            }
+        }
+
+        // Compress and add images
+        for (const image of images) {
+            if (image.size > 0) {
+                try {
+                    const compressedBlob = await compressImage(image);
+                    compressedFormData.append('images', compressedBlob, image.name);
+                } catch (err) {
+                    console.error('Compression failed, using original', err);
+                    compressedFormData.append('images', image);
+                }
+            }
+        }
+
+        dispatch(compressedFormData);
+    }
+
     return (
-        <form action={dispatch} className="flex flex-col gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 max-w-lg">
+        <form action={handleSubmit} className="flex flex-col gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 max-w-lg">
             <div>
                 <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Material Name</label>
                 <input
