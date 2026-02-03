@@ -19,7 +19,7 @@ export default async function DashboardLayout({
                     await signOut();
                 }}
             />
-            <div className="flex-grow p-6 md:overflow-y-auto md:p-12 overflow-x-hidden">
+            <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
                 {children}
             </div>
         </div>

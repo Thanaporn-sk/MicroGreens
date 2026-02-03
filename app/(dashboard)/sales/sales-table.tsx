@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Pencil } from 'lucide-react';
 import DeleteButton from '@/app/ui/delete-button';
 import { deleteSale } from '@/app/lib/actions';
-import { formatDate } from '@/app/lib/formatters';
+import { formatDate, formatCurrency } from '@/app/lib/formatters';
 import CustomerHistoryModal from '@/app/ui/history/customer-history-modal';
 import ProductHistoryModal from '@/app/ui/history/product-history-modal';
 import SortableHeader from '@/app/ui/sortable-header';
@@ -29,7 +29,7 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
     return (
         <>
             <div className="rounded-lg bg-white dark:bg-gray-800 shadow overflow-hidden border border-gray-200 dark:border-gray-700">
-                <div className="overflow-x-auto">
+                <div className="w-full overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-gray-50 dark:bg-gray-900/50">
                             <tr>
@@ -75,7 +75,7 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
                                             {sale.productName}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{sale.weight.toFixed(2)}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600 dark:text-green-400">${sale.price.toFixed(2)}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600 dark:text-green-400">{formatCurrency(sale.price)}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-2">
                                             <Link href={`/sales/${sale.id}/edit`} className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 p-1">
                                                 <Pencil className="w-4 h-4" />
