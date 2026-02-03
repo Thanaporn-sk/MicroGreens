@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Eye } from 'lucide-react';
 import { PlantingLot } from '@prisma/client';
-import { formatDate } from '@/app/lib/formatters';
+import { formatDate, formatNumber } from '@/app/lib/formatters';
 import DeleteButton from '@/app/ui/delete-button';
 import { deletePlantingLot } from '@/app/lib/actions';
 import SortableHeader from '@/app/ui/sortable-header';
@@ -71,7 +71,7 @@ export default function LotsTable({ lots }: { lots: LotWithWeight[] }) {
                                     {lot.expectedHarvestDate ? formatDate(lot.expectedHarvestDate) : '-'}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{lot.trayCount}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{lot.totalWeight} kg</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{formatNumber(lot.totalWeight)} kg</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 text-right">{(lot.totalWeight / (lot.trayCount || 1)).toFixed(2)}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div className="flex items-center justify-end gap-2">

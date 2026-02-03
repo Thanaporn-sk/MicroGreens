@@ -36,7 +36,7 @@ export default function LotFilters({ crops }: { crops: string[] }) {
                     value={currentStatus}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
                 >
-                    <option value="">All Statuses</option>
+                    <option value="ALL">All Statuses</option>
                     <option value="ACTIVE">Active</option>
                     <option value="PLANTED">Growing</option>
                     <option value="HARVESTING">Harvesting</option>

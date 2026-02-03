@@ -8,6 +8,15 @@
       "role": "ADMIN",
       "createdAt": "2025-12-19T07:58:53.754Z",
       "updatedAt": "2026-01-08T16:27:36.147Z"
+    },
+    {
+      "id": "cmkf81n10000013vg7gg387yz",
+      "email": "amm@mc.com",
+      "password": "$2b$10$Ms6uu0jsD.QFeQTQ1KJUu.ZDAWbMw7sOoqA96wOru9RpxaSGrBmr.",
+      "name": "amm",
+      "role": "ADMIN",
+      "createdAt": "2026-01-15T09:02:42.897Z",
+      "updatedAt": "2026-01-15T09:02:42.897Z"
     }
   ],
   "Material": [
@@ -16,6 +25,8 @@
       "name": "Soil",
       "unit": "bag",
       "description": null,
+      "type": "MATERIAL",
+      "buySale": "BUY",
       "createdAt": "2025-12-19T08:01:45.405Z"
     },
     {
@@ -23,34 +34,17 @@
       "name": "coconut coir",
       "unit": "bag",
       "description": null,
+      "type": "MATERIAL",
+      "buySale": "BUY",
       "createdAt": "2025-12-19T08:42:58.783Z"
-    },
-    {
-      "id": 5,
-      "name": "Pea Maple",
-      "unit": "kg",
-      "description": null,
-      "createdAt": "2025-12-20T15:03:41.206Z"
-    },
-    {
-      "id": 1,
-      "name": "Sun Flower Seed",
-      "unit": "kg",
-      "description": "test ",
-      "createdAt": "2025-12-19T08:01:21.957Z"
-    },
-    {
-      "id": 4,
-      "name": "Sun Flower Sprout",
-      "unit": "kg",
-      "description": "test description",
-      "createdAt": "2025-12-19T08:59:57.885Z"
     },
     {
       "id": 8,
       "name": "morning glory Seed",
       "unit": "kg",
       "description": "",
+      "type": "SEED",
+      "buySale": "BUY",
       "createdAt": "2026-01-15T04:52:49.331Z"
     },
     {
@@ -58,17 +52,66 @@
       "name": "morning glory Sprout",
       "unit": "kg",
       "description": "",
+      "type": "CROP",
+      "buySale": "SELL",
       "createdAt": "2026-01-15T04:54:01.152Z"
+    },
+    {
+      "id": 5,
+      "name": "Pea Maple",
+      "unit": "kg",
+      "description": "",
+      "type": "CROP",
+      "buySale": "SELL",
+      "createdAt": "2025-12-20T15:03:41.206Z"
+    },
+    {
+      "id": 10,
+      "name": "Shelf",
+      "unit": "pcs",
+      "description": "Shelf (rack) 6 layer 120x200x40",
+      "type": "ASSET",
+      "buySale": "BUY",
+      "createdAt": "2026-01-15T09:05:33.872Z"
+    },
+    {
+      "id": 1,
+      "name": "Sun Flower Seed",
+      "unit": "kg",
+      "description": "test ",
+      "type": "SEED",
+      "buySale": "BUY",
+      "createdAt": "2025-12-19T08:01:21.957Z"
+    },
+    {
+      "id": 4,
+      "name": "Sun Flower Sprout",
+      "unit": "kg",
+      "description": "test description",
+      "type": "CROP",
+      "buySale": "SELL",
+      "createdAt": "2025-12-19T08:59:57.885Z"
+    },
+    {
+      "id": 12,
+      "name": "bag 10 x15 ปูฟ้า",
+      "unit": "bag",
+      "description": "",
+      "type": "PACKAGING",
+      "buySale": "BOTH",
+      "createdAt": "2026-01-17T11:48:07.789Z"
+    },
+    {
+      "id": 11,
+      "name": "tray 50x35x8 cm(no hole)",
+      "unit": "pcs",
+      "description": "",
+      "type": "EQUIPMENT",
+      "buySale": "BUY",
+      "createdAt": "2026-01-17T11:47:00.947Z"
     }
   ],
   "Customer": [
-    {
-      "id": 1,
-      "name": "P' Kae",
-      "contact": "",
-      "address": "",
-      "createdAt": "2025-12-19T09:06:03.657Z"
-    },
     {
       "id": 2,
       "name": "P'Nok",
@@ -117,9 +160,99 @@
       "contact": "",
       "address": "",
       "createdAt": "2026-01-09T06:28:44.092Z"
+    },
+    {
+      "id": 9,
+      "name": "P'On-In",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-17T08:42:19.347Z"
+    },
+    {
+      "id": 10,
+      "name": "Emily ",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-17T08:43:52.766Z"
+    },
+    {
+      "id": 11,
+      "name": "The plus 100",
+      "contact": "",
+      "address": "soi 11",
+      "createdAt": "2026-01-17T08:46:36.600Z"
+    },
+    {
+      "id": 12,
+      "name": "P' Rat TTFL",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-19T03:36:27.484Z"
+    },
+    {
+      "id": 13,
+      "name": "Wednesday Market",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-21T09:52:22.328Z"
+    },
+    {
+      "id": 14,
+      "name": "Sumet TTFL",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-27T13:00:14.638Z"
+    },
+    {
+      "id": 15,
+      "name": "The plus 409",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-27T13:00:45.862Z"
+    },
+    {
+      "id": 1,
+      "name": "P' Kae",
+      "contact": "",
+      "address": "252 ซอย 14  the plus",
+      "createdAt": "2025-12-19T09:06:03.657Z"
+    },
+    {
+      "id": 16,
+      "name": "The plus 200",
+      "contact": "",
+      "address": "210/200 ซอย 17",
+      "createdAt": "2026-01-31T10:14:42.687Z"
+    },
+    {
+      "id": 17,
+      "name": "The plus 397",
+      "contact": "",
+      "address": "",
+      "createdAt": "2026-01-31T11:02:35.218Z"
+    },
+    {
+      "id": 18,
+      "name": "The plus 332 ",
+      "contact": "ส้มตำ ร้านนวด",
+      "address": "",
+      "createdAt": "2026-02-01T15:11:38.162Z"
     }
   ],
   "PlantingLot": [
+    {
+      "id": 23,
+      "lotCode": "S2026-01-06",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.28,
+      "trayCount": 2,
+      "plantingDate": "2026-01-20T00:00:00.000Z",
+      "expectedHarvestDate": "2026-01-27T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "หมดถุง",
+      "status": "COMPLETED",
+      "createdAt": "2026-01-21T09:51:34.443Z"
+    },
     {
       "id": 1,
       "lotCode": "S2025-12-01",
@@ -173,6 +306,19 @@
       "createdAt": "2025-12-19T08:52:32.078Z"
     },
     {
+      "id": 26,
+      "lotCode": "S2026-01-09",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.52,
+      "trayCount": 4,
+      "plantingDate": "2026-01-27T00:00:00.000Z",
+      "expectedHarvestDate": "2026-02-03T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "แช่เมล็ด 6.00 น\r\nเริ่มอบ 18.00 น",
+      "status": "PLANTED",
+      "createdAt": "2026-01-27T14:25:07.855Z"
+    },
+    {
       "id": 5,
       "lotCode": "S2025-12-05",
       "cropType": "Sun Flower Sprout",
@@ -184,6 +330,19 @@
       "notes": "",
       "status": "COMPLETED",
       "createdAt": "2025-12-19T08:56:39.405Z"
+    },
+    {
+      "id": 24,
+      "lotCode": "S2026-01-07",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0,
+      "trayCount": 2,
+      "plantingDate": "2026-01-21T00:00:00.000Z",
+      "expectedHarvestDate": "2026-01-28T00:00:00.000Z",
+      "mediumUsed": "",
+      "notes": "มี 1 ถาดที่แช่อย่างเดียวไม่ได้อบ \r\nเพื่อเทียบการเจริญเติบโต\r\n",
+      "status": "COMPLETED",
+      "createdAt": "2026-01-23T01:22:32.868Z"
     },
     {
       "id": 6,
@@ -316,6 +475,19 @@
       "createdAt": "2026-01-09T02:06:53.879Z"
     },
     {
+      "id": 27,
+      "lotCode": "S2026-01-10",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.36,
+      "trayCount": 3,
+      "plantingDate": "2026-01-29T00:00:00.000Z",
+      "expectedHarvestDate": "2026-02-06T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "แช่น้ำ 21.00 29/01/2026",
+      "status": "PLANTED",
+      "createdAt": "2026-01-29T17:04:56.867Z"
+    },
+    {
       "id": 18,
       "lotCode": "S2026-01-02",
       "cropType": "Sun Flower Sprout",
@@ -329,8 +501,34 @@
       "createdAt": "2026-01-09T02:07:53.089Z"
     },
     {
+      "id": 25,
+      "lotCode": "S2026-01-08",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.42,
+      "trayCount": 3,
+      "plantingDate": "2026-01-24T00:00:00.000Z",
+      "expectedHarvestDate": "2026-01-31T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "แช่น้ำ ตอนเช้า\r\nอบ บ่ายสองถึงเช้าอีกวัน",
+      "status": "COMPLETED",
+      "createdAt": "2026-01-24T18:22:33.375Z"
+    },
+    {
       "id": 19,
       "lotCode": "S2026-01-03",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0,
+      "trayCount": 3,
+      "plantingDate": "2026-01-10T00:00:00.000Z",
+      "expectedHarvestDate": "2026-01-17T00:00:00.000Z",
+      "mediumUsed": "",
+      "notes": "",
+      "status": "COMPLETED",
+      "createdAt": "2026-01-15T04:51:29.148Z"
+    },
+    {
+      "id": 21,
+      "lotCode": "S2026-01-04",
       "cropType": "Sun Flower Sprout",
       "seedUsed": 0.36,
       "trayCount": 3,
@@ -338,8 +536,8 @@
       "expectedHarvestDate": "2026-01-21T00:00:00.000Z",
       "mediumUsed": null,
       "notes": "",
-      "status": "PLANTED",
-      "createdAt": "2026-01-15T04:51:29.148Z"
+      "status": "COMPLETED",
+      "createdAt": "2026-01-15T08:39:59.829Z"
     },
     {
       "id": 20,
@@ -351,8 +549,47 @@
       "expectedHarvestDate": "2026-01-21T00:00:00.000Z",
       "mediumUsed": null,
       "notes": "",
-      "status": "PLANTED",
+      "status": "COMPLETED",
       "createdAt": "2026-01-15T07:54:33.679Z"
+    },
+    {
+      "id": 22,
+      "lotCode": "S2026-01-05",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.25,
+      "trayCount": 2,
+      "plantingDate": "2026-01-17T00:00:00.000Z",
+      "expectedHarvestDate": "2026-01-24T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "",
+      "status": "COMPLETED",
+      "createdAt": "2026-01-17T08:40:33.965Z"
+    },
+    {
+      "id": 30,
+      "lotCode": "S2026-02-01",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0.42,
+      "trayCount": 3,
+      "plantingDate": "2026-02-01T00:00:00.000Z",
+      "expectedHarvestDate": "2026-02-09T00:00:00.000Z",
+      "mediumUsed": null,
+      "notes": "แช่เมล็ด 09.00น\r\nอบ 15.00 น\r\nทับถาด 06.00 น. 02/02/2026",
+      "status": "PLANTED",
+      "createdAt": "2026-02-01T15:05:43.989Z"
+    },
+    {
+      "id": 29,
+      "lotCode": "S2026-02-02",
+      "cropType": "Sun Flower Sprout",
+      "seedUsed": 0,
+      "trayCount": 3,
+      "plantingDate": "2026-02-01T00:00:00.000Z",
+      "expectedHarvestDate": "2026-02-10T00:00:00.000Z",
+      "mediumUsed": "",
+      "notes": "แช่เมล็ด 20.00น 1/2/2026\r\nอบ 06.00น 2/2/2026\r\nทับถาด 20.00 น 2/2/2026",
+      "status": "PLANTED",
+      "createdAt": "2026-02-01T15:03:04.939Z"
     }
   ],
   "ActivityLog": [
@@ -754,14 +991,525 @@
       "action": "Start Planting",
       "detail": "Started Lot M2026-01-01 (morning glory sprout) - Note: Stock deduction manual",
       "createdAt": "2026-01-15T07:54:34.093Z"
+    },
+    {
+      "id": 58,
+      "userId": "admin@example.com",
+      "action": "Update Lot",
+      "detail": "Updated Lot S2026-01-03 (ID: 19)",
+      "createdAt": "2026-01-15T08:39:00.300Z"
+    },
+    {
+      "id": 59,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-04 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-15T08:40:00.232Z"
+    },
+    {
+      "id": 60,
+      "userId": "admin@example.com",
+      "action": "Create User",
+      "detail": "Created user amm@mc.com (ADMIN)",
+      "createdAt": "2026-01-15T09:02:43.348Z"
+    },
+    {
+      "id": 61,
+      "userId": "amm@mc.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 1 of Material ID 10 for 800",
+      "createdAt": "2026-01-15T09:07:59.152Z"
+    },
+    {
+      "id": 62,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-05 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-17T08:40:34.562Z"
+    },
+    {
+      "id": 63,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer P'On-In",
+      "createdAt": "2026-01-17T08:42:20.030Z"
+    },
+    {
+      "id": 64,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-17T08:42:56.907Z"
+    },
+    {
+      "id": 65,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-17T08:43:15.152Z"
+    },
+    {
+      "id": 66,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer Emily ",
+      "createdAt": "2026-01-17T08:43:53.333Z"
+    },
+    {
+      "id": 67,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-17T08:44:16.577Z"
+    },
+    {
+      "id": 68,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 1g of Sun Flower Sprout for 140",
+      "createdAt": "2026-01-17T08:45:27.099Z"
+    },
+    {
+      "id": 69,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer The plus 100",
+      "createdAt": "2026-01-17T08:46:37.166Z"
+    },
+    {
+      "id": 70,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.75g of Sun Flower Sprout for 100",
+      "createdAt": "2026-01-17T08:47:09.233Z"
+    },
+    {
+      "id": 71,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Soil: -4 bag (Planting)",
+      "createdAt": "2026-01-17T08:58:43.070Z"
+    },
+    {
+      "id": 72,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 15 of Material ID 2 for 200",
+      "createdAt": "2026-01-17T08:59:08.377Z"
+    },
+    {
+      "id": 73,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Sun Flower Seed: -4 kg (Planting)",
+      "createdAt": "2026-01-17T08:59:42.320Z"
+    },
+    {
+      "id": 74,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 5 of Material ID 11 for 116.5",
+      "createdAt": "2026-01-17T11:48:55.842Z"
+    },
+    {
+      "id": 75,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 1 of Material ID 12 for 35",
+      "createdAt": "2026-01-17T11:49:35.314Z"
+    },
+    {
+      "id": 76,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 2 of Material ID 1 for 198",
+      "createdAt": "2026-01-17T11:50:21.185Z"
+    },
+    {
+      "id": 77,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 19: 3g (3 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-17T11:53:27.550Z"
+    },
+    {
+      "id": 78,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-17T11:55:22.758Z"
+    },
+    {
+      "id": 79,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 3.5g of Sun Flower Sprout for 0",
+      "createdAt": "2026-01-17T12:39:15.842Z"
+    },
+    {
+      "id": 80,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 1.75g of Sun Flower Sprout for 0",
+      "createdAt": "2026-01-17T12:42:03.982Z"
+    },
+    {
+      "id": 81,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted tray 50x35x8 cm(no hole): -5 pcs (check out)",
+      "createdAt": "2026-01-17T12:43:47.835Z"
+    },
+    {
+      "id": 82,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Shelf: -1 pcs (check out)",
+      "createdAt": "2026-01-17T12:45:37.576Z"
+    },
+    {
+      "id": 83,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer P' Rat TTFL",
+      "createdAt": "2026-01-19T03:36:28.636Z"
+    },
+    {
+      "id": 84,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.75g of Sun Flower Sprout for 100",
+      "createdAt": "2026-01-19T03:37:00.465Z"
+    },
+    {
+      "id": 85,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted bag 10 x15 ปูฟ้า: -1 bag (check out)",
+      "createdAt": "2026-01-19T14:43:40.649Z"
+    },
+    {
+      "id": 86,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 21: 2.25g (3 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-21T09:50:11.910Z"
+    },
+    {
+      "id": 87,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-06 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-21T09:51:35.645Z"
+    },
+    {
+      "id": 88,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer Wednesday Market",
+      "createdAt": "2026-01-21T09:52:23.450Z"
+    },
+    {
+      "id": 89,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 3g of Sun Flower Sprout for 480",
+      "createdAt": "2026-01-21T14:22:52.875Z"
+    },
+    {
+      "id": 90,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Sun Flower Sprout: -1 kg (กินเอง 0.5 ให้ส้มโอ 0.5)",
+      "createdAt": "2026-01-21T14:34:32.420Z"
+    },
+    {
+      "id": 91,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted morning glory Seed: -1 kg (check out)",
+      "createdAt": "2026-01-22T09:19:44.549Z"
+    },
+    {
+      "id": 92,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-07 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-23T01:22:34.025Z"
+    },
+    {
+      "id": 93,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 20: 0.4g (1 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-23T01:24:05.477Z"
+    },
+    {
+      "id": 94,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.4g of morning glory Sprout for 40",
+      "createdAt": "2026-01-23T06:08:18.324Z"
+    },
+    {
+      "id": 95,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 22: 1.5g (2 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-24T12:18:43.206Z"
+    },
+    {
+      "id": 96,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.5g of Sun Flower Sprout for 80",
+      "createdAt": "2026-01-24T12:19:47.736Z"
+    },
+    {
+      "id": 97,
+      "userId": "admin@example.com",
+      "action": "Update Lot",
+      "detail": "Updated Lot S2026-01-07 (ID: 24)",
+      "createdAt": "2026-01-24T17:19:15.028Z"
+    },
+    {
+      "id": 98,
+      "userId": "admin@example.com",
+      "action": "Update Lot",
+      "detail": "Updated Lot S2026-01-07 (ID: 24)",
+      "createdAt": "2026-01-24T17:21:21.684Z"
+    },
+    {
+      "id": 99,
+      "userId": "admin@example.com",
+      "action": "Update Lot",
+      "detail": "Updated Lot S2026-01-07 (ID: 24)",
+      "createdAt": "2026-01-24T17:23:32.869Z"
+    },
+    {
+      "id": 100,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-08 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-24T18:22:34.678Z"
+    },
+    {
+      "id": 101,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.75g of Sun Flower Sprout for 100",
+      "createdAt": "2026-01-24T18:42:53.314Z"
+    },
+    {
+      "id": 102,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 0",
+      "createdAt": "2026-01-24T18:43:23.900Z"
+    },
+    {
+      "id": 103,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 23: 0.75g (1 trays) - Status: HARVESTING",
+      "createdAt": "2026-01-27T12:56:22.804Z"
+    },
+    {
+      "id": 104,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 23: 0.75g (1 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-27T12:57:11.248Z"
+    },
+    {
+      "id": 105,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.4g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-27T12:59:14.395Z"
+    },
+    {
+      "id": 106,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-27T12:59:47.163Z"
+    },
+    {
+      "id": 107,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer Sumet TTFL",
+      "createdAt": "2026-01-27T13:00:16.728Z"
+    },
+    {
+      "id": 108,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer The plus 409",
+      "createdAt": "2026-01-27T13:00:46.991Z"
+    },
+    {
+      "id": 109,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-27T13:01:59.230Z"
+    },
+    {
+      "id": 110,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.75g of Sun Flower Sprout for 100",
+      "createdAt": "2026-01-27T14:13:51.955Z"
+    },
+    {
+      "id": 111,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-09 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-27T14:25:09.090Z"
+    },
+    {
+      "id": 112,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Sun Flower Seed: -3 kg (Planting)",
+      "createdAt": "2026-01-27T14:46:34.713Z"
+    },
+    {
+      "id": 113,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 24: 0.75g (2 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-29T16:06:36.802Z"
+    },
+    {
+      "id": 114,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.75g of Sun Flower Sprout for 160",
+      "createdAt": "2026-01-29T16:08:14.924Z"
+    },
+    {
+      "id": 115,
+      "userId": "admin@example.com",
+      "action": "Create Purchase",
+      "detail": "Purchased 3 of Material ID 1 for 3.7",
+      "createdAt": "2026-01-29T16:14:51.462Z"
+    },
+    {
+      "id": 116,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-01-10 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-01-29T17:04:58.064Z"
+    },
+    {
+      "id": 117,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer The plus 200",
+      "createdAt": "2026-01-31T10:14:43.852Z"
+    },
+    {
+      "id": 118,
+      "userId": "admin@example.com",
+      "action": "Harvest",
+      "detail": "Harvested Lot ID 25: 2.25g (3 trays) - Status: COMPLETED",
+      "createdAt": "2026-01-31T10:20:50.583Z"
+    },
+    {
+      "id": 119,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-31T10:21:28.117Z"
+    },
+    {
+      "id": 120,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-31T10:21:55.332Z"
+    },
+    {
+      "id": 121,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer The plus 397",
+      "createdAt": "2026-01-31T11:02:36.260Z"
+    },
+    {
+      "id": 122,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-01-31T11:03:23.900Z"
+    },
+    {
+      "id": 123,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Soil: -5 bag (Planting)",
+      "createdAt": "2026-01-31T11:05:55.124Z"
+    },
+    {
+      "id": 124,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-02-01 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-02-01T15:01:27.375Z"
+    },
+    {
+      "id": 125,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-02-02 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-02-01T15:03:06.283Z"
+    },
+    {
+      "id": 126,
+      "userId": "admin@example.com",
+      "action": "Start Planting",
+      "detail": "Started Lot S2026-02-01 (Sun Flower Sprout) - Note: Stock deduction manual",
+      "createdAt": "2026-02-01T15:05:45.118Z"
+    },
+    {
+      "id": 127,
+      "userId": "admin@example.com",
+      "action": "Create Customer",
+      "detail": "Added customer The plus 332 ",
+      "createdAt": "2026-02-01T15:11:39.287Z"
+    },
+    {
+      "id": 128,
+      "userId": "admin@example.com",
+      "action": "New Sale",
+      "detail": "Sold 0.25g of Sun Flower Sprout for 40",
+      "createdAt": "2026-02-01T15:12:32.498Z"
+    },
+    {
+      "id": 129,
+      "userId": "admin@example.com",
+      "action": "Update Lot",
+      "detail": "Updated Lot S2026-02-02 (ID: 29)",
+      "createdAt": "2026-02-03T06:07:17.432Z"
+    },
+    {
+      "id": 130,
+      "userId": "admin@example.com",
+      "action": "Manual Deduct",
+      "detail": "Adjusted Sun Flower Sprout: -0.5 kg (Cooking)",
+      "createdAt": "2026-02-03T06:13:13.195Z"
     }
   ],
   "Stock": [
     {
-      "id": 1,
-      "materialId": 1,
-      "quantity": 5,
-      "updatedAt": "2025-12-19T08:41:13.101Z"
+      "id": 8,
+      "materialId": 8,
+      "quantity": 0,
+      "updatedAt": "2026-01-22T09:19:42.266Z"
     },
     {
       "id": 3,
@@ -770,34 +1518,52 @@
       "updatedAt": "2025-12-19T08:42:58.783Z"
     },
     {
+      "id": 9,
+      "materialId": 9,
+      "quantity": 0,
+      "updatedAt": "2026-01-23T06:08:16.884Z"
+    },
+    {
       "id": 5,
       "materialId": 5,
       "quantity": 0,
       "updatedAt": "2025-12-20T15:03:41.206Z"
     },
     {
+      "id": 1,
+      "materialId": 1,
+      "quantity": 3,
+      "updatedAt": "2026-01-29T16:15:23.472Z"
+    },
+    {
       "id": 2,
       "materialId": 2,
-      "quantity": 4,
-      "updatedAt": "2026-01-09T03:24:07.210Z"
+      "quantity": 10,
+      "updatedAt": "2026-01-31T11:05:52.718Z"
     },
     {
       "id": 4,
       "materialId": 4,
-      "quantity": 9.649999999999999,
-      "updatedAt": "2026-01-15T04:50:21.229Z"
+      "quantity": 0.75,
+      "updatedAt": "2026-02-03T06:13:10.815Z"
     },
     {
-      "id": 8,
-      "materialId": 8,
-      "quantity": 1,
-      "updatedAt": "2026-01-15T04:53:34.992Z"
-    },
-    {
-      "id": 9,
-      "materialId": 9,
+      "id": 11,
+      "materialId": 11,
       "quantity": 0,
-      "updatedAt": "2026-01-15T04:54:01.152Z"
+      "updatedAt": "2026-01-17T12:43:45.433Z"
+    },
+    {
+      "id": 10,
+      "materialId": 10,
+      "quantity": 0,
+      "updatedAt": "2026-01-17T12:45:35.200Z"
+    },
+    {
+      "id": 12,
+      "materialId": 12,
+      "quantity": 0,
+      "updatedAt": "2026-01-19T14:43:38.374Z"
     }
   ],
   "Purchase": [
@@ -832,6 +1598,54 @@
       "cost": 170,
       "date": "2025-12-15T00:00:00.000Z",
       "createdAt": "2026-01-15T04:53:34.992Z"
+    },
+    {
+      "id": 7,
+      "materialId": 10,
+      "quantity": 1,
+      "cost": 800,
+      "date": "2026-01-11T00:00:00.000Z",
+      "createdAt": "2026-01-15T09:07:57.738Z"
+    },
+    {
+      "id": 8,
+      "materialId": 2,
+      "quantity": 15,
+      "cost": 200,
+      "date": "2026-01-17T00:00:00.000Z",
+      "createdAt": "2026-01-17T08:59:07.058Z"
+    },
+    {
+      "id": 9,
+      "materialId": 11,
+      "quantity": 5,
+      "cost": 116.5,
+      "date": "2026-01-06T00:00:00.000Z",
+      "createdAt": "2026-01-17T11:48:54.341Z"
+    },
+    {
+      "id": 10,
+      "materialId": 12,
+      "quantity": 1,
+      "cost": 35,
+      "date": "2026-01-17T00:00:00.000Z",
+      "createdAt": "2026-01-17T11:49:33.723Z"
+    },
+    {
+      "id": 11,
+      "materialId": 1,
+      "quantity": 2,
+      "cost": 198,
+      "date": "2026-01-17T00:00:00.000Z",
+      "createdAt": "2026-01-17T11:50:19.604Z"
+    },
+    {
+      "id": 12,
+      "materialId": 1,
+      "quantity": 3,
+      "cost": 307,
+      "date": "2026-01-29T00:00:00.000Z",
+      "createdAt": "2026-01-29T16:14:48.666Z"
     }
   ],
   "StockAdjustment": [
@@ -848,19 +1662,79 @@
       "quantity": -7,
       "reason": "Planting",
       "date": "2026-01-09T03:24:07.210Z"
+    },
+    {
+      "id": 3,
+      "materialId": 2,
+      "quantity": -4,
+      "reason": "Planting",
+      "date": "2026-01-17T08:58:40.788Z"
+    },
+    {
+      "id": 4,
+      "materialId": 1,
+      "quantity": -4,
+      "reason": "Planting",
+      "date": "2026-01-17T08:59:40.087Z"
+    },
+    {
+      "id": 5,
+      "materialId": 11,
+      "quantity": -5,
+      "reason": "check out",
+      "date": "2026-01-17T12:43:45.433Z"
+    },
+    {
+      "id": 6,
+      "materialId": 10,
+      "quantity": -1,
+      "reason": "check out",
+      "date": "2026-01-17T12:45:35.200Z"
+    },
+    {
+      "id": 7,
+      "materialId": 12,
+      "quantity": -1,
+      "reason": "check out",
+      "date": "2026-01-19T14:43:38.374Z"
+    },
+    {
+      "id": 8,
+      "materialId": 4,
+      "quantity": -1,
+      "reason": "กินเอง 0.5 ให้ส้มโอ 0.5",
+      "date": "2026-01-21T14:34:30.033Z"
+    },
+    {
+      "id": 9,
+      "materialId": 8,
+      "quantity": -1,
+      "reason": "check out",
+      "date": "2026-01-22T09:19:42.266Z"
+    },
+    {
+      "id": 10,
+      "materialId": 1,
+      "quantity": -3,
+      "reason": "Planting",
+      "date": "2026-01-27T14:46:32.285Z"
+    },
+    {
+      "id": 11,
+      "materialId": 2,
+      "quantity": -5,
+      "reason": "Planting",
+      "date": "2026-01-31T11:05:52.718Z"
+    },
+    {
+      "id": 12,
+      "materialId": 4,
+      "quantity": -0.5,
+      "reason": "Cooking",
+      "date": "2026-02-03T06:13:10.815Z"
     }
   ],
   "Harvest": [
-    {
-      "id": 1,
-      "lotId": 1,
-      "weight": 3.6,
-      "trayCount": 2,
-      "bagCount": 9,
-      "harvestDate": "2025-12-10T00:00:00.000Z",
-      "createdAt": "2025-12-19T09:01:04.239Z",
-      "materialId": 4
-    },
     {
       "id": 2,
       "lotId": 2,
@@ -1030,6 +1904,96 @@
       "harvestDate": "2026-01-15T00:00:00.000Z",
       "createdAt": "2026-01-15T04:50:21.229Z",
       "materialId": 4
+    },
+    {
+      "id": 19,
+      "lotId": 19,
+      "weight": 3,
+      "trayCount": 3,
+      "bagCount": 12,
+      "harvestDate": "2026-01-17T00:00:00.000Z",
+      "createdAt": "2026-01-17T11:53:25.821Z",
+      "materialId": 4
+    },
+    {
+      "id": 1,
+      "lotId": 1,
+      "weight": 2.2,
+      "trayCount": 2,
+      "bagCount": 9,
+      "harvestDate": "2025-12-10T00:00:00.000Z",
+      "createdAt": "2025-12-19T09:01:04.239Z",
+      "materialId": 4
+    },
+    {
+      "id": 20,
+      "lotId": 21,
+      "weight": 2.25,
+      "trayCount": 3,
+      "bagCount": 9,
+      "harvestDate": "2026-01-20T00:00:00.000Z",
+      "createdAt": "2026-01-21T09:50:10.171Z",
+      "materialId": 4
+    },
+    {
+      "id": 21,
+      "lotId": 20,
+      "weight": 0.4,
+      "trayCount": 1,
+      "bagCount": 2,
+      "harvestDate": "2026-01-22T00:00:00.000Z",
+      "createdAt": "2026-01-23T01:24:03.742Z",
+      "materialId": 9
+    },
+    {
+      "id": 22,
+      "lotId": 22,
+      "weight": 1.5,
+      "trayCount": 2,
+      "bagCount": 6,
+      "harvestDate": "2026-01-24T00:00:00.000Z",
+      "createdAt": "2026-01-24T12:18:41.500Z",
+      "materialId": 4
+    },
+    {
+      "id": 23,
+      "lotId": 23,
+      "weight": 0.75,
+      "trayCount": 1,
+      "bagCount": 3,
+      "harvestDate": "2026-01-26T00:00:00.000Z",
+      "createdAt": "2026-01-27T12:56:21.096Z",
+      "materialId": 4
+    },
+    {
+      "id": 24,
+      "lotId": 23,
+      "weight": 0.75,
+      "trayCount": 1,
+      "bagCount": 3,
+      "harvestDate": "2026-01-27T00:00:00.000Z",
+      "createdAt": "2026-01-27T12:57:09.551Z",
+      "materialId": 4
+    },
+    {
+      "id": 25,
+      "lotId": 24,
+      "weight": 0.75,
+      "trayCount": 2,
+      "bagCount": 3,
+      "harvestDate": "2026-01-27T00:00:00.000Z",
+      "createdAt": "2026-01-29T16:06:34.949Z",
+      "materialId": 4
+    },
+    {
+      "id": 26,
+      "lotId": 25,
+      "weight": 2.25,
+      "trayCount": 3,
+      "bagCount": 9,
+      "harvestDate": "2026-01-31T00:00:00.000Z",
+      "createdAt": "2026-01-31T10:20:48.769Z",
+      "materialId": 4
     }
   ],
   "Sale": [
@@ -1054,14 +2018,244 @@
       "createdAt": "2026-01-09T04:03:32.084Z"
     },
     {
+      "id": 4,
+      "customerId": 9,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-10T00:00:00.000Z",
+      "createdAt": "2026-01-17T08:42:55.749Z"
+    },
+    {
+      "id": 5,
+      "customerId": 9,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-17T00:00:00.000Z",
+      "createdAt": "2026-01-17T08:43:14.004Z"
+    },
+    {
+      "id": 6,
+      "customerId": 10,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-17T00:00:00.000Z",
+      "createdAt": "2026-01-17T08:44:15.457Z"
+    },
+    {
+      "id": 7,
+      "customerId": 4,
+      "productName": "Sun Flower Sprout",
+      "weight": 1,
+      "bagCount": null,
+      "price": 140,
+      "saleDate": "2026-01-14T00:00:00.000Z",
+      "createdAt": "2026-01-17T08:45:25.973Z"
+    },
+    {
+      "id": 8,
+      "customerId": 11,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.75,
+      "bagCount": null,
+      "price": 100,
+      "saleDate": "2026-01-15T00:00:00.000Z",
+      "createdAt": "2026-01-17T08:47:08.481Z"
+    },
+    {
+      "id": 9,
+      "customerId": 4,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-11T00:00:00.000Z",
+      "createdAt": "2026-01-17T11:55:21.436Z"
+    },
+    {
+      "id": 10,
+      "customerId": 4,
+      "productName": "Sun Flower Sprout",
+      "weight": 3.5,
+      "bagCount": null,
+      "price": 0,
+      "saleDate": "2026-01-02T00:00:00.000Z",
+      "createdAt": "2026-01-17T12:39:14.493Z"
+    },
+    {
+      "id": 11,
+      "customerId": 4,
+      "productName": "Sun Flower Sprout",
+      "weight": 1.75,
+      "bagCount": null,
+      "price": 0,
+      "saleDate": "2026-01-13T00:00:00.000Z",
+      "createdAt": "2026-01-17T12:42:02.566Z"
+    },
+    {
+      "id": 12,
+      "customerId": 12,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.75,
+      "bagCount": null,
+      "price": 100,
+      "saleDate": "2026-01-19T00:00:00.000Z",
+      "createdAt": "2026-01-19T03:36:59.057Z"
+    },
+    {
+      "id": 13,
+      "customerId": 13,
+      "productName": "Sun Flower Sprout",
+      "weight": 3,
+      "bagCount": null,
+      "price": 480,
+      "saleDate": "2026-01-21T00:00:00.000Z",
+      "createdAt": "2026-01-21T14:22:51.452Z"
+    },
+    {
       "id": 1,
       "customerId": 4,
       "productName": "Sun Flower Sprout",
-      "weight": 20,
+      "weight": 20.75,
       "bagCount": null,
-      "price": 1765,
+      "price": 2535,
       "saleDate": "2025-12-31T00:00:00.000Z",
       "createdAt": "2026-01-09T03:26:45.074Z"
+    },
+    {
+      "id": 14,
+      "customerId": 1,
+      "productName": "morning glory Sprout",
+      "weight": 0.4,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-22T00:00:00.000Z",
+      "createdAt": "2026-01-23T06:08:16.884Z"
+    },
+    {
+      "id": 15,
+      "customerId": 7,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.5,
+      "bagCount": null,
+      "price": 80,
+      "saleDate": "2026-01-24T00:00:00.000Z",
+      "createdAt": "2026-01-24T12:19:46.290Z"
+    },
+    {
+      "id": 16,
+      "customerId": 12,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.75,
+      "bagCount": null,
+      "price": 100,
+      "saleDate": "2026-01-26T00:00:00.000Z",
+      "createdAt": "2026-01-24T18:42:51.978Z"
+    },
+    {
+      "id": 17,
+      "customerId": 11,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 0,
+      "saleDate": "2026-01-24T00:00:00.000Z",
+      "createdAt": "2026-01-24T18:43:22.270Z"
+    },
+    {
+      "id": 19,
+      "customerId": 10,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-27T00:00:00.000Z",
+      "createdAt": "2026-01-27T12:59:45.839Z"
+    },
+    {
+      "id": 20,
+      "customerId": 15,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-27T00:00:00.000Z",
+      "createdAt": "2026-01-27T13:01:57.900Z"
+    },
+    {
+      "id": 18,
+      "customerId": 2,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-27T00:00:00.000Z",
+      "createdAt": "2026-01-27T12:59:12.976Z"
+    },
+    {
+      "id": 21,
+      "customerId": 14,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.75,
+      "bagCount": null,
+      "price": 100,
+      "saleDate": "2026-01-26T00:00:00.000Z",
+      "createdAt": "2026-01-27T14:13:50.543Z"
+    },
+    {
+      "id": 22,
+      "customerId": 13,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.75,
+      "bagCount": null,
+      "price": 160,
+      "saleDate": "2026-01-28T00:00:00.000Z",
+      "createdAt": "2026-01-29T16:08:13.536Z"
+    },
+    {
+      "id": 23,
+      "customerId": 1,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-31T00:00:00.000Z",
+      "createdAt": "2026-01-31T10:21:26.697Z"
+    },
+    {
+      "id": 24,
+      "customerId": 16,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-31T00:00:00.000Z",
+      "createdAt": "2026-01-31T10:21:53.888Z"
+    },
+    {
+      "id": 25,
+      "customerId": 17,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-01-31T00:00:00.000Z",
+      "createdAt": "2026-01-31T11:03:22.474Z"
+    },
+    {
+      "id": 26,
+      "customerId": 18,
+      "productName": "Sun Flower Sprout",
+      "weight": 0.25,
+      "bagCount": null,
+      "price": 40,
+      "saleDate": "2026-02-01T00:00:00.000Z",
+      "createdAt": "2026-02-01T15:12:31.130Z"
     }
   ]
 }

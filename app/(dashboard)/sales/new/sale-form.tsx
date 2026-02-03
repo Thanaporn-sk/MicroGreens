@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useActionState } from 'react';
 import { createSale, State } from '@/app/lib/actions';
 import { SubmitButton } from '@/app/ui/submit-button';
+import { formatNumber } from '@/app/lib/formatters';
 import type { Customer, Material } from '@prisma/client';
 
 type MaterialWithStock = Material & { stock: { quantity: number } | null };
@@ -46,7 +47,7 @@ export default function SaleForm({ customers, materials }: { customers: Customer
                     <option value="">Select Product from Stock</option>
                     {materials.map((m) => (
                         <option key={m.id} value={m.id}>
-                            {m.name} (Available: {m.stock?.quantity ?? 0} {m.unit})
+                            {m.name} (Available: {formatNumber(m.stock?.quantity ?? 0)} {m.unit})
                         </option>
                     ))}
                 </select>
