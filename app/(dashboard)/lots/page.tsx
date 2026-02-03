@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { Plus, Eye } from 'lucide-react';
 import DeleteButton from '@/app/ui/delete-button';
 import { deletePlantingLot } from '@/app/lib/actions';
-import { formatDate } from '@/app/lib/formatters';
+import { formatDate, formatNumber } from '@/app/lib/formatters';
 import { Prisma } from '@prisma/client';
 
 import Search from '@/app/ui/search';
@@ -36,12 +36,14 @@ export default async function LotsPage(props: {
     if (query) {
         where.lotCode = { contains: query };
     }
-    if (statusParam && statusParam !== 'ACTIVE') {
-        // Regular status filter
-        where.status = statusParam;
+    if (statusParam === 'ALL') {
+        // Show all records (no status filter)
     } else if (statusParam === 'ACTIVE') {
         // Active means PLANTED or HARVESTING
         where.status = { in: ['PLANTED', 'HARVESTING'] };
+    } else if (statusParam) {
+        // Regular status filter
+        where.status = statusParam;
     }
     if (cropParam) {
         where.cropType = cropParam;
@@ -136,7 +138,7 @@ export default async function LotsPage(props: {
                                             </div>
                                             <div>
                                                 <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Harv. Qty</p>
-                                                <p className="font-bold text-base text-gray-900 dark:text-gray-100">{lot.totalWeight} kg</p>
+                                                <p className="font-bold text-base text-gray-900 dark:text-gray-100">{formatNumber(lot.totalWeight)} kg</p>
                                             </div>
                                             <div>
                                                 <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Yield</p>

@@ -1,14 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import DateFilter from './date-filter';
 import { format } from 'date-fns';
+import { formatCurrency, formatNumber } from '@/app/lib/formatters';
 
-// Helper for formatting currency if utils doesn't exist
-const formatMoney = (amount: number) => {
-    return new Intl.NumberFormat('th-TH', {
-        style: 'currency',
-        currency: 'THB',
-    }).format(amount);
-};
+
 
 export default async function ReportsPage({
     searchParams,
@@ -276,8 +271,8 @@ export default async function ReportsPage({
                                     productSummary.map((item) => (
                                         <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                             <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{item.weight.toFixed(1)}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatMoney(item.amount)}</td>
+                                            <td className="px-4 py-2 text-right dark:text-gray-300">{formatNumber(item.weight)}</td>
+                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))
                                 )}
@@ -306,7 +301,7 @@ export default async function ReportsPage({
                                     expenseSummary.map((item) => (
                                         <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                             <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatMoney(item.amount)}</td>
+                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))
                                 )}
@@ -340,8 +335,8 @@ export default async function ReportsPage({
                                     yieldSummary.map((item) => (
                                         <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                             <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{item.seedUsed}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{item.harvestWeight}</td>
+                                            <td className="px-4 py-2 text-right dark:text-gray-300">{formatNumber(item.seedUsed)}</td>
+                                            <td className="px-4 py-2 text-right dark:text-gray-300">{formatNumber(item.harvestWeight)}</td>
                                             <td className="px-4 py-2 text-right font-bold text-blue-600 dark:text-blue-400">
                                                 1 : {item.ratio.toFixed(1)}
                                             </td>
@@ -375,7 +370,7 @@ export default async function ReportsPage({
                                         <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                             <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
                                             <td className="px-4 py-2 text-right dark:text-gray-300">{item.count}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatMoney(item.amount)}</td>
+                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))
                                 )}
@@ -407,9 +402,9 @@ export default async function ReportsPage({
                                 inventoryValuation.map((item) => (
                                     <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                        <td className="px-4 py-2 text-right dark:text-gray-200">{item.quantity.toFixed(1)} {item.unit}</td>
-                                        <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400">{formatMoney(item.unitCost)}</td>
-                                        <td className="px-4 py-2 text-right font-medium dark:text-gray-200">{formatMoney(item.value)}</td>
+                                        <td className="px-4 py-2 text-right dark:text-gray-200">{formatNumber(item.quantity)} {item.unit}</td>
+                                        <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400">{formatCurrency(item.unitCost)}</td>
+                                        <td className="px-4 py-2 text-right font-medium dark:text-gray-200">{formatCurrency(item.value)}</td>
                                     </tr>
                                 ))
                             )}
@@ -433,7 +428,7 @@ function SummaryCard({ title, value, type }: { title: string, value: number, typ
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{title}</h3>
             <p className={`text-2xl font-bold ${colorClass}`}>
-                {formatMoney(value)}
+                {formatCurrency(value)}
             </p>
         </div>
     );

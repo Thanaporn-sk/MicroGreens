@@ -2,10 +2,12 @@
 const { Client } = require('pg');
 
 const sourceConfig = {
-    connectionString: "postgresql://postgres.xgwokqgdwmdwuukgawvd:mTrBBRnPSRaDagLW@aws-1-ap-south-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+    connectionString: "postgresql://postgres.xgwokqgdwmdwuukgawvd:mTrBBRnPSRaDagLW@aws-1-ap-south-1.pooler.supabase.com:5432/postgres?pgbouncer=true",
+    ssl: { rejectUnauthorized: false }
 };
 const targetConfig = {
-    connectionString: "postgresql://postgres.pbnvpdvjtdufjihyeczu:4Bxzu7THj3L1G54h@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
+    connectionString: "postgresql://postgres.pbnvpdvjtdufjihyeczu:4Bxzu7THj3L1G54h@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?pgbouncer=true",
+    ssl: { rejectUnauthorized: false }
 };
 
 const tables = [
@@ -83,7 +85,7 @@ async function main() {
         console.log('Sync Complete!');
 
     } catch (e) {
-        console.error('FATAL ERROR:', e);
+        console.error('FATAL ERROR:', e.message, e.stack);
     } finally {
         await source.end();
         await target.end();
