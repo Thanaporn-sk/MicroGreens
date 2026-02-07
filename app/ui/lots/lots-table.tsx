@@ -19,7 +19,7 @@ export default function LotsTable({ lots }: { lots: LotWithWeight[] }) {
 
     return (
         <div className="overflow-x-auto rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <table className="min-w-[1000px] w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
                     <tr>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300">

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { createHarvest, editHarvest } from '@/app/lib/actions';
 import { SubmitButton } from '@/app/ui/submit-button';
+import { getLocalISODate } from '@/app/lib/formatters';
 import type { Material, PlantingLot, Harvest } from '@prisma/client';
 
 type MaterialWithStock = Material & { stock: { quantity: number } | null };
@@ -96,7 +97,7 @@ export default function HarvestForm({
                         type="date"
                         name="harvestDate"
                         required
-                        defaultValue={harvest ? new Date(harvest.harvestDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
+                        defaultValue={harvest ? new Date(harvest.harvestDate).toISOString().split('T')[0] : getLocalISODate()}
                         className="border border-gray-300 dark:border-gray-600 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none dark:bg-gray-700 dark:text-gray-100"
                     />
                 </div>

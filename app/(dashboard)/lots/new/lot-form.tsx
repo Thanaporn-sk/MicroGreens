@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { createPlantingLot } from '@/app/lib/actions';
 import { SubmitButton } from '@/app/ui/submit-button';
+import { getLocalISODate } from '@/app/lib/formatters';
 import type { Material } from '@prisma/client';
 
 export default function LotForm({ materials }: { materials: Material[] }) {
@@ -73,7 +74,7 @@ export default function LotForm({ materials }: { materials: Material[] }) {
                     <input
                         type="date"
                         name="plantingDate"
-                        defaultValue={new Date().toISOString().split('T')[0]}
+                        defaultValue={getLocalISODate()}
                         required
                         className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     />

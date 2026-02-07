@@ -36,3 +36,13 @@ export function formatDateTime(date: Date | string | null | undefined) {
     const minutes = d.getMinutes().toString().padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
+
+/**
+ * Returns the current date in YYYY-MM-DD format based on the client's local timezone.
+ * Useful for setting default values in <input type="date" />
+ */
+export function getLocalISODate(date: Date = new Date()) {
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - (offset * 60000));
+    return localDate.toISOString().split('T')[0];
+}

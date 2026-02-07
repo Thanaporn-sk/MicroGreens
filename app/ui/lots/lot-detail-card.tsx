@@ -46,7 +46,7 @@ export function LotDetailCard({ lot }: { lot: LotDetails }) {
                 {lot.notes && (
                     <div className="pt-2">
                         <span className="text-gray-600 dark:text-gray-400 block mb-1 text-sm">Notes</span>
-                        <p className="text-sm bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">{lot.notes}</p>
+                        <p className="text-sm bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 whitespace-pre-wrap">{lot.notes}</p>
                     </div>
                 )}
             </div>

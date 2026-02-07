@@ -53,15 +53,17 @@ export default async function LotsPage(props: {
     const lotsRaw = await prisma.plantingLot.findMany({
         where,
         orderBy: { [sort]: order },
-        include: { harvests: { select: { weight: true } } }
+        include: { harvests: { select: { weight: true, bagCount: true } } }
     });
 
     // 3. Calculate Derived Metrics (Total Weight)
     const lots = lotsRaw.map(lot => {
-        const totalWeight = lot.harvests.reduce((sum, h) => sum + h.weight, 0);
+        const totalWeight = lot.harvests.reduce((sum, h) => sum + (h.weight || 0), 0);
+        const totalBags = lot.harvests.reduce((sum, h) => sum + (h.bagCount || 0), 0);
         return {
             ...lot,
-            totalWeight
+            totalWeight,
+            totalBags
         };
     });
 
@@ -131,7 +133,7 @@ export default async function LotsPage(props: {
                                             )}
                                         </div>
 
-                                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-3 gap-2 text-center">
+                                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-4 gap-2 text-center">
                                             <div>
                                                 <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Trays</p>
                                                 <p className="font-bold text-base text-gray-900 dark:text-gray-100">{lot.trayCount}</p>
@@ -139,6 +141,10 @@ export default async function LotsPage(props: {
                                             <div>
                                                 <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Harv. Qty</p>
                                                 <p className="font-bold text-base text-gray-900 dark:text-gray-100">{formatNumber(lot.totalWeight)} kg</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Bags</p>
+                                                <p className="font-bold text-base text-gray-900 dark:text-gray-100">{lot.totalBags}</p>
                                             </div>
                                             <div>
                                                 <p className="text-xs text-gray-700 dark:text-gray-400 font-bold uppercase">Yield</p>
