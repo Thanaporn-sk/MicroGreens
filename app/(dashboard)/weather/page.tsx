@@ -17,6 +17,7 @@ import {
 import { Line, Bar } from 'react-chartjs-2';
 import { CloudRain, Thermometer, Download } from 'lucide-react';
 import { getActiveLotsForWeather, getDailySalesData, getDailyHarvestData, getRealTimeWeather } from './actions';
+import { useMemo } from 'react';
 
 ChartJS.register(
     CategoryScale,
@@ -132,7 +133,7 @@ export default function WeatherPage() {
     console.log('WeatherPage harvestData:', harvestData.length, harvestData);
     console.log('WeatherPage salesData:', salesData.length, salesData);
 
-    const weekLinesPlugin: Plugin = {
+    const weekLinesPlugin: Plugin = useMemo(() => ({
         id: 'weekLines',
         afterDraw: (chart) => {
             if (unifiedData.length === 0) return;
@@ -177,19 +178,15 @@ export default function WeatherPage() {
             });
 
             // 3. Draw Lot Periods (Gantt Chart Style)
-            const chartHeight = bottom - top;
-            const ganttTopY = bottom - (chartHeight * 0.39);
-            const ganttBottomY = bottom - (chartHeight * 0.32);
+            const chartAreaHeight = bottom - top;
+            const ganttTopY = bottom - (chartAreaHeight * 0.39);
             const barHeight = 10;
             const barGap = 3;
-            console.log('Active Lots Drawing (Plugin):', activeLots.length, activeLots);
 
             // Clear previous bar positions
             ganttBarsRef.current = [];
 
             activeLots.forEach((lot, i) => {
-                console.log(`Drawing Lot ${i}: ${lot.lotCode}`, lot);
-
                 const plantingDate = new Date(lot.plantingDate);
                 plantingDate.setHours(0, 0, 0, 0);
                 const harvestDate = lot.expectedHarvestDate ? new Date(lot.expectedHarvestDate) : null;
@@ -200,11 +197,7 @@ export default function WeatherPage() {
                 const plantTime = plantingDate.getTime();
                 const harvestTime = harvestDate ? harvestDate.getTime() : (new Date().setHours(0, 0, 0, 0) + 5 * 86400000);
 
-                console.log(`  Plant: ${plantingDate.toISOString()}, Harvest: ${harvestDate?.toISOString()}`);
-                console.log(`  Chart range: ${new Date(firstChartDate).toISOString()} to ${new Date(lastChartDate).toISOString()}`);
-
                 if (harvestTime < firstChartDate || plantTime > lastChartDate) {
-                    console.log('  SKIP: Outside chart range');
                     return;
                 }
 
@@ -220,11 +213,7 @@ export default function WeatherPage() {
                     if (startIndex === -1) startIndex = unifiedData.findIndex(d => d.date.toISOString().split('T')[0] > plantKey);
                 }
 
-                console.log(`  startIndex: ${startIndex}`);
-                if (startIndex === -1) {
-                    console.log('  SKIP: startIndex is -1');
-                    return;
-                }
+                if (startIndex === -1) return;
 
                 // Find end index
                 let endIndex = unifiedData.length - 1;
@@ -237,11 +226,7 @@ export default function WeatherPage() {
                     endIndex = foundIndex === -1 ? unifiedData.length - 1 : Math.max(0, foundIndex - 1);
                 }
 
-                console.log(`  endIndex: ${endIndex}`);
-                if (endIndex < startIndex) {
-                    console.log('  SKIP: endIndex < startIndex');
-                    return;
-                }
+                if (endIndex < startIndex) return;
 
                 // Draw
                 if (startIndex !== -1 && endIndex !== -1) {
@@ -250,24 +235,15 @@ export default function WeatherPage() {
                     // @ts-ignore
                     const endX = x.getPixelForValue(endIndex);
 
-                    console.log(`  startX: ${startX}, endX: ${endX}, chartLeft: ${left}, chartRight: ${right}`);
-
                     if (startX <= right && endX >= left) {
                         const clampedStartX = Math.max(left, startX);
                         const clampedEndX = Math.min(right, endX);
                         const width = clampedEndX - clampedStartX;
 
-                        console.log(`  clampedX: ${clampedStartX} to ${clampedEndX}, width: ${width}`);
+                        if (width < 5) return;
 
-                        if (width < 5) {
-                            console.log('  SKIP: width < 5');
-                            return;
-                        }
-
-                        const level = i % 2; // Only 2 levels since area is smaller
+                        const level = i % 2;
                         const yPos = ganttTopY + (level * (barHeight + barGap));
-
-                        console.log(`  Drawing at Y: ${yPos}, level: ${level}, ganttTopY: ${ganttTopY}`);
 
                         // Store bar position for hit testing
                         ganttBarsRef.current.push({
@@ -280,51 +256,40 @@ export default function WeatherPage() {
 
                         // Draw Gantt Bar
                         ctx.save();
-
-                        // Shadow for pop
                         ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
                         ctx.shadowBlur = 4;
                         ctx.shadowOffsetY = 2;
 
-                        // Gradient Fill - Neon Brighter Colors
                         const gradient = ctx.createLinearGradient(clampedStartX, yPos, clampedEndX, yPos);
                         if (lot.cropType === 'Sunflower') {
-                            gradient.addColorStop(0, '#facc15'); // Yellow-400 (Brighter)
-                            gradient.addColorStop(1, '#eab308'); // Yellow-500
+                            gradient.addColorStop(0, '#facc15');
+                            gradient.addColorStop(1, '#eab308');
                         } else {
-                            gradient.addColorStop(0, '#4ade80'); // Green-400 (Brighter)
-                            gradient.addColorStop(1, '#22c55e'); // Green-500
+                            gradient.addColorStop(0, '#4ade80');
+                            gradient.addColorStop(1, '#22c55e');
                         }
 
                         ctx.fillStyle = gradient;
-                        // Fallback solid color if gradient issue (rare)
-                        // ctx.fillStyle = lot.cropType === 'Sunflower' ? '#facc15' : '#4ade80';
-
-                        // Rect
                         ctx.beginPath();
                         ctx.roundRect ? ctx.roundRect(clampedStartX, yPos, width, barHeight, 4) : ctx.rect(clampedStartX, yPos, width, barHeight);
                         ctx.fill();
 
-                        // Border for contrast against dark bg
                         ctx.strokeStyle = '#222';
                         ctx.lineWidth = 1;
                         ctx.stroke();
 
-                        // Label
                         ctx.shadowColor = '#000';
                         ctx.shadowBlur = 4;
                         ctx.fillStyle = '#ffffff';
-                        ctx.font = 'bold 10px sans-serif'; // Larger font
+                        ctx.font = 'bold 10px sans-serif';
                         ctx.textAlign = 'left';
 
-                        const text = `${lot.lotCode} (${lot.cropType})`;
-                        const textWidth = ctx.measureText(text).width;
+                        const textLabel = `${lot.lotCode} (${lot.cropType})`;
+                        const textWidthLabel = ctx.measureText(textLabel).width;
 
-                        if (width > textWidth + 10) {
-                            // fit inside
-                            ctx.fillText(text, clampedStartX + 5, yPos + 12);
+                        if (width > textWidthLabel + 10) {
+                            ctx.fillText(textLabel, clampedStartX + 5, yPos + 12);
                         } else {
-                            // draw outside if too small? or just lot code
                             ctx.fillText(lot.lotCode, clampedStartX + 5, yPos + 12);
                         }
 
@@ -335,7 +300,7 @@ export default function WeatherPage() {
 
             ctx.restore();
         }
-    };
+    }), [unifiedData, activeLots]);
 
     // Handle mouse move on chart to detect Gantt bar hover
     const handleChartMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -367,7 +332,7 @@ export default function WeatherPage() {
         setGanttTooltip({ visible: false, x: 0, y: 0, lot: null });
     };
 
-    const chartData = {
+    const chartData = useMemo(() => ({
         labels: unifiedData.map(i => i.d),
         datasets: [
             // Weather Datasets
@@ -430,8 +395,8 @@ export default function WeatherPage() {
                 borderWidth: 0,
                 borderRadius: 4,
                 yAxisID: 'y2',
-                barThickness: 12, // More robust width
-                grouped: false, // Force overlap, don't side-by-side
+                barThickness: 12,
+                grouped: false,
                 order: 2
             },
             // Sales Dataset (0-15% height)
@@ -451,11 +416,11 @@ export default function WeatherPage() {
                 hoverBackgroundColor: '#9333ea',
                 yAxisID: 'y1',
                 barThickness: 12,
-                grouped: false, // Force overlap
+                grouped: false,
                 order: 3
             }
         ] as any[]
-    };
+    }), [unifiedData, currentMetric, harvestData, salesData]);
 
 
     const options = {
@@ -579,6 +544,11 @@ export default function WeatherPage() {
             }
         }
     };
+
+    const chartOptions = useMemo(() => ({
+        ...options as any,
+        animation: false
+    }), [options]);
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-10" >
@@ -762,97 +732,9 @@ export default function WeatherPage() {
                     )}
                     <Bar
                         ref={chartRef}
-                        key={`chart-${activeLots.length}-${harvestData.length}-${salesData.length}`}
-                        data={{
-                            labels: unifiedData.map(i => i.d),
-                            datasets: [
-                                // Weather Datasets
-                                ...(currentMetric === 'temp' ? [
-                                    {
-                                        type: 'line' as const,
-                                        label: 'Max Temp (°C)',
-                                        data: unifiedData.map(i => i.h),
-                                        borderColor: '#f97316',
-                                        backgroundColor: 'rgba(249, 115, 22, 0.05)',
-                                        borderWidth: 4,
-                                        tension: 0.4,
-                                        fill: true,
-                                        pointBackgroundColor: (context: any) => unifiedData[context.dataIndex]?.isToday ? '#2563eb' : '#f97316',
-                                        pointRadius: (context: any) => unifiedData[context.dataIndex]?.isToday ? 8 : 4,
-                                        pointHoverRadius: 10,
-                                        yAxisID: 'y',
-                                        order: 1
-                                    },
-                                    {
-                                        type: 'line' as const,
-                                        label: 'Min Temp (°C)',
-                                        data: unifiedData.map(i => i.l),
-                                        borderColor: '#60a5fa',
-                                        backgroundColor: 'transparent',
-                                        borderWidth: 2,
-                                        borderDash: [8, 4],
-                                        tension: 0.4,
-                                        pointBackgroundColor: (context: any) => unifiedData[context.dataIndex]?.isToday ? '#2563eb' : '#60a5fa',
-                                        pointRadius: (context: any) => unifiedData[context.dataIndex]?.isToday ? 8 : 3,
-                                        pointHoverRadius: 6,
-                                        yAxisID: 'y',
-                                        order: 2
-                                    }
-                                ] : [
-                                    {
-                                        type: 'bar' as const,
-                                        label: 'Precipitation Chance (%)',
-                                        data: unifiedData.map(i => i.r),
-                                        backgroundColor: (context: any) => unifiedData[context.dataIndex]?.isToday ? '#2563eb' : '#bae6fd',
-                                        borderRadius: 8,
-                                        hoverBackgroundColor: '#0284c7',
-                                        yAxisID: 'y',
-                                        order: 1
-                                    }
-                                ]),
-                                // Harvest Dataset
-                                {
-                                    type: 'bar' as const,
-                                    label: 'Harvest (kg)',
-                                    data: unifiedData.map(day => {
-                                        const isoKey = day.date.toISOString().split('T')[0];
-                                        const localKey = day.date.toLocaleDateString('en-CA');
-                                        const record = harvestData.find(h => h.date === isoKey || h.date === localKey);
-                                        return record ? record.total : 0;
-                                    }),
-                                    backgroundColor: '#22c55e',
-                                    hoverBackgroundColor: '#16a34a',
-                                    borderColor: '#166534',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    yAxisID: 'y2',
-                                    barThickness: 12,
-                                    order: 2
-                                },
-                                // Sales Dataset
-                                {
-                                    type: 'bar' as const,
-                                    label: 'Daily Sales (THB)',
-                                    data: unifiedData.map(day => {
-                                        const dayString = day.date.toLocaleDateString('en-CA');
-                                        const record = salesData.find(s => s.date === dayString);
-                                        return record ? record.total : 0;
-                                    }),
-                                    backgroundColor: 'rgba(147, 51, 234, 0.3)',
-                                    borderColor: 'rgba(147, 51, 234, 0.8)',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    hoverBackgroundColor: '#9333ea',
-                                    yAxisID: 'y1',
-                                    barThickness: 12,
-                                    order: 3
-                                }
-                            ] as any[]
-                        }}
-                        options={{
-                            ...options as any,
-                            animation: false
-                        }}
+                        key={`chart-${activeLots.length}-${harvestData.length}-${salesData.length}-${currentMetric}`}
+                        data={chartData}
+                        options={chartOptions}
                         plugins={[weekLinesPlugin]}
                     />
                 </div>
