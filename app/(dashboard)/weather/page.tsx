@@ -356,7 +356,7 @@ export default function WeatherPage() {
                     pointRadius: (context: any) => unifiedData[context.dataIndex]?.isToday ? 8 : 4,
                     pointHoverRadius: 10,
                     yAxisID: 'y',
-                    order: 4
+                    order: 1
                 },
                 {
                     type: 'line' as const,
@@ -371,7 +371,7 @@ export default function WeatherPage() {
                     pointRadius: (context: any) => unifiedData[context.dataIndex]?.isToday ? 8 : 3,
                     pointHoverRadius: 6,
                     yAxisID: 'y',
-                    order: 5
+                    order: 2
                 }
             ] : [
                 {
@@ -382,29 +382,9 @@ export default function WeatherPage() {
                     borderRadius: 8,
                     hoverBackgroundColor: '#0284c7',
                     yAxisID: 'y',
-                    order: 4
+                    order: 3
                 }
             ]),
-            // Harvest Dataset (16-30% height)
-            {
-                type: 'bar' as const,
-                label: 'Harvest (kg)',
-                data: unifiedData.map(day => {
-                    const isoKey = day.date.toISOString().split('T')[0];
-                    const localKey = day.date.toLocaleDateString('en-CA');
-                    const record = harvestData.find(h => h.date === isoKey || h.date === localKey);
-                    return record ? record.total : 0;
-                }),
-                backgroundColor: '#22c55e',
-                hoverBackgroundColor: '#16a34a',
-                borderColor: '#22c55e',
-                borderWidth: 0,
-                borderRadius: 4,
-                yAxisID: 'y2',
-                barThickness: 12,
-                grouped: false,
-                order: 2
-            },
             // Sales Dataset (0-15% height)
             {
                 type: 'bar' as const,
@@ -422,8 +402,26 @@ export default function WeatherPage() {
                 hoverBackgroundColor: '#9333ea',
                 yAxisID: 'y1',
                 barThickness: 12,
-                grouped: false,
                 order: 3
+            },
+            // Harvest Dataset (16-30% height)
+            {
+                type: 'bar' as const,
+                label: 'Harvest (kg)',
+                data: unifiedData.map(day => {
+                    const isoKey = day.date.toISOString().split('T')[0];
+                    const localKey = day.date.toLocaleDateString('en-CA');
+                    const record = harvestData.find(h => h.date === isoKey || h.date === localKey);
+                    return record ? record.total : 0;
+                }),
+                backgroundColor: '#22c55e',
+                hoverBackgroundColor: '#16a34a',
+                borderColor: '#22c55e',
+                borderWidth: 0,
+                borderRadius: 4,
+                yAxisID: 'y2',
+                barThickness: 12,
+                order: 4
             }
         ] as any[]
     }), [unifiedData, currentMetric, harvestData, salesData]);
