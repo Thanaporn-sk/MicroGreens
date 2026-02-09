@@ -8,6 +8,8 @@ import {
     PointElement,
     LineElement,
     BarElement,
+    LineController,
+    BarController,
     Title,
     Tooltip,
     Legend,
@@ -25,6 +27,8 @@ ChartJS.register(
     PointElement,
     LineElement,
     BarElement,
+    LineController,
+    BarController,
     Title,
     Tooltip,
     Legend,
@@ -69,6 +73,7 @@ export default function WeatherPage() {
         y: number;
         lot: any | null;
     }>({ visible: false, x: 0, y: 0, lot: null });
+    const [mounted, setMounted] = useState(false);
 
     const chartRef = useRef<any>(null);
 
@@ -87,6 +92,7 @@ export default function WeatherPage() {
     };
 
     useEffect(() => {
+        setMounted(true);
         async function loadData() {
             // 1. Fetch Real Weather
             const weather = await getRealTimeWeather();
@@ -423,12 +429,13 @@ export default function WeatherPage() {
     }), [unifiedData, currentMetric, harvestData, salesData]);
 
 
-    const options = {
+    const chartOptions = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
         layout: {
             padding: { top: 35, bottom: 10 }
         },
+        animation: false as const,
         plugins: {
             legend: {
                 position: 'bottom' as const,
@@ -456,7 +463,6 @@ export default function WeatherPage() {
                             return `${label}: ฿${value}`;
                         }
                         if (context.dataset.yAxisID === 'y2') {
-                            // Get bag count for this date
                             const day = unifiedData[dataIndex];
                             if (day) {
                                 const isoKey = day.date.toISOString().split('T')[0];
@@ -483,7 +489,7 @@ export default function WeatherPage() {
                 title: {
                     display: true,
                     text: currentMetric === 'temp' ? 'Temperature (°C)' : 'Precipitation (%)',
-                    font: { size: 9, weight: 'bold' }
+                    font: { size: 9, weight: 'bold' as const }
                 }
             },
             y1: {
@@ -501,13 +507,13 @@ export default function WeatherPage() {
                         return record ? record.total : 0;
                     });
                     const max = Math.max(...vals, 100);
-                    return max / 0.10; // Keep Sales VERY low (0-10% height)
+                    return max / 0.10;
                 })(),
                 title: {
                     display: true,
                     text: 'Sales (THB)',
                     color: '#a855f7',
-                    font: { size: 9, weight: 'bold' }
+                    font: { size: 9, weight: 'bold' as const }
                 }
             },
             y2: {
@@ -515,9 +521,8 @@ export default function WeatherPage() {
                 display: true,
                 position: 'right' as const,
                 grid: { display: false },
-                beginAtZero: true, // Bars start from 0
+                beginAtZero: true,
                 suggestedMax: (() => {
-                    // Find max harvest in range
                     const vals = unifiedData.map(day => {
                         const isoKey = day.date.toISOString().split('T')[0];
                         const localKey = day.date.toLocaleDateString('en-CA');
@@ -525,14 +530,13 @@ export default function WeatherPage() {
                         return record ? record.total : 0;
                     });
                     const maxVal = Math.max(...vals, 1);
-                    // Scale so max harvest is at ~25% of chart height
                     return maxVal / 0.25;
                 })(),
                 title: {
                     display: true,
                     text: 'Harvest (kg)',
                     color: '#22c55e',
-                    font: { size: 9, weight: 'bold' }
+                    font: { size: 9, weight: 'bold' as const }
                 },
                 ticks: {
                     color: '#22c55e'
@@ -543,12 +547,7 @@ export default function WeatherPage() {
                 ticks: { font: { size: 10, weight: 'bold' as const }, color: '#475569', maxRotation: 45 }
             }
         }
-    };
-
-    const chartOptions = useMemo(() => ({
-        ...options as any,
-        animation: false
-    }), [options]);
+    }), [unifiedData, currentMetric, harvestData, salesData]);
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-10" >
@@ -563,7 +562,7 @@ export default function WeatherPage() {
                         </div>
                     </div>
                     <p className="text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-                        5-Week Forecast with Sunday Dividers <span className="text-slate-900 dark:text-white font-bold">(Data as of {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })})</span>
+                        5-Week Forecast with Sunday Dividers <span className="text-slate-900 dark:text-white font-bold">(Data as of {mounted ? new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '...'})</span>
                     </p>
                 </div>
                 <div className="z-10 mt-8 md:mt-0 flex flex-col items-center md:items-end gap-3">
@@ -658,7 +657,7 @@ export default function WeatherPage() {
                         </h2>
                         <p className="text-slate-400 dark:text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] mt-3 flex items-center gap-2">
                             <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                            Current Day: {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} (Week {Math.ceil(unifiedData.length / 14)}) • Vertical Lines mark Sunday
+                            Current Day: {mounted ? new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '...'} (Week {Math.ceil(unifiedData.length / 14)}) • Vertical Lines mark Sunday
                         </p>
                     </div>
                     <div className="flex bg-slate-100 dark:bg-gray-700 p-1.5 rounded-2xl border border-slate-200 dark:border-gray-600 shadow-inner">
