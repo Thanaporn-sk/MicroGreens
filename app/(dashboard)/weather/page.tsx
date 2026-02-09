@@ -141,7 +141,7 @@ export default function WeatherPage() {
 
     const weekLinesPlugin: Plugin = useMemo(() => ({
         id: 'weekLines',
-        afterDraw: (chart) => {
+        beforeTooltipDraw: (chart) => {
             if (unifiedData.length === 0) return;
 
             const { ctx, chartArea: { top, bottom, left, right }, scales: { x } } = chart;
