@@ -8,6 +8,7 @@ import { deleteCustomer } from '@/app/lib/actions';
 import { formatDate } from '@/app/lib/formatters';
 import CustomerHistoryModal from '@/app/ui/history/customer-history-modal';
 import SortableHeader from '@/app/ui/sortable-header';
+import Pagination from '@/app/ui/pagination';
 
 type CustomerWithSales = {
     id: number;
@@ -18,12 +19,19 @@ type CustomerWithSales = {
     sales: any[];
 };
 
-export default function CustomersTable({ customers }: { customers: CustomerWithSales[] }) {
+export default function CustomersTable({
+    customers,
+    totalPages
+}: {
+    customers: CustomerWithSales[],
+    totalPages: number,
+    currentPage: number
+}) {
     const [historyCustomer, setHistoryCustomer] = useState<{ id: number, name: string } | null>(null);
 
     return (
         <>
-            <div className="rounded-lg bg-white dark:bg-gray-800 shadow overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="rounded-xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-900/50">
                         <tr>
@@ -93,6 +101,8 @@ export default function CustomersTable({ customers }: { customers: CustomerWithS
                     customerName={historyCustomer.name}
                 />
             )}
+
+            <Pagination totalPages={totalPages} />
         </>
     );
 }

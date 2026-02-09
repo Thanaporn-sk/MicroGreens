@@ -7,10 +7,11 @@ async function main() {
     console.log('🔄 LOADING FULL DATA INTO DEV...');
 
     const devEnvConfig = dotenv.parse(fs.readFileSync(path.join(__dirname, '../.env')));
-    let devDbUrl = devEnvConfig.DATABASE_URL;
-
-    // Supabase pg connection fix
-    console.log(`🔌 URL: ${devDbUrl.replace(/:[^:]+@/, ':******@')}`);
+    let devDbUrl = devEnvConfig.DIRECT_URL || devEnvConfig.DATABASE_URL;
+    // Force direct URL for South-1 to avoid pgbouncer issues
+    if (devDbUrl.includes('south-1')) {
+        devDbUrl = "postgresql://postgres.xgwokqgdwmdwuukgawvd:mTrBBRnPSRaDagLW@aws-1-ap-south-1.pooler.supabase.com:5432/postgres";
+    }
 
     const client = new Client({
         connectionString: devDbUrl,
@@ -31,11 +32,8 @@ async function main() {
             console.log(`\n📂 Processing ${tableName} (${rows.length} rows)...`);
 
             for (const row of rows) {
-                const keys = Object.keys(row);
-                const values = Object.values(row).map(v => {
-                    // Convert Date strings back to Date objects or keep ISO strings for PG
-                    return v;
-                });
+                const keys = Object.keys(row).map(k => k === 'buySale' ? 'buy_sale' : k);
+                const values = Object.values(row);
 
                 const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
                 const columns = keys.map(k => `"${k}"`).join(', '); // Quote identifiers
@@ -52,7 +50,7 @@ async function main() {
                     process.stdout.write('.');
                 } catch (e) {
                     process.stdout.write('X');
-                    // console.error(`Failed ${tableName}:`, e.message); 
+                    console.error(`\nFailed ${tableName}:`, e.message);
                 }
             }
             console.log(' Done.');

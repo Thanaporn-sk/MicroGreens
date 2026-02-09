@@ -5,18 +5,26 @@ import InventoryTable from '@/app/(dashboard)/inventory/inventory-table';
 import Search from '@/app/ui/search';
 
 import { Prisma } from '@prisma/client';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 export default async function InventoryPage(props: {
     searchParams?: Promise<{
         query?: string;
         sort?: string;
         order?: 'asc' | 'desc';
+        page?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const sort = searchParams?.sort || 'name';
     const order = searchParams?.order || 'asc';
+    const page = Number(searchParams?.page) || 1;
+    const itemsPerPage = await getRowsPerPage();
+
+    const where: Prisma.MaterialWhereInput = {
+        name: { contains: query, mode: 'insensitive' }
+    };
 
     const orderBy: Prisma.MaterialOrderByWithRelationInput = {};
     if (sort === 'stock') {
@@ -25,18 +33,23 @@ export default async function InventoryPage(props: {
         orderBy[sort as keyof Prisma.MaterialOrderByWithRelationInput] = order;
     }
 
-    const materials = await prisma.material.findMany({
-        where: {
-            name: { contains: query, mode: 'insensitive' }
-        },
-        include: {
-            stock: true,
-            images: {
-                select: { url: true }
-            }
-        },
-        orderBy: orderBy
-    });
+    const [totalMaterials, materials] = await Promise.all([
+        prisma.material.count({ where }),
+        prisma.material.findMany({
+            where,
+            include: {
+                stock: true,
+                images: {
+                    select: { url: true }
+                }
+            },
+            orderBy: orderBy,
+            skip: (page - 1) * itemsPerPage,
+            take: itemsPerPage,
+        })
+    ]);
+
+    const totalPages = Math.ceil(totalMaterials / itemsPerPage);
 
     return (
         <div className="w-full">
@@ -55,7 +68,7 @@ export default async function InventoryPage(props: {
                 <Search placeholder="Search materials..." />
             </div>
 
-            <InventoryTable materials={materials} />
+            <InventoryTable materials={materials} totalPages={totalPages} currentPage={page} />
         </div>
     );
 }

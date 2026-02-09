@@ -9,6 +9,8 @@ import { Prisma } from '@prisma/client';
 import Search from '@/app/ui/search';
 import LotFilters from '@/app/ui/lots/lot-filters';
 import LotsTable from '@/app/ui/lots/lots-table';
+import Pagination from '@/app/ui/pagination';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 // ... imports
 
@@ -20,6 +22,7 @@ export default async function LotsPage(props: {
         view?: 'grid' | 'table';
         sort?: string;
         order?: 'asc' | 'desc';
+        page?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
@@ -29,6 +32,8 @@ export default async function LotsPage(props: {
     const view = searchParams?.view || 'grid';
     const sort = searchParams?.sort || 'plantingDate'; // Default sort
     const order = searchParams?.order || 'desc';
+    const page = Number(searchParams?.page) || 1;
+    const itemsPerPage = await getRowsPerPage();
 
     // 1. Build Filter
     const where: Prisma.PlantingLotWhereInput = {};
@@ -50,11 +55,18 @@ export default async function LotsPage(props: {
     }
 
     // 2. Fetch Data
-    const lotsRaw = await prisma.plantingLot.findMany({
-        where,
-        orderBy: { [sort]: order },
-        include: { harvests: { select: { weight: true, bagCount: true } } }
-    });
+    const [totalLots, lotsRaw] = await Promise.all([
+        prisma.plantingLot.count({ where }),
+        prisma.plantingLot.findMany({
+            where,
+            orderBy: { [sort]: order },
+            include: { harvests: { select: { weight: true, bagCount: true } } },
+            skip: (page - 1) * itemsPerPage,
+            take: itemsPerPage,
+        })
+    ]);
+
+    const totalPages = Math.ceil(totalLots / itemsPerPage);
 
     // 3. Calculate Derived Metrics (Total Weight)
     const lots = lotsRaw.map(lot => {
@@ -93,7 +105,7 @@ export default async function LotsPage(props: {
             <LotFilters crops={crops} />
 
             {view === 'table' ? (
-                <LotsTable lots={lots} />
+                <LotsTable lots={lots} totalPages={totalPages} currentPage={page} />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {lots.length === 0 ? (
@@ -164,6 +176,8 @@ export default async function LotsPage(props: {
                     )}
                 </div>
             )}
+
+            <Pagination totalPages={totalPages} />
         </div>
     );
 }

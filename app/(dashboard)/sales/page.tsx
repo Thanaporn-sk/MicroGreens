@@ -4,18 +4,30 @@ import { Plus } from 'lucide-react';
 import Search from '@/app/ui/search';
 import SalesTable from './sales-table';
 import { Prisma } from '@prisma/client';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 export default async function SalesPage(props: {
     searchParams?: Promise<{
         query?: string;
         sort?: string;
         order?: 'asc' | 'desc';
+        page?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const sort = searchParams?.sort || 'saleDate';
     const order = searchParams?.order || 'desc';
+
+    const page = Number(searchParams?.page) || 1;
+    const itemsPerPage = await getRowsPerPage();
+
+    const where: Prisma.SaleWhereInput = {
+        OR: [
+            { productName: { contains: query, mode: 'insensitive' } },
+            { customer: { name: { contains: query, mode: 'insensitive' } } }
+        ]
+    };
 
     const orderBy: Prisma.SaleOrderByWithRelationInput = {};
     if (sort === 'customer') {
@@ -24,16 +36,18 @@ export default async function SalesPage(props: {
         orderBy[sort as keyof Prisma.SaleOrderByWithRelationInput] = order;
     }
 
-    const sales = await prisma.sale.findMany({
-        where: {
-            OR: [
-                { productName: { contains: query, mode: 'insensitive' } },
-                { customer: { name: { contains: query, mode: 'insensitive' } } }
-            ]
-        },
-        include: { customer: true },
-        orderBy: orderBy,
-    });
+    const [totalSales, sales] = await Promise.all([
+        prisma.sale.count({ where }),
+        prisma.sale.findMany({
+            where,
+            include: { customer: true },
+            orderBy: orderBy,
+            skip: (page - 1) * itemsPerPage,
+            take: itemsPerPage,
+        })
+    ]);
+
+    const totalPages = Math.ceil(totalSales / itemsPerPage);
 
     return (
         <div className="w-full">
@@ -52,7 +66,8 @@ export default async function SalesPage(props: {
                 <Search placeholder="Search sales by product or customer..." />
             </div>
 
-            <SalesTable sales={sales} />
+            {/* @ts-ignore */}
+            <SalesTable sales={sales} totalPages={totalPages} currentPage={page} />
         </div>
     );
 }

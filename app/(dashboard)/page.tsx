@@ -100,10 +100,10 @@ export default async function DashboardPage() {
 
             <div className="grid gap-6 md:grid-cols-2">
                 {/* Low Stock Warnings */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
-                        <h2 className="font-semibold text-lg text-gray-900 dark:text-gray-100">Low Stock Alerts</h2>
-                        <span className="text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-2 py-1 rounded-full">
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50 flex items-center justify-between">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Low Stock Alerts</h2>
+                        <span className="text-xs font-bold bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-2 py-1 rounded-full uppercase tracking-tight">
                             {lowStockMaterials.length} Items
                         </span>
                     </div>
@@ -112,17 +112,17 @@ export default async function DashboardPage() {
                             <div className="p-6 text-center text-gray-500 dark:text-gray-400">All stocks are healthy</div>
                         ) : (
                             <table className="min-w-full text-left text-sm">
-                                <thead className="bg-gray-50 dark:bg-gray-900/50">
+                                <thead className="bg-gray-50/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700">
                                     <tr>
-                                        <th className="px-6 py-3 font-semibold text-gray-600 dark:text-gray-400">Material</th>
-                                        <th className="px-6 py-3 font-semibold text-gray-600 dark:text-gray-400 text-right">Quantity</th>
+                                        <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Material</th>
+                                        <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 text-right uppercase tracking-wider">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                                     {lowStockMaterials.map((stock) => (
-                                        <tr key={stock.id}>
-                                            <td className="px-6 py-3 font-medium text-gray-900 dark:text-gray-200">{stock.material.name}</td>
-                                            <td className="px-6 py-3 text-right text-red-600 dark:text-red-400 font-bold">{stock.quantity.toFixed(2)} {stock.material.unit}</td>
+                                        <tr key={stock.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors">
+                                            <td className="px-6 py-3 font-bold text-gray-900 dark:text-gray-200">{stock.material.name}</td>
+                                            <td className="px-6 py-3 text-right text-red-600 dark:text-red-400 font-black">{stock.quantity.toFixed(2)} {stock.material.unit}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -132,9 +132,9 @@ export default async function DashboardPage() {
                 </div>
 
                 {/* Recent Activity */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
-                        <h2 className="font-semibold text-lg text-gray-900 dark:text-gray-100">Recent Activity</h2>
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Recent Activity</h2>
                     </div>
                     <div className="p-0">
                         {recentActivity.length === 0 ? (

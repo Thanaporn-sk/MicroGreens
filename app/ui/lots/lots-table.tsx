@@ -10,7 +10,15 @@ interface LotWithWeight extends PlantingLot {
     totalWeight: number;
 }
 
-export default function LotsTable({ lots }: { lots: LotWithWeight[] }) {
+export default function LotsTable({
+    lots,
+    totalPages,
+    currentPage
+}: {
+    lots: LotWithWeight[],
+    totalPages?: number,
+    currentPage?: number
+}) {
     const statusLabels: Record<string, string> = {
         'PLANTED': 'Growing',
         'HARVESTING': 'Harvesting',
@@ -18,7 +26,7 @@ export default function LotsTable({ lots }: { lots: LotWithWeight[] }) {
     };
 
     return (
-        <div className="overflow-x-auto rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+        <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-sm">
             <table className="min-w-[1000px] w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
                     <tr>

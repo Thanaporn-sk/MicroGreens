@@ -5,24 +5,44 @@ import { Plus, Pencil } from 'lucide-react';
 import DeleteButton from '@/app/ui/delete-button';
 import { deleteUser } from '@/app/lib/actions-user';
 import Search from '@/app/ui/search';
+import Pagination from '@/app/ui/pagination';
+import SortableHeader from '@/app/ui/sortable-header';
+import { Prisma } from '@prisma/client';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 export default async function UsersPage(props: {
     searchParams?: Promise<{
         query?: string;
+        page?: string;
+        sort?: string;
+        order?: 'asc' | 'desc';
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
+    const page = Number(searchParams?.page) || 1;
+    const sort = searchParams?.sort || 'createdAt';
+    const order = searchParams?.order || 'desc';
+    const itemsPerPage = await getRowsPerPage();
 
-    const users = await prisma.user.findMany({
-        where: {
-            OR: [
-                { name: { contains: query } },
-                { email: { contains: query } },
-            ]
-        },
-        orderBy: { createdAt: 'desc' },
-    });
+    const where: Prisma.UserWhereInput = {
+        OR: [
+            { name: { contains: query, mode: 'insensitive' } },
+            { email: { contains: query, mode: 'insensitive' } },
+        ]
+    };
+
+    const [totalUsers, users] = await Promise.all([
+        prisma.user.count({ where }),
+        prisma.user.findMany({
+            where,
+            orderBy: { [sort]: order },
+            skip: (page - 1) * itemsPerPage,
+            take: itemsPerPage,
+        })
+    ]);
+
+    const totalPages = Math.ceil(totalUsers / itemsPerPage);
 
     return (
         <div className="w-full">
@@ -41,13 +61,19 @@ export default async function UsersPage(props: {
                 <Search placeholder="Search users by name or email..." />
             </div>
 
-            <div className="rounded-lg bg-white dark:bg-gray-800 shadow overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="rounded-xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-900/50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
+                            <th scope="col" className="px-6 py-3 text-left">
+                                <SortableHeader label="Name" value="name" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left">
+                                <SortableHeader label="Email" value="email" />
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left">
+                                <SortableHeader label="Role" value="role" />
+                            </th>
                             <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                         </tr>
                     </thead>
@@ -79,6 +105,10 @@ export default async function UsersPage(props: {
                         )}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="mt-4">
+                <Pagination totalPages={totalPages} />
             </div>
         </div>
     );

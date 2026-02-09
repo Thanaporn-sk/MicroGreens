@@ -7,6 +7,7 @@ import CustomersTable from '@/app/ui/customers/customers-table';
 import { Prisma } from '@prisma/client';
 import CustomerSortControls from '@/app/ui/customers/customer-sort';
 import ViewToggle from '@/app/ui/view-toggle';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 export default async function CustomersPage(props: {
     searchParams?: Promise<{
@@ -14,6 +15,7 @@ export default async function CustomersPage(props: {
         sort?: string;
         order?: 'asc' | 'desc';
         view?: 'grid' | 'table';
+        page?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
@@ -21,22 +23,33 @@ export default async function CustomersPage(props: {
     const sort = searchParams?.sort || 'createdAt';
     const order = searchParams?.order || 'desc';
     const view = searchParams?.view || 'grid';
+    const page = Number(searchParams?.page) || 1;
+    const itemsPerPage = await getRowsPerPage();
+
+    const where: Prisma.CustomerWhereInput = {
+        OR: [
+            { name: { contains: query, mode: 'insensitive' } },
+            { contact: { contains: query, mode: 'insensitive' } }
+        ]
+    };
 
     const orderBy: Prisma.CustomerOrderByWithRelationInput = {};
     if (sort) {
         orderBy[sort as keyof Prisma.CustomerOrderByWithRelationInput] = order;
     }
 
-    const customersRaw = await prisma.customer.findMany({
-        where: {
-            OR: [
-                { name: { contains: query, mode: 'insensitive' } },
-                { contact: { contains: query, mode: 'insensitive' } }
-            ]
-        },
-        include: { sales: true },
-        orderBy: orderBy,
-    });
+    const [totalCustomers, customersRaw] = await Promise.all([
+        prisma.customer.count({ where }),
+        prisma.customer.findMany({
+            where,
+            include: { sales: true },
+            orderBy: orderBy,
+            skip: (page - 1) * itemsPerPage,
+            take: itemsPerPage,
+        })
+    ]);
+
+    const totalPages = Math.ceil(totalCustomers / itemsPerPage);
 
     return (
         <div className="w-full">
@@ -62,9 +75,9 @@ export default async function CustomersPage(props: {
             </div>
 
             {view === 'table' ? (
-                <CustomersTable customers={customersRaw} />
+                <CustomersTable customers={customersRaw} totalPages={totalPages} currentPage={page} />
             ) : (
-                <CustomersList customers={customersRaw} />
+                <CustomersList customers={customersRaw} totalPages={totalPages} currentPage={page} />
             )}
         </div>
     );

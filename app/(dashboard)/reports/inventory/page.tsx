@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import InventoryReportFilters from './inventory-filters';
 import { format } from 'date-fns';
+import Pagination from '@/app/ui/pagination';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 const formatNumber = (num: number) => new Intl.NumberFormat('en-US').format(num);
 
@@ -11,12 +13,15 @@ export default async function InventoryReportPage({
         startDate?: string;
         endDate?: string;
         itemName?: string;
+        page?: string;
     }>;
 }) {
     const params = await searchParams;
     const startDate = params?.startDate ? new Date(params.startDate) : new Date(new Date().getFullYear(), 0, 1);
     const endDate = params?.endDate ? new Date(params.endDate) : new Date();
     const itemName = params?.itemName || '';
+    const page = Number(params?.page) || 1;
+    const itemsPerPage = await getRowsPerPage();
 
     // Adjust end date to end of day
     const endDateAdjusted = new Date(endDate);
@@ -123,6 +128,10 @@ export default async function InventoryReportPage({
 
     // Sort Descending
     transactions.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    const totalTransactions = transactions.length;
+    const totalPages = Math.ceil(totalTransactions / itemsPerPage);
+    const paginatedTransactions = transactions.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
     // 3. Summaries (Recalculate based on filtered transactions)
     // Note: Can't simply sum quantities because units differ (bags vs kg).
@@ -236,12 +245,12 @@ export default async function InventoryReportPage({
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                            {transactions.length === 0 ? (
+                            {paginatedTransactions.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="px-6 py-8 text-center text-gray-500">No transactions found matching criteria.</td>
                                 </tr>
                             ) : (
-                                transactions.map((t) => (
+                                paginatedTransactions.map((t) => (
                                     <tr key={t.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                         <td className="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400">
                                             {format(t.date, 'dd/MM/yyyy HH:mm')}
@@ -266,6 +275,10 @@ export default async function InventoryReportPage({
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div className="mt-4">
+                <Pagination totalPages={totalPages} />
             </div>
         </div>
     );

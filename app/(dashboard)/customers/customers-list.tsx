@@ -7,6 +7,7 @@ import DeleteButton from '@/app/ui/delete-button';
 import { deleteCustomer } from '@/app/lib/actions';
 import { formatDate } from '@/app/lib/formatters';
 import CustomerHistoryModal from '@/app/ui/history/customer-history-modal';
+import Pagination from '@/app/ui/pagination';
 
 type CustomerWithSales = {
     id: number;
@@ -17,7 +18,14 @@ type CustomerWithSales = {
     sales: any[];
 };
 
-export default function CustomersList({ customers }: { customers: CustomerWithSales[] }) {
+export default function CustomersList({
+    customers,
+    totalPages
+}: {
+    customers: CustomerWithSales[],
+    totalPages: number,
+    currentPage: number
+}) {
     const [historyCustomer, setHistoryCustomer] = useState<{ id: number, name: string } | null>(null);
 
     return (
@@ -69,6 +77,8 @@ export default function CustomersList({ customers }: { customers: CustomerWithSa
                     customerName={historyCustomer.name}
                 />
             )}
+
+            <Pagination totalPages={totalPages} />
         </>
     );
 }

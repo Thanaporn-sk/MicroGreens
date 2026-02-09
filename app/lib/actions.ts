@@ -271,6 +271,7 @@ export async function createSale(prevState: State | any, formData: FormData) {
     const weight = parseFloat(formData.get('weight') as string);
     const price = parseFloat(formData.get('price') as string);
     const saleDate = new Date(formData.get('saleDate') as string);
+    const notes = formData.get('notes') as string;
 
     if (!customerId || !materialId || isNaN(weight) || isNaN(price)) {
         return { message: 'Missing required fields' };
@@ -299,6 +300,7 @@ export async function createSale(prevState: State | any, formData: FormData) {
                 weight,
                 price,
                 saleDate,
+                notes,
             }
         }),
         prisma.stock.update({
@@ -594,6 +596,7 @@ export async function updateSale(id: number, formData: FormData) {
     const weight = parseFloat(formData.get('weight') as string);
     const price = parseFloat(formData.get('price') as string);
     const saleDate = new Date(formData.get('saleDate') as string);
+    const notes = formData.get('notes') as string;
 
     const oldSale = await prisma.sale.findUnique({ where: { id } });
     if (!oldSale) throw new Error("Sale not found");
@@ -606,7 +609,7 @@ export async function updateSale(id: number, formData: FormData) {
         await prisma.$transaction([
             prisma.sale.update({
                 where: { id },
-                data: { weight, price, saleDate }
+                data: { weight, price, saleDate, notes }
             }),
             prisma.stock.update({
                 where: { materialId: maxMatchMaterial.id },
@@ -616,7 +619,7 @@ export async function updateSale(id: number, formData: FormData) {
     } else {
         await prisma.sale.update({
             where: { id },
-            data: { weight, price, saleDate }
+            data: { weight, price, saleDate, notes }
         });
     }
 

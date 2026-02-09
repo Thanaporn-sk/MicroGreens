@@ -6,18 +6,28 @@ import PurchasesTable from './purchases-table';
 
 // ... imports
 import { Prisma } from '@prisma/client';
+import { getRowsPerPage } from '@/app/lib/user-settings';
 
 export default async function PurchasesPage(props: {
     searchParams?: Promise<{
         query?: string;
         sort?: string;
         order?: 'asc' | 'desc';
+        page?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const sort = searchParams?.sort || 'date';
     const order = searchParams?.order || 'desc';
+    const page = Number(searchParams?.page) || 1;
+    const itemsPerPage = await getRowsPerPage();
+
+    const where: Prisma.PurchaseWhereInput = {
+        material: {
+            name: { contains: query, mode: 'insensitive' }
+        }
+    };
 
     const orderBy: Prisma.PurchaseOrderByWithRelationInput = {};
     if (sort === 'material') {
@@ -26,15 +36,18 @@ export default async function PurchasesPage(props: {
         orderBy[sort as keyof Prisma.PurchaseOrderByWithRelationInput] = order;
     }
 
-    const purchases = await prisma.purchase.findMany({
-        where: {
-            material: {
-                name: { contains: query, mode: 'insensitive' }
-            }
-        },
-        include: { material: true },
-        orderBy: orderBy,
-    });
+    const [totalPurchases, purchases] = await Promise.all([
+        prisma.purchase.count({ where }),
+        prisma.purchase.findMany({
+            where,
+            include: { material: true },
+            orderBy: orderBy,
+            skip: (page - 1) * itemsPerPage,
+            take: itemsPerPage,
+        })
+    ]);
+
+    const totalPages = Math.ceil(totalPurchases / itemsPerPage);
 
     return (
         <div className="w-full">
@@ -53,7 +66,7 @@ export default async function PurchasesPage(props: {
                 <Search placeholder="Search purchases by material name..." />
             </div>
 
-            <PurchasesTable purchases={purchases} />
+            <PurchasesTable purchases={purchases} totalPages={totalPages} currentPage={page} />
         </div>
     );
 }

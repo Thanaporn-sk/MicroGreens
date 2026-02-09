@@ -251,28 +251,28 @@ export default async function ReportsPage({
             {/* Row 1: Sales & Expenses */}
             <div className="grid gap-8 md:grid-cols-2">
                 {/* Product Sales Summary */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 className="font-semibold text-lg dark:text-gray-100">Sales by Product</h2>
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Sales by Product</h2>
                     </div>
-                    <div className="p-6 overflow-x-auto">
+                    <div className="p-0 overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
                             <thead>
-                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                                    <th className="px-4 py-2 font-semibold dark:text-gray-300">Product</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Weight</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Revenue</th>
+                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80">
+                                    <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Product</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Weight</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Revenue</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {productSummary.length === 0 ? (
-                                    <tr><td colSpan={3} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">No data</td></tr>
+                                    <tr><td colSpan={3} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">No data available.</td></tr>
                                 ) : (
                                     productSummary.map((item) => (
-                                        <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{formatNumber(item.weight)}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatCurrency(item.amount)}</td>
+                                        <tr key={item.name} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                            <td className="px-6 py-4 font-bold text-gray-900 dark:text-gray-200">{item.name}</td>
+                                            <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">{formatNumber(item.weight)}</td>
+                                            <td className="px-6 py-4 text-right font-bold text-green-600 dark:text-green-400">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))
                                 )}
@@ -282,26 +282,26 @@ export default async function ReportsPage({
                 </div>
 
                 {/* Expenses by Material */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 className="font-semibold text-lg dark:text-gray-100">Expenses by Material</h2>
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Expenses by Material</h2>
                     </div>
-                    <div className="p-6 overflow-x-auto">
+                    <div className="p-0 overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
                             <thead>
-                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                                    <th className="px-4 py-2 font-semibold dark:text-gray-300">Material</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Cost</th>
+                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80">
+                                    <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Material</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Cost</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {expenseSummary.length === 0 ? (
-                                    <tr><td colSpan={2} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">No data</td></tr>
+                                    <tr><td colSpan={2} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">No data available.</td></tr>
                                 ) : (
                                     expenseSummary.map((item) => (
-                                        <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatCurrency(item.amount)}</td>
+                                        <tr key={item.name} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                            <td className="px-6 py-4 font-bold text-gray-900 dark:text-gray-200">{item.name}</td>
+                                            <td className="px-6 py-4 text-right font-bold text-red-600 dark:text-red-400">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))
                                 )}
@@ -314,30 +314,30 @@ export default async function ReportsPage({
             {/* Row 2: Yield & Customers */}
             <div className="grid gap-8 md:grid-cols-2">
                 {/* Yield Efficiency */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 className="font-semibold text-lg dark:text-gray-100">Yield Efficiency</h2>
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Yield Efficiency (Input:Output)</h2>
                     </div>
-                    <div className="p-6 overflow-x-auto">
+                    <div className="p-0 overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
                             <thead>
-                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                                    <th className="px-4 py-2 font-semibold dark:text-gray-300">Crop</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Input (g)</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Output (g)</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Ratio</th>
+                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80">
+                                    <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Crop</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Input (g)</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Output (g)</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Ratio</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {yieldSummary.length === 0 ? (
-                                    <tr><td colSpan={4} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">No harvest data</td></tr>
+                                    <tr><td colSpan={4} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">No harvest data.</td></tr>
                                 ) : (
                                     yieldSummary.map((item) => (
-                                        <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{formatNumber(item.seedUsed)}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{formatNumber(item.harvestWeight)}</td>
-                                            <td className="px-4 py-2 text-right font-bold text-blue-600 dark:text-blue-400">
+                                        <tr key={item.name} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                            <td className="px-6 py-4 font-bold text-gray-900 dark:text-gray-200">{item.name}</td>
+                                            <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">{formatNumber(item.seedUsed)}</td>
+                                            <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">{formatNumber(item.harvestWeight)}</td>
+                                            <td className="px-6 py-4 text-right font-black text-blue-600 dark:text-blue-400">
                                                 1 : {item.ratio.toFixed(1)}
                                             </td>
                                         </tr>
@@ -349,28 +349,28 @@ export default async function ReportsPage({
                 </div>
 
                 {/* Top Customers */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 className="font-semibold text-lg dark:text-gray-100">Top Customers</h2>
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Top 10 Customers</h2>
                     </div>
-                    <div className="p-6 overflow-x-auto">
+                    <div className="p-0 overflow-x-auto">
                         <table className="min-w-full text-left text-sm">
                             <thead>
-                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                                    <th className="px-4 py-2 font-semibold dark:text-gray-300">Customer</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Orders</th>
-                                    <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Total</th>
+                                <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80">
+                                    <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Customer</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Orders</th>
+                                    <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Total spent</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {customerSummary.length === 0 ? (
-                                    <tr><td colSpan={3} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">No data</td></tr>
+                                    <tr><td colSpan={3} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">No customer data.</td></tr>
                                 ) : (
                                     customerSummary.map((item) => (
-                                        <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-300">{item.count}</td>
-                                            <td className="px-4 py-2 text-right dark:text-gray-200">{formatCurrency(item.amount)}</td>
+                                        <tr key={item.name} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                            <td className="px-6 py-4 font-bold text-gray-900 dark:text-gray-200">{item.name}</td>
+                                            <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">{item.count}</td>
+                                            <td className="px-6 py-4 text-right font-bold text-gray-900 dark:text-gray-100">{formatCurrency(item.amount)}</td>
                                         </tr>
                                     ))
                                 )}
@@ -381,18 +381,18 @@ export default async function ReportsPage({
             </div>
 
             {/* Inventory Valuation Details */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="font-semibold text-lg dark:text-gray-100">Inventory Valuation (Current Assets)</h2>
+            <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+                    <h2 className="font-bold text-lg text-gray-900 dark:text-gray-100 italic">Inventory Valuation (Estimated Asset Value)</h2>
                 </div>
-                <div className="p-6 overflow-x-auto">
+                <div className="p-0 overflow-x-auto">
                     <table className="min-w-full text-left text-sm">
                         <thead>
-                            <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                                <th className="px-4 py-2 font-semibold dark:text-gray-300">Material</th>
-                                <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Stock</th>
-                                <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Est. Unit Cost</th>
-                                <th className="px-4 py-2 font-semibold text-right dark:text-gray-300">Value</th>
+                            <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/80">
+                                <th className="px-6 py-3 font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Material</th>
+                                <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Stock</th>
+                                <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Est. Unit Cost</th>
+                                <th className="px-6 py-3 font-bold text-right text-gray-700 dark:text-gray-300 uppercase tracking-wider">Value</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -400,11 +400,11 @@ export default async function ReportsPage({
                                 <tr><td colSpan={4} className="px-4 py-4 text-center text-gray-500 dark:text-gray-400">No stock data</td></tr>
                             ) : (
                                 inventoryValuation.map((item) => (
-                                    <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                        <td className="px-4 py-2 font-medium dark:text-gray-200">{item.name}</td>
-                                        <td className="px-4 py-2 text-right dark:text-gray-200">{formatNumber(item.quantity)} {item.unit}</td>
-                                        <td className="px-4 py-2 text-right text-gray-500 dark:text-gray-400">{formatCurrency(item.unitCost)}</td>
-                                        <td className="px-4 py-2 text-right font-medium dark:text-gray-200">{formatCurrency(item.value)}</td>
+                                    <tr key={item.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                        <td className="px-6 py-4 font-bold text-gray-900 dark:text-gray-200">{item.name}</td>
+                                        <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">{formatNumber(item.quantity)} {item.unit}</td>
+                                        <td className="px-6 py-4 text-right text-gray-500 dark:text-gray-400 italic">{formatCurrency(item.unitCost)}</td>
+                                        <td className="px-6 py-4 text-right font-bold text-gray-900 dark:text-gray-100">{formatCurrency(item.value)}</td>
                                     </tr>
                                 ))
                             )}

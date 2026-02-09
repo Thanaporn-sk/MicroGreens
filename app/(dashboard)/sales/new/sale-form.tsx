@@ -91,6 +91,15 @@ export default function SaleForm({ customers, materials }: { customers: Customer
                 />
             </div>
 
+            <div>
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Note</label>
+                <textarea
+                    name="notes"
+                    className="border border-gray-300 dark:border-gray-700 p-2 w-full rounded focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-[100px]"
+                    placeholder="Optional notes about the sale..."
+                />
+            </div>
+
             <div className="flex gap-2 mt-4">
                 <Link
                     href="/sales"

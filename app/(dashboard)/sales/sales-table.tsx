@@ -9,6 +9,7 @@ import { formatDate, formatCurrency } from '@/app/lib/formatters';
 import CustomerHistoryModal from '@/app/ui/history/customer-history-modal';
 import ProductHistoryModal from '@/app/ui/history/product-history-modal';
 import SortableHeader from '@/app/ui/sortable-header';
+import Pagination from '@/app/ui/pagination';
 
 type SaleWithCustomer = {
     id: number;
@@ -16,19 +17,27 @@ type SaleWithCustomer = {
     productName: string;
     weight: number;
     price: number;
+    notes: string | null;
     customer: {
         id: number;
         name: string;
     } | null;
 };
 
-export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
+export default function SalesTable({
+    sales,
+    totalPages
+}: {
+    sales: SaleWithCustomer[],
+    totalPages: number,
+    currentPage: number
+}) {
     const [historyCustomer, setHistoryCustomer] = useState<{ id: number, name: string } | null>(null);
     const [historyProduct, setHistoryProduct] = useState<string | null>(null);
 
     return (
         <>
-            <div className="rounded-lg bg-white dark:bg-gray-800 shadow overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="rounded-xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
                 <div className="w-full overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-gray-50 dark:bg-gray-900/50">
@@ -47,6 +56,9 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                     <SortableHeader label="Price" value="price" />
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Notes
                                 </th>
                                 <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                             </tr>
@@ -76,6 +88,9 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{sale.weight.toFixed(2)}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600 dark:text-green-400">{formatCurrency(sale.price)}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate" title={sale.notes || ''}>
+                                            {sale.notes || '-'}
+                                        </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-2">
                                             <Link href={`/sales/${sale.id}/edit`} className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 p-1">
                                                 <Pencil className="w-4 h-4" />
@@ -106,6 +121,8 @@ export default function SalesTable({ sales }: { sales: SaleWithCustomer[] }) {
                     productName={historyProduct}
                 />
             )}
+
+            <Pagination totalPages={totalPages} />
         </>
     );
 }

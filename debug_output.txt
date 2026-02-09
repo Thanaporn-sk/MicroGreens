@@ -1,0 +1,16 @@
+--- Debugging Data ---
+Active Lots Found: 2
+  Lot: S2026-02-02, Status: PLANTED, Plant: 2026-02-01T00:00:00.000Z, Harvest: 2026-02-10T00:00:00.000Z
+  Lot: S2026-02-03, Status: PLANTED, Plant: 2026-02-05T00:00:00.000Z, Harvest: 2026-02-13T00:00:00.000Z
+Harvests Found in range: 7
+  Harvest: 2026-01-26T00:00:00.000Z, Qty: 0.75kg
+  Harvest: 2026-01-27T00:00:00.000Z, Qty: 0.75kg
+  Harvest: 2026-01-27T00:00:00.000Z, Qty: 0.75kg
+  Harvest: 2026-01-31T00:00:00.000Z, Qty: 2.25kg
+  Harvest: 2026-02-03T00:00:00.000Z, Qty: 2.75kg
+Sales Found in range: 17
+  Sale: 2026-01-26T00:00:00.000Z, Price: 100
+  Sale: 2026-01-27T00:00:00.000Z, Price: 40
+  Sale: 2026-01-27T00:00:00.000Z, Price: 40
+  Sale: 2026-01-27T00:00:00.000Z, Price: 40
+  Sale: 2026-01-26T00:00:00.000Z, Price: 100

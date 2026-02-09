@@ -91,3 +91,23 @@ export async function updateUserPassword(id: string, formData: FormData) {
         throw new Error('Failed to update password');
     }
 }
+
+export async function updateUserSettings(id: string, formData: FormData) {
+    const rowsPerPage = parseInt(formData.get('rowsPerPage') as string);
+
+    if (isNaN(rowsPerPage) || rowsPerPage < 1) {
+        throw new Error('Invalid rows per page value');
+    }
+
+    try {
+        await prisma.user.update({
+            where: { id },
+            data: { rowsPerPage },
+        });
+        await logActivity('Update Settings', `Updated rowsPerPage to ${rowsPerPage}`);
+        revalidatePath('/'); // Revalidate everything to reflect changes
+    } catch (error) {
+        console.error('Failed to update settings:', error);
+        throw new Error('Failed to update settings.');
+    }
+}

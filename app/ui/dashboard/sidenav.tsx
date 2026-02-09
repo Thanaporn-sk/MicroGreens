@@ -13,12 +13,15 @@ import {
     ClipboardList,
     LogOut,
     Menu,
-    X
+    X,
+    CloudRain,
+    Settings as SettingsIcon
 } from 'lucide-react';
 import { UserMenu } from '@/app/ui/dashboard/user-menu';
 
 const links = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Weather', href: '/weather', icon: CloudRain },
     { name: 'Inventory', href: '/inventory', icon: Package },
     { name: 'Purchases', href: '/purchases', icon: ShoppingCart },
     { name: 'Planting Lots', href: '/lots', icon: Sprout },
@@ -26,6 +29,7 @@ const links = [
     { name: 'Reports', href: '/reports', icon: ClipboardList },
     { name: 'Customers', href: '/customers', icon: Users },
     { name: 'User Management', href: '/users', icon: Users },
+    { name: 'Settings', href: '/settings', icon: SettingsIcon },
 ];
 
 export default function SideNav({ signOutAction, userName }: { signOutAction: () => Promise<void>, userName: string }) {

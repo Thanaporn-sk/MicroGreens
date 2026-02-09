@@ -8,6 +8,7 @@ import { deletePurchase } from '@/app/lib/actions';
 import { formatDate } from '@/app/lib/formatters';
 import MaterialHistoryModal from '@/app/ui/history/material-history-modal';
 import SortableHeader from '@/app/ui/sortable-header';
+import Pagination from '@/app/ui/pagination';
 
 type PurchaseWithMaterial = {
     id: number;
@@ -23,7 +24,14 @@ type PurchaseWithMaterial = {
     };
 };
 
-export default function PurchasesTable({ purchases }: { purchases: PurchaseWithMaterial[] }) {
+export default function PurchasesTable({
+    purchases,
+    totalPages
+}: {
+    purchases: PurchaseWithMaterial[],
+    totalPages: number,
+    currentPage: number
+}) {
     const [historyMaterial, setHistoryMaterial] = useState<{ id: number, name: string } | null>(null);
 
     // Filter States
@@ -38,7 +46,7 @@ export default function PurchasesTable({ purchases }: { purchases: PurchaseWithM
 
     return (
         <>
-            <div className="rounded-lg bg-white dark:bg-gray-800 shadow overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="rounded-xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-900/50">
                         <tr>
@@ -129,6 +137,8 @@ export default function PurchasesTable({ purchases }: { purchases: PurchaseWithM
                     materialName={historyMaterial.name}
                 />
             )}
+
+            <Pagination totalPages={totalPages} />
         </>
     );
 }
