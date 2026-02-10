@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Plus, Pencil, Settings2 } from 'lucide-react';
 import DeleteButton from '@/app/ui/delete-button';
 import { deleteMaterial } from '@/app/lib/actions';
@@ -26,23 +27,25 @@ export default function InventoryTable({
     totalPages
 }: {
     materials: MaterialWithDetails[],
-    totalPages: number,
-    currentPage: number
+    totalPages: number
 }) {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
     const [selectedMaterial, setSelectedMaterial] = useState<MaterialWithDetails | null>(null);
     const [detailMaterial, setDetailMaterial] = useState<MaterialWithDetails | null>(null);
 
-    // Filter States
-    const [nameFilter, setNameFilter] = useState('');
-    const [typeFilter, setTypeFilter] = useState('');
-    const [buySaleFilter, setBuySaleFilter] = useState('');
-
-    const filteredMaterials = materials.filter((material) => {
-        const matchName = material.name.toLowerCase().includes(nameFilter.toLowerCase());
-        const matchType = typeFilter ? material.type === typeFilter : true;
-        const matchBuySale = buySaleFilter ? material.buySale === buySaleFilter : true;
-        return matchName && matchType && matchBuySale;
-    });
+    const handleFilter = (key: string, value: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (value) {
+            params.set(key, value);
+        } else {
+            params.delete(key);
+        }
+        params.set('page', '1'); // Reset to first page when filtering
+        replace(`${pathname}?${params.toString()}`);
+    };
 
     return (
         <>
@@ -57,8 +60,8 @@ export default function InventoryTable({
                                         type="text"
                                         placeholder="Filter Name..."
                                         className="w-full text-xs p-1 border rounded dark:bg-gray-800 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                        value={nameFilter}
-                                        onChange={(e) => setNameFilter(e.target.value)}
+                                        defaultValue={searchParams.get('query') || ''}
+                                        onChange={(e) => handleFilter('query', e.target.value)}
                                         // Prevent sorting when clicking input
                                         onClick={(e) => e.stopPropagation()}
                                     />
@@ -66,11 +69,11 @@ export default function InventoryTable({
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 <div className="flex flex-col gap-2">
-                                    <span>Type</span>
+                                    <SortableHeader label="Type" value="type" />
                                     <select
                                         className="w-full text-xs p-1 border rounded dark:bg-gray-800 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                        value={typeFilter}
-                                        onChange={(e) => setTypeFilter(e.target.value)}
+                                        value={searchParams.get('type') || ''}
+                                        onChange={(e) => handleFilter('type', e.target.value)}
                                         onClick={(e) => e.stopPropagation()}
                                     >
                                         <option value="">All Types</option>
@@ -86,11 +89,11 @@ export default function InventoryTable({
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 <div className="flex flex-col gap-2">
-                                    <span>Buy/Sale</span>
+                                    <SortableHeader label="Buy/Sale" value="buySale" />
                                     <select
                                         className="w-full text-xs p-1 border rounded dark:bg-gray-800 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                        value={buySaleFilter}
-                                        onChange={(e) => setBuySaleFilter(e.target.value)}
+                                        value={searchParams.get('buySale') || ''}
+                                        onChange={(e) => handleFilter('buySale', e.target.value)}
                                         onClick={(e) => e.stopPropagation()}
                                     >
                                         <option value="">All</option>
@@ -101,7 +104,11 @@ export default function InventoryTable({
                                     </select>
                                 </div>
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unit</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                <div className="flex flex-col gap-2">
+                                    <SortableHeader label="Unit" value="unit" />
+                                </div>
+                            </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400">
                                 <SortableHeader label="Stock" value="stock" />
                             </th>
@@ -109,12 +116,12 @@ export default function InventoryTable({
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        {filteredMaterials.length === 0 ? (
+                        {materials.length === 0 ? (
                             <tr>
                                 <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">No materials found.</td>
                             </tr>
                         ) : (
-                            filteredMaterials.map((material) => (
+                            materials.map((material) => (
                                 <tr
                                     key={material.id}
                                     className="hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"

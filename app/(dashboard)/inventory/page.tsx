@@ -10,6 +10,8 @@ import { getRowsPerPage } from '@/app/lib/user-settings';
 export default async function InventoryPage(props: {
     searchParams?: Promise<{
         query?: string;
+        type?: string;
+        buySale?: string;
         sort?: string;
         order?: 'asc' | 'desc';
         page?: string;
@@ -17,6 +19,8 @@ export default async function InventoryPage(props: {
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
+    const type = searchParams?.type || '';
+    const buySale = searchParams?.buySale || '';
     const sort = searchParams?.sort || 'name';
     const order = searchParams?.order || 'asc';
     const page = Number(searchParams?.page) || 1;
@@ -25,6 +29,14 @@ export default async function InventoryPage(props: {
     const where: Prisma.MaterialWhereInput = {
         name: { contains: query, mode: 'insensitive' }
     };
+
+    if (type) {
+        where.type = type as Prisma.EnumMaterialTypeFilter;
+    }
+
+    if (buySale) {
+        where.buySale = buySale as Prisma.EnumMaterialFlowFilter;
+    }
 
     const orderBy: Prisma.MaterialOrderByWithRelationInput = {};
     if (sort === 'stock') {
@@ -68,7 +80,7 @@ export default async function InventoryPage(props: {
                 <Search placeholder="Search materials..." />
             </div>
 
-            <InventoryTable materials={materials} totalPages={totalPages} currentPage={page} />
+            <InventoryTable materials={materials} totalPages={totalPages} />
         </div>
     );
 }

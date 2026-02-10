@@ -116,3 +116,42 @@ export async function getCustomerHistory(customerId: number) {
     });
     return sales;
 }
+export async function deleteAdjustment(adjustmentId: number) {
+    try {
+        const adjustment = await prisma.stockAdjustment.findUnique({
+            where: { id: adjustmentId },
+            include: { material: { include: { stock: true } } }
+        });
+
+        if (!adjustment) {
+            throw new Error('Adjustment not found');
+        }
+
+        const materialId = adjustment.materialId;
+        const adjustmentQty = adjustment.quantity;
+
+        await prisma.$transaction(async (tx) => {
+            // 1. Delete the adjustment
+            await tx.stockAdjustment.delete({
+                where: { id: adjustmentId }
+            });
+
+            // 2. Reverse the stock change (since it was adjustment, we subtract what was added)
+            if (adjustment.material.stock) {
+                await tx.stock.update({
+                    where: { materialId: materialId },
+                    data: {
+                        quantity: {
+                            decrement: adjustmentQty
+                        }
+                    }
+                });
+            }
+        });
+
+        return { success: true };
+    } catch (error) {
+        console.error('Failed to delete adjustment:', error);
+        return { success: false, error: 'Failed to delete adjustment' };
+    }
+}

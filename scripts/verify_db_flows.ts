@@ -128,8 +128,43 @@ async function main() {
     console.log(`   Deleted Lot.`);
 
 
-    // 7. Cleanup Material
-    console.log(`\n7. Cleanup Material and Customer`);
+    // 7. Stock Adjustment
+    console.log(`\n7. Stock Adjustment Verification`);
+    console.log(`   Creating Adjustment (Qty: 50)`);
+    const adjustment = await prisma.stockAdjustment.create({
+        data: {
+            materialId: material.id,
+            quantity: 50,
+            reason: 'Test Adjustment',
+            date: new Date()
+        }
+    });
+
+    // Replicate Action Logic
+    await prisma.stock.update({
+        where: { materialId: material.id },
+        data: { quantity: { increment: 50 } }
+    });
+
+    stock = await prisma.stock.findUnique({ where: { materialId: material.id } });
+    console.log(`   Stock after Adjustment: ${stock?.quantity} (Expected: 50)`);
+    if (stock?.quantity !== 50) throw new Error("Stock should be 50");
+
+    console.log(`   Deleting Adjustment (Should revert 50)`);
+    // Replicate Action Logic (decrement)
+    await prisma.stock.update({
+        where: { materialId: material.id },
+        data: { quantity: { decrement: adjustment.quantity } }
+    });
+    await prisma.stockAdjustment.delete({ where: { id: adjustment.id } });
+
+    stock = await prisma.stock.findUnique({ where: { materialId: material.id } });
+    console.log(`   Stock after Delete Adjustment: ${stock?.quantity} (Expected: 0)`);
+    if (stock?.quantity !== 0) throw new Error("Stock should be 0");
+
+
+    // 8. Cleanup Material
+    console.log(`\n8. Cleanup Material and Customer`);
     await prisma.stock.delete({ where: { materialId: material.id } });
     await prisma.material.delete({ where: { id: material.id } });
     await prisma.customer.delete({ where: { id: customer.id } });

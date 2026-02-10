@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { adjustStock } from '@/app/lib/actions';
-import { X } from 'lucide-react';
+import Modal from '@/app/ui/modal';
 
 export default function StockAdjustmentModal({
     isOpen,
@@ -23,8 +23,6 @@ export default function StockAdjustmentModal({
     const [reason, setReason] = useState('Manual Correction');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    if (!isOpen) return null;
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -44,16 +42,12 @@ export default function StockAdjustmentModal({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 relative transition-colors">
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-                    <X className="w-5 h-5" />
-                </button>
-
-                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Adjust Stock: {materialName}</h2>
-
-                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-100 dark:border-gray-700">
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Current Stock: <span className="font-bold text-gray-900 dark:text-white">{currentStock} {unit}</span></p>
+        <Modal isOpen={isOpen} onClose={onClose} title={`Adjust Stock: ${materialName}`}>
+            <div className="p-6 space-y-6">
+                <div className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-100 dark:border-gray-700">
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Current Stock: <span className="font-bold text-gray-900 dark:text-white">{currentStock.toFixed(2)} {unit}</span>
+                    </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -71,7 +65,7 @@ export default function StockAdjustmentModal({
                                 className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
                                 placeholder="-5.5 or 10"
                             />
-                            <span className="text-gray-500 dark:text-gray-400 text-sm">{unit}</span>
+                            <span className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">{unit}</span>
                         </div>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Use negative values to deduct stock (e.g. -5).</p>
                     </div>
@@ -90,7 +84,7 @@ export default function StockAdjustmentModal({
                         />
                     </div>
 
-                    <div className="flex justify-end gap-3 mt-6">
+                    <div className="flex justify-end gap-3 pt-2">
                         <button
                             type="button"
                             onClick={onClose}
@@ -108,6 +102,6 @@ export default function StockAdjustmentModal({
                     </div>
                 </form>
             </div>
-        </div>
+        </Modal>
     );
 }
